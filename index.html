@@ -1,12 +1,21 @@
 <html>
+  <head>
+  	<link href="main.css" rel="stylesheet">
+  </head>
   <body>
-    testing
-
-  <form>
-    Name:<br>
-    <input type="text" name="firstname"><br>
-    Name of Requested room:<br>
-    <input type="text" name="lastname">
-  </form>
+  	<h3>Get a room: the epitomal Stanford room-booker</h3>
+	  <form>
+	    What's your name?<br>
+	    <input type="text" name="firstname"><br>
+	    What room do you want?<br>
+	    <input type="text" name="lastname"><br>
+	    When do you want the room?<br>
+	    <input type="radio" name="When" value="now" checked>Now!<br>
+  		<input type="radio" name="When" value="hour">In an hour<br>
+  		<input type="radio" name="When" value="two_hours">In two hours!<br><br>
+	  </form>
+	  <form method="link" action="https://25live.collegenet.com/stanford/#event_browse[1]">
+	  	<input type="submit" value="done">
+	  </form>
   </body>
 </html>
