@@ -5,6 +5,6 @@ from django.template import loader
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the booker index.")
+    return HttpResponse("Look mom, I made a website.")
 
 
