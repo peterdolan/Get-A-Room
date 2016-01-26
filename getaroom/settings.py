@@ -131,7 +131,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# # Allow all host hosts/domain names for this site
+# Allow all host hosts/domain names for this site
 ALLOWED_HOSTS = ['*']
 
 # Parse database configuration from $DATABASE_URL
