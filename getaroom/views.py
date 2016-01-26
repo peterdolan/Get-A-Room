@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.template import loader
 
 
-def index(request):
-    return HttpResponse("Look mom, I made a website.")
+def home(request):
+    return HttpResponseRedirect('booker/')
 
 

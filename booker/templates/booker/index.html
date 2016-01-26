@@ -1,0 +1,9 @@
+{% if reservation_list %}
+    <ul>
+    {% for reservation in reservation_list %}
+        <li>{{ reservation.get_string }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No reservations are available.</p>
+{% endif %}
