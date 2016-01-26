@@ -33,7 +33,7 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 SECRET_KEY = '6ai$+zfrs@my6cwq8une0-!nk4xg_5wmh1%-%zoqk4cc$3^0u4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -85,16 +85,12 @@ WSGI_APPLICATION = 'getaroom.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {}
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'devdatabase',
-#         'USER': 'postgres',
-#         'PASSWORD': 'WILLjohn831!',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5433',
-#     }
-# }
+# we only need the engine name, as heroku takes care of the rest
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 
 # Password validation
@@ -130,23 +126,24 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-DATABASES['default']['NAME'] = 'devdatabase'
-DATABASES['default']['USER'] = 'postgres'
-DATABASES['default']['PASSWORD'] = 'WILLjohn831!'
-DATABASES['default']['HOST'] = '127.0.0.1'
-DATABASES['default']['PORT'] = '5433'
-
-
-
-# Enable Persistent Connections
-DATABASES['default']['CONN_MAX_AGE'] = 500
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# # Allow all host hosts/domain names for this site
+ALLOWED_HOSTS = ['*']
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+
+DATABASES = { 'default' : dj_database_url.config()}
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# try to load local_settings.py if it exists
+try:
+  from local_settings import *
+except Exception as e:
+  pass
