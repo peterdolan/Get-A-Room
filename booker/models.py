@@ -28,13 +28,15 @@ class Reservation(models.Model):
 	start_time = models.DateTimeField()
 	end_time = models.DateTimeField()
 
-	def __str__(self):
-		return ' '.join([
-			self.room.name,
-			self.user_name,
-			str(self.start_time),
-			str(self.end_time)
-		])
+	def get_string(self):
+		return self.user_name + ' has booked ' + self.room.name + ' for ' + self.description
+	#+ ' from ' + str(start_time) + ' to ' + str(end_time)
+
+	# def __str__(self):
+	# 	return ' '.join([
+	# 		self.room.name,
+	# 		self.user_name,
+	# 	])
 
 
 
