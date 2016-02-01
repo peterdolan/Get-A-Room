@@ -1,9 +1,28 @@
-{% if reservation_list %}
-    <ul>
-    {% for reservation in reservation_list %}
-        <li>{{ reservation.get_string }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No reservations are available.</p>
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<title>Testing multiple pages</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+ 	<script>
+  		function show(shown, hidden1, hidden2) {
+  			document.getElementById(shown).style.display='block';
+  			document.getElementById(hidden1).style.display='none';
+  			document.getElementById(hidden2).style.display='none';
+  			document.getElementById(hidden3).style.display='none';
+  			return false;
+		}
+	</script>
+</head>
+
+<body>
+	<form action="." method="post">
+		{% csrf_token %}
+		{{ form }}
+    		<input type="submit" value="Submit" />
+	</form>
+</body>
+<html>
