@@ -5,6 +5,7 @@
   	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
  	<script>
@@ -19,10 +20,74 @@
 </head>
 
 <body>
-	<form action="." method="post">
-		{% csrf_token %}
-		{{ form }}
-    		<input type="submit" value="Submit" />
-	</form>
+  <div class="container">
+    <ul class="row nav nav-pill">
+      <li class="col-md-3">
+        <a href="#" style="text-align:center;" onclick="return show('timepage', 'amnetiesPage', 'locationPage');">
+          <img src="./time.png" alt="Time" width="70" height="70" /> 
+        </a>
+      </li>
+      <li class="col-md-3">
+        <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timepage', 'locationPage');">
+          <img src="./list.jpg" alt="Time" width="70" height="70" /> 
+        </a>
+      </li>
+      <li class="col-md-3">
+        <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timepage', 'amnetiesPage');">
+          <img src="location.png" alt="Time" width="40" height="70" /> 
+        </a>
+      </li>
+      <li class="col-md-3">
+        <a href="#" style="text-align:center;">
+          <label for="submit-form">Go!</label>
+        </a>
+      </li>
+    </ul>
+    <form action="." method="post">
+      {% csrf_token %}
+      <div id="timepage">
+        <h2>Time and Duration</h2>
+        <div class = "form-group">
+          {{ time_form.date.label_tag }}
+          {{ time_form.date }}
+        </div>
+        <div class = "form-group">
+          {{ time_form.duration.label_tag }}
+          {{ time_form.duration }}
+        </div>
+        <div class = "form-group">
+          {{ time_form.time.label_tag }}
+          {{ time_form.time }}
+        </div>
+      </div>
+      <div id="amnetiesPage" style = "display:none">
+        <h2>Amenities</h2>
+        <div class = "form-group">
+          {{ time_form.projector_option.label_tag }}
+          {{ time_form.projector_option }}
+        </div>
+        <div class = "form-group">
+          {{ time_form.whiteboard_option.label_tag }}
+          {{ time_form.whiteboard_option }}
+        </div>
+        <div class = "form-group">
+          {{ time_form.chairs_option.label_tag }}
+          {{ time_form.chairs_option }}
+        </div>
+      </div>
+      <div id="locationPage" style = "display:none">
+        <h2>Location</h2>
+        <div class = "form-group">
+          {{ time_form.area.label_tag }}
+          {{ time_form.area }}
+        </div>
+        <div class = "form-group">
+          {{ time_form.flexible.label_tag }}
+          {{ time_form.flexible }}
+        </div>
+      </div>
+      <input type="submit" id='submit-form' class = "hidden" />
+    </form>
+  </div>
 </body>
 <html>

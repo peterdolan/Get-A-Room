@@ -9,6 +9,7 @@ class TimeForm(forms.Form):
 	)
 	date = forms.ChoiceField(
 		label = "Date",
+		required = False,
 		choices = date_choices
 	)
 
@@ -21,6 +22,7 @@ class TimeForm(forms.Form):
 	)
 	duration = forms.ChoiceField(
 		label = "Duration",
+		required = False,
 		choices = duration_choices
 	)
 
@@ -33,10 +35,10 @@ class TimeForm(forms.Form):
 	)
 	time = forms.ChoiceField(
 		label = "What Time?",
+		required = False,
 		choices = time_choices
 	)
 
-class AmentiesForm(forms.Form):	
 	projector_option = forms.BooleanField(
 		required = False,
 		initial = False,
@@ -53,7 +55,6 @@ class AmentiesForm(forms.Form):
 		label = "Wheeled chairs"
 	)
 
-class LocationForm(forms.Form):	
 	area_choices = (
 		('empty', ''),
 		('huang', 'Huang'),
@@ -64,6 +65,7 @@ class LocationForm(forms.Form):
 	)
 	area = forms.ChoiceField(
 		label = "Where?",
+		required = False,
 		choices = area_choices
 	)
 
