@@ -39,20 +39,20 @@ class TimeForm(forms.Form):
 		choices = time_choices
 	)
 
-	projector_option = forms.BooleanField(
+	projector = forms.BooleanField(
 		required = False,
 		initial = False,
 		label = "Projector"
 	)
-	whiteboard_option = forms.BooleanField(
+	whiteboard = forms.BooleanField(
 		required = False,
 		initial = False,
 		label = "Whiteboard"
 	)
-	chairs_option = forms.BooleanField(
+	windows = forms.BooleanField(
 		required = False,
 		initial = False,
-		label = "Wheeled chairs"
+		label = "Windows"
 	)
 
 	area_choices = (
