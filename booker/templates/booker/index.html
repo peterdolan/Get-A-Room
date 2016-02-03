@@ -2,11 +2,11 @@
 {% load static %}
 <html lang="en">
 <head>
-  	<title>Testing multiple pages</title>
+  	<title>Get-A-Room</title>
   	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    	<link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %} ">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	 	<script>
@@ -24,18 +24,18 @@
   <div class="container">
     <ul class="row nav nav-pill">
       <li class="col-md-3">
-        <a href="#" style="text-align:center;" onclick="return show('timepage', 'amnetiesPage', 'locationPage');">
-          <img src="{% static "time.png" %}" alt="Time" width="70" height="70" /> 
+        <a href="#" style="text-align:center;" onclick="return show('timePage', 'amnetiesPage', 'locationPage');">
+          <img src="{% static "img/time.png" %}" alt="Time" width="70" height="70" /> 
         </a>
       </li>
       <li class="col-md-3">
-        <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timepage', 'locationPage');">
-          <img src="{% static "list.jpg"%}" alt="Time" width="70" height="70" /> 
+        <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timePage', 'locationPage');">
+          <img src="{% static "img/list.jpg"%}" alt="Time" width="70" height="70" /> 
         </a>
       </li>
       <li class="col-md-3">
-        <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timepage', 'amnetiesPage');">
-          <img src="{% static "location.png" %}" alt="Time" width="40" height="70" /> 
+        <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timePage', 'amnetiesPage');">
+          <img src="{% static "img/location.png" %}" alt="Time" width="40" height="70" /> 
         </a>
       </li>
       <li class="col-md-3">
@@ -46,7 +46,7 @@
     </ul>
     <form action="." method="post">
       {% csrf_token %}
-      <div id="timepage">
+      <div id="timePage">
         <h2>Time and Duration</h2>
         <div class = "form-group">
           {{ time_form.date.label_tag }}
