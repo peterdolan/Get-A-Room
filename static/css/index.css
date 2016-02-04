@@ -10,3 +10,13 @@ input[type=submit] {
     -webkit-border-radius: 5px;
     border-radius: 5px; 
 }
+
+#submit {
+	text-align: center;
+	font-size: 40pt;
+}
+
+#submit:hover {
+	cursor: pointer;
+	color: orange;
+}

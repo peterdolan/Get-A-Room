@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %} ">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="{% static "js/index.js" %}"></script>
 	 	<script>
   		function show(shown, hidden1, hidden2) {
   			document.getElementById(shown).style.display='block';
@@ -38,10 +39,8 @@
           <img src="{% static "img/location.png" %}" alt="Time" width="40" height="70" /> 
         </a>
       </li>
-      <li class="col-md-3">
-        <a href="#" style="text-align:center;">
-          <label for="submit-form">Go!</label>
-        </a>
+      <li class="col-md-3" id="submit">
+        <label for="submit-form" id="submit">Go!</label>
       </li>
     </ul>
     <form action="." method="post">
@@ -90,5 +89,9 @@
       <input type="submit" id='submit-form' class = "hidden" />
     </form>
   </div>
+
+  <script>
+    addClasses();
+  </script>
 </body>
 <html>
