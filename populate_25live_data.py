@@ -70,6 +70,7 @@ def add_room(room_name, bldg_name, capacity, features):
 # Start execution here!
 if __name__ == '__main__':
     print "Starting booker population script..."
+    # settings.configure()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'getaroom.settings')
-    from booker.models import Room, Reservation
+    import booker.models
     populate()
