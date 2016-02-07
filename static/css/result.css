@@ -1,0 +1,19 @@
+.list-group-item {
+	margin: 10px;
+}
+
+#room-list .active {
+	background-color: #F923AB;
+}
+
+.empty {
+	color: red;
+}
+
+h1 {
+	margin-left: 10px;
+}
+
+h5 {
+	margin-bottom: 0px;
+}

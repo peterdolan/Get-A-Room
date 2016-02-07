@@ -2,7 +2,6 @@ from django import forms
 
 class TimeForm(forms.Form):
 	date_choices = (
-		('empty', ''),
 		('today', 'Today'),
 		('tomorrow', 'Tomorrow'),
 		('two', 'In two days')
@@ -10,11 +9,11 @@ class TimeForm(forms.Form):
 	date = forms.ChoiceField(
 		label = "Date",
 		required = False,
-		choices = date_choices
+		choices = date_choices,
+		initial = 'today'
 	)
 
 	duration_choices = (
-		('empty', ''),
 		('thirty', 'Half an hour'),
 		('one', 'An hour'),
 		('two', 'Two hours'),
@@ -23,7 +22,8 @@ class TimeForm(forms.Form):
 	duration = forms.ChoiceField(
 		label = "Duration",
 		required = False,
-		choices = duration_choices
+		choices = duration_choices,
+		initial = 'one'
 	)
 
 	time_choices = (
@@ -36,7 +36,8 @@ class TimeForm(forms.Form):
 	time = forms.ChoiceField(
 		label = "What Time?",
 		required = False,
-		choices = time_choices
+		choices = time_choices,
+		initial = 'now'
 	)
 
 	projector = forms.BooleanField(

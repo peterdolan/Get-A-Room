@@ -1,7 +1,50 @@
-<h1>You have booked a room {{date}}</h1> 
+<!-- <h1>You have booked a room {{date}}</h1> 
 <h1>For {{duration}} time units</h1> 
 <h1>In {{time}} hour</h1> 
 <h1>Window: {{windows}}</h1> 
 <h1>Whiteboard: {{whieboard}}</h1> 
 <h1>Projector: {{projector}}</h1> 
+ -->
 
+ <!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  	<title>Get-A-Room</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  	<link rel="stylesheet" type="text/css" href="{% static "css/result.css" %} ">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  	<script src="{% static "js/result.js" %}"></script>
+</head>
+
+<body>
+	<div class="container">
+		<h1>These rooms are available:</h1>
+		<hr />
+		<div class="list-group" id="room-list">
+			{% for room in rooms %}
+				<a id="{{ room.name }}" onclick="updateActiveRoom( {{room.name}} )" href="#" class="list-group-item">
+					<h3>{{ room.building.name }} {{ room.name }}:</h3>
+					<h5>Amenities:</h5>
+					<ul>
+						{% if room.has_projector %}
+							<li>Projector</li>
+						{% endif %}
+						{% if room.has_windows %}
+							<li>Windows</li>
+						{% endif %}
+						{% if room.has_whiteboard %}
+							<li>Whiteboard</li>
+						{% endif %}
+					</ul>
+				</a>
+			{% endfor %}
+		</div>
+		<script>
+			checkIfListsEmpty();
+		</script>
+	</div>
+</body>
