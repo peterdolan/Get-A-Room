@@ -11,12 +11,8 @@ def index(request):
 	if request.method == 'POST':
 		form = TimeForm(request.POST)
 		if form.is_valid():
-			return render(request, 'booker/result.html', {'date':form.cleaned_data['date'],
-														  'time':form.cleaned_data['time'],
-														  'duration':form.cleaned_data['duration'],
-														  'projector':form.cleaned_data['projector'],
-														  'whiteboard':form.cleaned_data['whiteboard'],
-														  'windows':form.cleaned_data['windows']})
+			rooms = Room.objects.all()
+			return render(request, 'booker/result.html', {'rooms': rooms})
 	else:
 		time_form = TimeForm()
 	return render(request, 'booker/index.html', {'time_form':time_form})
