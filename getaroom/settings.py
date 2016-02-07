@@ -111,6 +111,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Administrator login redirect
+# https://docs.djangoproject.com/en/1.9/ref/settings/#login-redirect-url
+
+LOGIN_URL = '/booker/login/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

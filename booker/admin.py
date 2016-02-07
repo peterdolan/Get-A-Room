@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Building)
 admin.site.register(Room)
 admin.site.register(Reservation)
+admin.site.register(AdminUser)

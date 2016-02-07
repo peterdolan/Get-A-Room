@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Get-A-Room</title>
+    </head>
+
+    <body>
+    	<div class="header">
+            <ul>
+            {% if user.is_authenticated %}
+                <li><a href="/rango/restricted/">Restricted Page</a></li>
+                <li><a href="/rango/logout/">Logout</a></li>
+                <li><a href="/rango/add_category/">Add a New Category</a></li>
+            {% else %}
+                <li><a href="/rango/register/">Register Here</a></li>
+                <li><a href="/rango/login/">Login</a></li>
+            {% endif %}
+
+                <li><a href="/rango/about/">About</a></li>
+            </ul>
+        </div>
+
+
+        <div>{% block body_block %}{% endblock %}</div>
+    </body>
+</html>
