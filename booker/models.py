@@ -20,6 +20,9 @@ class Room(models.Model):
 	def __str__(self):
 		return self.name
 
+	def get_name(self):
+		return str(self.name)
+
 class Reservation(models.Model):
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
 	user_name = models.CharField(max_length=200)
