@@ -2,11 +2,14 @@ function addClasses() {
 	var date = document.getElementById("id_date");
 	date.className = "form-control";
 
+	var time = document.getElementById("id_time");
+	time.className = "form-control";
+
 	var duration = document.getElementById("id_duration");
 	duration.className = "form-control";
 
-	var time = document.getElementById("id_time");
-	time.className = "form-control";
+	var capacity = document.getElementById("id_capacity");
+	capacity.className = "form-control";
 
 	var projector = document.getElementById("id_projector");
 	projector.className = "form-control";

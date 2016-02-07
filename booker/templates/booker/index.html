@@ -48,42 +48,46 @@
       <div id="timePage">
         <h2>Time and Duration</h2>
         <div class = "form-group">
-          {{ time_form.date.label_tag }}
-          {{ time_form.date }}
+          {{ form.date.label_tag }}
+          {{ form.date }}
         </div>
         <div class = "form-group">
-          {{ time_form.duration.label_tag }}
-          {{ time_form.duration }}
+          {{ form.time.label_tag }}
+          {{ form.time }}
         </div>
         <div class = "form-group">
-          {{ time_form.time.label_tag }}
-          {{ time_form.time }}
+          {{ form.duration.label_tag }}
+          {{ form.duration }}
+        </div>
+        <div class = "form-group">
+          {{ form.capacity.label_tag }}
+          {{ form.capacity }}
         </div>
       </div>
       <div id="amnetiesPage" style = "display:none">
         <h2>Amenities</h2>
         <div class = "form-group">
-          {{ time_form.projector.label_tag }}
-          {{ time_form.projector }}
+          {{ form.projector.label_tag }}
+          {{ form.projector }}
         </div>
         <div class = "form-group">
-          {{ time_form.whiteboard.label_tag }}
-          {{ time_form.whiteboard }}
+          {{ form.whiteboard.label_tag }}
+          {{ form.whiteboard }}
         </div>
         <div class = "form-group">
-          {{ time_form.windows.label_tag }}
-          {{ time_form.windows }}
+          {{ form.windows.label_tag }}
+          {{ form.windows }}
         </div>
       </div>
       <div id="locationPage" style = "display:none">
         <h2>Location</h2>
         <div class = "form-group">
-          {{ time_form.area.label_tag }}
-          {{ time_form.area }}
+          {{ form.area.label_tag }}
+          {{ form.area }}
         </div>
         <div class = "form-group">
-          {{ time_form.flexible.label_tag }}
-          {{ time_form.flexible }}
+          {{ form.flexible.label_tag }}
+          {{ form.flexible }}
         </div>
       </div>
       <input type="submit" id='submit-form' class = "hidden" />

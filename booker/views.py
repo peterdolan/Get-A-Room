@@ -6,25 +6,20 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 from .models import *
-from .forms import TimeForm
+from .forms import RoomForm
 
 
 def index(request):
 
 	if request.method == 'POST':
-		form = TimeForm(request.POST)
+		form = RoomForm(request.POST)
 		if form.is_valid():
-<<<<<<< HEAD
 			rooms = getValidRooms(request,form)
 			print "!!"
 			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form})
-=======
-			rooms = Room.objects.all()
-			return render(request, 'booker/result.html', {'rooms': rooms})
->>>>>>> 9a32c76839331186cf9f9bdad9bffaf7934f8d58
 	else:
-		time_form = TimeForm()
-	return render(request, 'booker/index.html', {'time_form':time_form})
+		form = RoomForm()
+	return render(request, 'booker/index.html', {'form':form})
 
 
 def getValidRooms(request, form):
@@ -67,3 +62,6 @@ def getActualDate(date_str, time_str):
 	else:
 		date = datetime.datetime.now()
 	return date
+
+def confirm(request, name):
+	return render(request, 'booker/confirm.html', {'name': name})

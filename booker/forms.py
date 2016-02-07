@@ -1,6 +1,6 @@
 from django import forms
 
-class TimeForm(forms.Form):
+class RoomForm(forms.Form):
 	date_choices = (
 		('today', 'Today'),
 		('tomorrow', 'Tomorrow'),
@@ -11,6 +11,19 @@ class TimeForm(forms.Form):
 		required = False,
 		choices = date_choices,
 		initial = 'today'
+	)
+
+	time_choices = (
+		('now', 'Now'),
+		('thirty', 'In 30 minutes'),
+		('one', 'In an hour'),
+		('two', 'In two hours')
+	)
+	time = forms.ChoiceField(
+		label = "What Time?",
+		required = False,
+		choices = time_choices,
+		initial = 'now'
 	)
 
 	duration_choices = (
@@ -26,18 +39,11 @@ class TimeForm(forms.Form):
 		initial = 'one'
 	)
 
-	time_choices = (
-		('empty', ''),
-		('now', 'Now'),
-		('thirty', 'In 30 minutes'),
-		('one', 'In an hour'),
-		('two', 'In two hours')
-	)
-	time = forms.ChoiceField(
-		label = "What Time?",
-		required = False,
-		choices = time_choices,
-		initial = 'now'
+	capacity = forms.IntegerField(
+		label = "Group Size",
+		min_value = 1,
+		max_value = 20,
+		initial = 3
 	)
 
 	projector = forms.BooleanField(

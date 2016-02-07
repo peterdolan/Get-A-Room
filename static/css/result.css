@@ -2,15 +2,19 @@
 	margin: 10px;
 }
 
-#room-list .active {
+/*#room-list .active {
 	background-color: #F923AB;
-}
+}*/
 
 .empty {
 	color: red;
 }
 
 h1 {
+	margin-left: 10px;
+}
+
+button {
 	margin-left: 10px;
 }
 
