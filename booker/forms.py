@@ -87,6 +87,3 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
-
-	def get_string(self):
-		return self.room + ' on ' + self.date + ' at ' + self.time + ' for ' + self.duration

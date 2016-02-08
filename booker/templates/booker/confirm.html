@@ -1,3 +1,26 @@
-{{ name }} <br>
+ <!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  	<title>Confirm-The-Room</title>
+  	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" type="text/css" href="{% static "css/confirm.css" %} ">
+</head>
+
+<body>
+	<div class="container">
+		<h1>Congratulations, <span class="name">{{res.user_name}}</span>, <br />
+			You've booked a room!</h1>
+		<h3>Room: {{res.room.building.name}} {{res.room.name}}</h3>
+		<h3>Time: {{res.start_time}} to {{res.end_time}}</h3>
+
+	</div>
+</body>
+</html>
+<!-- 
 {{ res_object.room }} {{ res_object.user_name }} {{ res_object.user_email }} {{ res_object.description }}
-{{ res_object.start_time }} "-" {{ res_object.end_time }}
+{{ res_object.start_time }} "-" {{ res_object.end_time }} -->
