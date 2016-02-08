@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <!-- Is anyone getting tired of repeatedly entering the header over and over?? -->
-        <title>Get-A-Room</title>
-    </head>
+{% extends 'booker/base.html' %}
 
-    <body>
+{% block body_block %}
         <h1>Login to Get-A-Room</h1>
 
         <form id="login_form" method="post" action="/booker/login/">
@@ -18,5 +13,4 @@
             <input type="submit" value="submit" />
         </form>
 
-    </body>
-</html>
+{% endblock %}

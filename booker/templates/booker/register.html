@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Get-A-Room</title>
-    </head>
+{% extends 'booker/base.html' %}
 
-    <body>
+{% block body_block %}
         <h1>Register with Get-A-Room!</h1>
 
         {% if registered %}
@@ -28,5 +24,4 @@
             <input type="submit" name="submit" value="Register" />
         </form>
         {% endif %}
-    </body>
-</html>
+{% endblock %}

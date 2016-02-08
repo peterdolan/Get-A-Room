@@ -1,25 +1,19 @@
+{% extends 'booker/base.html' %}
 
-<!-- {% if user.is_authenticated %}
-<a href="/booker/admin_dashboard/">Admin Dashboard</a><br />
-<a href="/booker/logout/">Logout</a><br />
-{% else %}
-<a href="/booker/register/">Register Here</a><br />
-<a href="/booker/login/">Login</a><br />
-{% endif %} -->
-{% extends 'base.html' %}
+{% block body_block %}
+	{% if user.is_authenticated %}
+		<h1>Welcome back, {{ user.username }}!</h1>
+	{% else %}
+		<h1>Welcome to Get-A-Room!</h1>
+	{% endif %}
 
-{% if user.is_authenticated %}
-<h1>Welcome back, {{ user.username }}!</h1>
-{% else %}
-<h1>Welcome to Get-A-Room!</h1>
-{% endif %}
-
-{% if reservation_list %}
-    <ul>
-    {% for reservation in reservation_list %}
-        <li>{{ reservation.get_string }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No reservations are available.</p>
-{% endif %}
+	{% if reservation_list %}
+    	<ul>
+    	{% for reservation in reservation_list %}
+        	<li>{{ reservation.get_string }}</li>
+    	{% endfor %}
+    	</ul>
+	{% else %}
+    	<p>No reservations are available.</p>
+	{% endif %}
+{% endblock %}
