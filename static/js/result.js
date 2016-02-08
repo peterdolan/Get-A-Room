@@ -1,6 +1,6 @@
-function updateActiveRoom(name) {
+function updateActiveRoom(nname) {
 	var old_rooms = document.getElementsByClassName("list-group-item active");
-	var room = document.getElementById(name);
+	var room = document.getElementById(nname);
 	var button = document.getElementById("book-button");
 
 	if (room === old_rooms[0]) {

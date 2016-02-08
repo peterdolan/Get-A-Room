@@ -5,10 +5,10 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils import timezone
 
 from .models import *
 from .forms import RoomForm
-from .forms import ReservationForm
 
 def index(request):
 	if request.method == 'POST':
@@ -22,7 +22,6 @@ def index(request):
 
 
 def getValidRooms(request, form):
-	# date = datetime.datetime(form.cleaned_data['date'])
 	date = form.cleaned_data['date']
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
@@ -45,7 +44,6 @@ def getValidRooms(request, form):
 	# res = Reservation.objects.all()
 	# bldgs = Building.objects.all()
 	start_time = getActualDate(date,start_time)
-	# dur_dt = timedelta(0)
 	if duration == "thirty":
 		dur_dt = timedelta(minutes=30)
 	elif duration == "one":
@@ -58,48 +56,45 @@ def getValidRooms(request, form):
 	time_tuple = (start_time, end_time)
 	return checkReservations(room_objects_filtered, time_tuple)
 
-
 def checkReservations(room_objects_list, time_tuple):
 	#look for overlap by comparing reservation times to times desired
 	#any rooms taken for time slice x are taken off the available rooms list
-	
-	reservations_case1 = Reservation.objects.all().filter(start_time__lte=time_tuple[0],end_time__gte=time_tuple[1])
-	reservations_case2 = Reservation.objects.all().filter(start_time__lte=time_tuple[0],end_time__gte=time_tuple[0],end_time__lte=time_tuple[1])
-	reservations_case3 = Reservation.objects.all().filter(start_time__gte=time_tuple[0],start_time__lte=time_tuple[1],end_time__gte=time_tuple[1])
-	reservations_case4 = Reservation.objects.all().filter(start_time__gte=time_tuple[0],end_time__lte=time_tuple[1])
-
-	overlapped_room_names = Set()
-	for res in reservations_case1:
-		overlapped_room_names.add(res.room)
-	for res in reservations_case2:
-		overlapped_room_names.add(res.room)
-	for res in reservations_case3:
-		overlapped_room_names.add(res.room)
-	for res in reservations_case4:
-		overlapped_room_names.add(res.room)
-
-	#HOW TO CHECK WHATS IN HERE?
-	#NEED TO DEBUG
 	available_rooms_list = []
+
 	for room_obj in room_objects_list:
-		if room_obj.name not in overlapped_room_names:
+		is_valid_flag = True
+		room_reservation_list = Reservation.objects.all().filter(room=room_obj)
+		for res_obj in room_reservation_list:
+			if checkValidRes(res_obj, time_tuple) == False: #we have an overlapping reservation
+				is_valid_flag = False
+				break
+		if is_valid_flag:
 			available_rooms_list.append(room_obj)
+
+	# reservations = Reservation.objects.all().filter(~(st_queryfilter1 | st_queryfilter2) & (et_queryfilter1 | et_queryfilter2))
 	return available_rooms_list
+
+def checkValidRes(res_obj, time_tuple):
+	request_start = time_tuple[0]
+	request_end = time_tuple[1]
+	res_start = res_obj.start_time
+	res_end = res_obj.end_time
+	return ((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))
 
 def getActualDate(date_str, time_str):
 	#first date
-	timestamp = date.today()
+	timestamp = timezone.now()
 	if date_str == "tomorrow":
-		timestamp = datetime.timedelta(days=1)
+		timestamp += timedelta(days=1)
 	elif date_str == "two": #two
-		timestamp += datetime.timedelta(days=2)
+		timestamp += timedelta(days=2)
 	#now times
 	if time_str == "thirty":
-		timestamp += datetime.timedelta(minutes=30)
+		timestamp += timedelta(minutes=30)
 	elif time_str == "one":
-		timestamp += datetime.timedelta(hours=1)
+		timestamp += timedelta(hours=1)
 	elif time_str == "two": #two hrs
-		timestamp += datetime.timedelta(hours=2)
+		timestamp += timedelta(hours=2)
 	return timestamp
 
 def confirm(request):
@@ -117,3 +112,9 @@ def confirm(request):
 		return render(request, 'booker/confirm.html', {'res_object':res})
 	else:
 		return render(request, 'booker/uhmmm.html')
+	# NEED to get real start/end times (as well as user info)!!
+	fake_start_time = timezone.now()
+	fake_end_time = fake_start_time + timedelta(hours=1)
+	#insert into database
+	res = Reservation.objects.get_or_create(room=room_obj, user_name='Alec Powell', user_email='atpowell@stanford.edu', description='!!', start_time=fake_start_time, end_time=fake_end_time)[0]
+	return render(request, 'booker/confirm.html', {'name':name, 'res_object':res})
