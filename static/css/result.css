@@ -21,3 +21,27 @@ button {
 h5 {
 	margin-bottom: 0px;
 }
+
+body {
+	/* Disable scrollbars and ensure that the body fills the window */
+	overflow: hidden;
+	/*width: 100%;
+	height: 100%;*/
+}
+
+#header {
+    /* Provide scrollbars if needed and fix the header dimensions */
+    overflow: auto;
+    position: absolute;
+    width: 90%;
+    height: 150px;
+}
+
+#main {
+    /* Provide scrollbars if needed, position below header, and derive height from top/bottom */
+    overflow: auto;
+    position: absolute;
+    width: 90%;
+    top: 150px;
+    bottom: 0;
+}
