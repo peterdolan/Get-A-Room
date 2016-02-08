@@ -81,3 +81,12 @@ class RoomForm(forms.Form):
 		initial = False,
 		label = "Accept other locations?"
 	)
+
+class ReservationForm(forms.Form):
+	room = forms.CharField(max_length=200)
+	date = forms.CharField(max_length=200)
+	time = forms.CharField(max_length=200)
+	duration = forms.CharField(max_length=200)
+
+	def get_string(self):
+		return self.room + ' on ' + self.date + ' at ' + self.time + ' for ' + self.duration

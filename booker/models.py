@@ -11,6 +11,7 @@ class Building(models.Model):
 
 class Room(models.Model):
 	name = models.CharField(max_length=200)
+	# nice_name = models.CharField(max_length=200)
 	building = models.ForeignKey(Building, on_delete=models.CASCADE)
 	capacity = models.IntegerField(default=0)
 	has_projector = models.BooleanField(default=False)

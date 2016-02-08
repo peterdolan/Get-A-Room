@@ -29,9 +29,11 @@ function checkIfListsEmpty() {
 	}
 }
 
-function bookRoom() {
-	var room_info = document.getElementsByTagName("SPAN");
-	var room_building = room_info[0].innerHTML;
+function bookRoom(date, time, duration) {
+	var block = document.getElementsByClassName("list-group-item active")[0];
+	var room_info = block.getElementsByTagName("SPAN");
 	var room_name = room_info[1].innerHTML;
-	window.location.href = "./confirm/" + room_name;
+	var input = document.getElementById("room-input");
+	input.value = room_name;
+    document.forms['param_form'].submit();
 }

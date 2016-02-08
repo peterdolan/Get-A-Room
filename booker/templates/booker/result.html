@@ -23,11 +23,11 @@
 <body>
 	<div class="container">
 		<h1>These rooms are available:</h1>
-		<button id="book-button" type="button" class="btn disabled" onclick="bookRoom()">Book Room</button>
+		<button id="book-button" type="button" class="btn disabled" onclick="bookRoom('{{form.data.date}}', '{{form.data.time}}', '{{form.data.duration}}')">Book Room</button>
 		<hr />
 		<div class="list-group" id="room-list">
 			{% for room in rooms %}
-				<a id="{{ room.name }}" onclick="updateActiveRoom( {{room.name}} )" href="#" class="list-group-item">
+				<a id="{{ room.name }}" onclick="updateActiveRoom('{{room.name}}')" href="#" class="list-group-item">
 					<h3><span>{{ room.building.name }}</span> <span>{{ room.name }}</span>:</h3>
 					<h5>Amenities:</h5>
 					<ul>
@@ -44,6 +44,14 @@
 				</a>
 			{% endfor %}
 		</div>
+		<form style="display:none" method="POST" action="./confirm/" name="param_form">
+			{% csrf_token %}
+			<input type="text" name="room" id="room-input" />
+			<input type="text" name="date" value="{{form.data.date}}" />
+			<input type="text" name="time" value="{{form.data.time}}" />
+			<input type="text" name="duration" value="{{form.data.duration}}" />
+			<input type="submit" value="submit" />
+		</form>
 		<script>
 			checkIfListsEmpty();
 		</script>
