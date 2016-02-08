@@ -115,9 +115,7 @@ def confirm(request):
 			dur_dt = timedelta(hours=3)
 		res_end_time = res_start_time + dur_dt
 		#insert into database
-		res = Reservation.objects.get_or_create(room=room_obj, user_name='Alec Powell', user_email='atpowell@stanford.edu', description='!!', start_time=fake_start_time, end_time=fake_end_time)[0]
-		return render(request, 'booker/confirm.html', {'res':res})
 		res = Reservation.objects.get_or_create(room=room_obj, user_name='Alec Powell', user_email='atpowell@stanford.edu', description='!!', start_time=res_start_time, end_time=res_end_time)[0]
-		return render(request, 'booker/confirm.html', {'res_object':res})
+		return render(request, 'booker/confirm.html', {'res':res})
 	else:
 		return render(request, 'booker/uhmmm.html')
