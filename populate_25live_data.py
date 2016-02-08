@@ -1,6 +1,13 @@
 import os
 import csv
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'getaroom.settings')
+
+import django
+django.setup()
+from booker.models import Room, Building, Reservation
+
+
 def remove_room_numbers(bldg_str):
     numerics = "1234567890"
     result = ""
@@ -9,7 +16,7 @@ def remove_room_numbers(bldg_str):
             break
         else:
             result += piece + " "
-    return result
+    return str(result)
 
 def read_file():
     f = open('RegistrarRoomList.csv')
@@ -39,38 +46,26 @@ def read_file():
             has_board = True
         else: has_board = False
 
-        # print room_name, ":", bldg_name, "(", capacity, ")", has_projector, has_window, has_board
         features_tup = tuple((has_projector, has_window, has_board))
         tup = tuple((room_name, bldg_name, capacity, features_tup))
         rooms.append(tup)
-
-    # print "------------"
-    # print "ROOMS LIST =", rooms
     return rooms
 
 def populate():
     rooms_list = read_file()
-
     for room in rooms_list:
         add_room(room[0], room[1], room[2], room[3])
 
     # Print out what we have added to the user.
-    # for c in Category.objects.all():
-    #     for p in Page.objects.filter(category=c):
-    #         print "- {0} - {1}".format(str(c), str(p))
-
-    for r in Room.objects.all():
-        print str(r)
+    # for r in Room.objects.all():
+    #     print str(r)
 
 def add_room(room_name, bldg_name, capacity, features):
-    r = Room.objects.get_or_create(name=room_name, building=bldg_name, capacity=capacity, has_projector=features[0], has_windows=features[1], has_whiteboard=features[2])[0]
+    b = Building.objects.get_or_create(name=bldg_name.strip())[0]
+    r = Room.objects.get_or_create(name=room_name, building=b, capacity=capacity, has_projector=features[0], has_windows=features[1], has_whiteboard=features[2])[0]
     return r
-
 
 # Start execution here!
 if __name__ == '__main__':
     print "Starting booker population script..."
-    # settings.configure()
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'getaroom.settings')
-    import booker.models
     populate()
