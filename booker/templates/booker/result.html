@@ -27,7 +27,7 @@
 		<hr />
 		<div class="list-group" id="room-list">
 			{% for room in rooms %}
-				<a id="{{ room.name }}" onclick="updateActiveRoom( {{room.name}} )" href="#" class="list-group-item">
+				<a id="{{ room.name }}" onclick="updateActiveRoom('{{room.name}}')" href="#" class="list-group-item">
 					<h3><span>{{ room.building.name }}</span> <span>{{ room.name }}</span>:</h3>
 					<h5>Amenities:</h5>
 					<ul>
