@@ -41,6 +41,7 @@ def getValidRooms(request, form):
 	if whiteboard_bool:
 		kwargs['has_whiteboard'] = True
 	room_objects_filtered = Room.objects.all().filter(**kwargs)
+	room_objects_ordered = room_objects_filtered.order_by('name')
 
 	# res = Reservation.objects.all()
 	# bldgs = Building.objects.all()
@@ -55,7 +56,7 @@ def getValidRooms(request, form):
 		dur_dt = timedelta(hours=3)
 	end_time = start_time + dur_dt
 	time_tuple = (start_time, end_time)
-	return checkReservations(room_objects_filtered, time_tuple)
+	return checkReservations(room_objects_ordered, time_tuple)
 
 def checkReservations(room_objects_list, time_tuple):
 	#look for overlap by comparing reservation times to times desired
