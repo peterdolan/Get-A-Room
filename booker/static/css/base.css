@@ -28,25 +28,39 @@ li {
 }
 
 .logo-div {
-	width: 30%;
+	float: left;
+	display: table-cell;
+	width: 20%;
 	height: 100%;
+	margin: 0;
 /*	padding-left: 10%;
 	padding-right: 10%;*/
 }
 
-.logo-link {
-	width: 100%;
-	height: 100%;
-}
-
 .logo {
 	display:block;
-   	/*margin:auto;*/
-   	padding-top: 4%;
-   	padding-left: 9%;
+   	padding-top: 7%;
+   	padding-left: 14%;
 	width: auto;
 	height: 70%;
+	margin: 0;
 }
+
+.links-container {
+	float: right;
+	width: 10%;
+	height: 80%;
+	float: right;
+	text-align: center;
+	padding-top: 2%;
+}
+
+.header-link {
+	width: 100%;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	color: #222222;
+}
+
 
 .greeting-container {
 	background-color: #222222;
