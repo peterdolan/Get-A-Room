@@ -1,0 +1,81 @@
+.submit_button {
+	float: right;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: #222222;
+    padding-top: 10px;
+}
+
+.container h2 {
+    color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+    font-weight: 100;
+}
+
+option {
+    font-family: Futura,Trebuchet MS,Arial,sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.container label {
+    color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+    font-weight: 100;
+}
+
+.container li {
+    list-style-type: none;
+}
+
+.container ul {
+    width: 80%;
+    display: block;
+    margin: 0 auto;
+}
+
+.container a:hover, a:focus {
+    background-color: #222222 !important;
+}
+
+
+.centered-container {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+input[type=submit] {
+    padding:5px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+.container img {
+    height: 70px;
+    width: auto;
+    -webkit-transform:scale(1.05); /* Safari and Chrome */
+    -moz-transform:scale(1.05); /* Firefox */
+    -ms-transform:scale(1.05); /* IE 9 */
+    -o-transform:scale(1.05); /* Opera */
+     transform:scale(1.05);
+}
+
+#submit {
+	text-align: center;
+	font-size: 60pt;
+    font-weight: 100;
+    padding-top: -10px;
+    margin-top: -15px;
+    padding-left: 15px;
+}
+
+#submit:hover {
+	cursor: pointer;
+	color: #fed100;
+}

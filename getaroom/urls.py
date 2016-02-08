@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+import booker
 
 from . import views
 
 urlpatterns = [
+    # getaroom.space/
+    # redirects to booker app
 	url(r'^$', views.home, name='home'),
+    # /booker/
 	url(r'^booker/', include('booker.urls')),
-        url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
 ]

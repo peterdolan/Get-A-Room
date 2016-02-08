@@ -1,0 +1,42 @@
+.container {
+	height: 100%;
+	width: 100%;
+	background-color: #222222;
+}
+
+* {
+	color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+    font-weight: 100;
+}
+
+#submit {
+	background-color: #fed100;
+	color: #222222;
+	border:none !important;
+	box-shadow:none !important;
+	padding: 5px 11px;
+	margin-top: 10px;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #222222 inset;
+}
+
+.textbox {
+	color: white !important;
+}
+
+input[type="text"] {
+	color: white !important;
+}
+
+input, select, textarea {
+	color: white;
+	background-color: #222222;
+}
+
+input, textarea {
+	color: white;
+	background-color: #222222;
+}

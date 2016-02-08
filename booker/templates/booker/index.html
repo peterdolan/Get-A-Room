@@ -1,101 +1,95 @@
-<!DOCTYPE html>
+{% extends 'booker/base.html' %}
 {% load static %}
-<html lang="en">
-<head>
-  	<title>Get-A-Room</title>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="width=device-width, initial-scale=1">
-  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %} ">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="{% static "js/index.js" %}"></script>
-	 	<script>
-  		function show(shown, hidden1, hidden2) {
-  			document.getElementById(shown).style.display='block';
-  			document.getElementById(hidden1).style.display='none';
-  			document.getElementById(hidden2).style.display='none';
-  			document.getElementById(hidden3).style.display='none';
-  			return false;
-		}
-	</script>
-</head>
+{% block head_block %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %} ">
+  <script src="{% static "js/index.js" %}"></script>
+  <script>
+    function show(shown, hidden1, hidden2) {
+  	 document.getElementById(shown).style.display='block';
+  	 document.getElementById(hidden1).style.display='none';
+  	 document.getElementById(hidden2).style.display='none';
+  	 document.getElementById(hidden3).style.display='none';
+  	 return false;
+    }
+  </script>
+{% endblock %}
 
-<body>
+{% block body_block %}
   <div class="container">
-    <ul class="row nav nav-pill">
-      <li class="col-md-3">
-        <a href="#" style="text-align:center;" onclick="return show('timePage', 'amnetiesPage', 'locationPage');">
-          <img src="{% static "img/time.png" %}" alt="Time" width="70" height="70" /> 
-        </a>
-      </li>
-      <li class="col-md-3">
-        <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timePage', 'locationPage');">
-          <img src="{% static "img/list.jpg"%}" alt="Time" width="70" height="70" /> 
-        </a>
-      </li>
-      <li class="col-md-3">
-        <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timePage', 'amnetiesPage');">
-          <img src="{% static "img/location.png" %}" alt="Time" width="40" height="70" /> 
-        </a>
-      </li>
-      <li class="col-md-3" id="submit">
-        <label for="submit-form" id="submit">Go!</label>
-      </li>
-    </ul>
-    <form action="." method="post">
-      {% csrf_token %}
-      <div id="timePage">
-        <h2>Time and Duration</h2>
-        <div class = "form-group">
-          {{ form.date.label_tag }}
-          {{ form.date }}
+  <ul class="row nav nav-pill">
+        <li class="col-md-3">
+          <a href="#" style="text-align:center;" onclick="return show('timePage', 'amnetiesPage', 'locationPage');">
+            <img src="{% static "images/clock_icon.png" %}" alt="Time" /> 
+          </a>
+        </li>
+        <li class="col-md-3">
+          <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timePage', 'locationPage');">
+            <img src="{% static "images/checkbox.png"%}" alt="Time" /> 
+          </a>
+        </li>
+        <li class="col-md-3">
+          <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timePage', 'amnetiesPage');">
+            <img src="{% static "images/location_point.png" %}" alt="Time" /> 
+          </a>
+        </li>
+        <li class="col-md-3">
+          <label for="submit-form" id="submit">Go!</label>
+        </li>
+      </ul>
+  <div class="centered-container">
+      <form action="." method="post">
+        {% csrf_token %}
+        <div id="timePage">
+          <h2>Time and Duration</h2>
+          <div class = "form-group">
+            {{ form.date.label_tag }}
+            {{ form.date }}
+          </div>
+          <div class = "form-group">
+            {{ form.time.label_tag }}
+            {{ form.time }}
+          </div>
+          <div class = "form-group">
+            {{ form.duration.label_tag }}
+            {{ form.duration }}
+          </div>
+          <div class = "form-group">
+            {{ form.capacity.label_tag }}
+            {{ form.capacity }}
+          </div>
         </div>
-        <div class = "form-group">
-          {{ form.time.label_tag }}
-          {{ form.time }}
+        <div id="amnetiesPage" style = "display:none">
+          <h2>Amenities</h2>
+          <div class = "form-group">
+            {{ form.projector.label_tag }}
+            {{ form.projector }}
+          </div>
+          <div class = "form-group">
+            {{ form.whiteboard.label_tag }}
+            {{ form.whiteboard }}
+          </div>
+          <div class = "form-group">
+            {{ form.windows.label_tag }}
+            {{ form.windows }}
+          </div>
         </div>
-        <div class = "form-group">
-          {{ form.duration.label_tag }}
-          {{ form.duration }}
+        <div id="locationPage" style = "display:none">
+          <h2>Location</h2>
+          <div class = "form-group">
+            {{ form.area.label_tag }}
+            {{ form.area }}
+          </div>
+          <div class = "form-group">
+            {{ form.flexible.label_tag }}
+            {{ form.flexible }}
+          </div>
         </div>
-        <div class = "form-group">
-          {{ form.capacity.label_tag }}
-          {{ form.capacity }}
-        </div>
-      </div>
-      <div id="amnetiesPage" style = "display:none">
-        <h2>Amenities</h2>
-        <div class = "form-group">
-          {{ form.projector.label_tag }}
-          {{ form.projector }}
-        </div>
-        <div class = "form-group">
-          {{ form.whiteboard.label_tag }}
-          {{ form.whiteboard }}
-        </div>
-        <div class = "form-group">
-          {{ form.windows.label_tag }}
-          {{ form.windows }}
-        </div>
-      </div>
-      <div id="locationPage" style = "display:none">
-        <h2>Location</h2>
-        <div class = "form-group">
-          {{ form.area.label_tag }}
-          {{ form.area }}
-        </div>
-        <div class = "form-group">
-          {{ form.flexible.label_tag }}
-          {{ form.flexible }}
-        </div>
-      </div>
-      <input type="submit" id='submit-form' class = "hidden" />
-    </form>
+        <input type="submit" id='submit-form' class = "hidden" />
+      </form>
+    </div>
   </div>
 
   <script>
     addClasses();
   </script>
-</body>
-<html>
+  {% endblock %}

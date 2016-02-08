@@ -1,0 +1,97 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	background-color: #222222;
+}
+
+* {
+	border-radius: 0 !important;
+}
+
+h1 {
+	margin: 0px;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	color: white;
+}
+
+li {
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	color: white;
+}
+
+.header {
+	background-color: #fed100;
+	height: 13%;
+	width: 100%;
+	margin-bottom: 1%
+}
+
+.logo-div {
+	float: left;
+	display: table-cell;
+	width: 20%;
+	height: 100%;
+	margin: 0;
+/*	padding-left: 10%;
+	padding-right: 10%;*/
+}
+
+.logo-div:hover img {
+    -webkit-transform:scale(1.05); /* Safari and Chrome */
+    -moz-transform:scale(1.05); /* Firefox */
+    -ms-transform:scale(1.05); /* IE 9 */
+    -o-transform:scale(1.05); /* Opera */
+     transform:scale(1.05);
+}
+
+.logo {
+	display:block;
+   	padding-top: 7%;
+   	padding-left: 14%;
+	width: auto;
+	height: 80%;
+	margin: 0;
+}
+
+.links-container {
+	float: right;
+	width: 10%;
+	height: 80%;
+	float: right;
+	text-align: center;
+	padding-top: 2%;
+}
+
+.header-link {
+	width: 100%;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	color: #222222;
+}
+
+
+.greeting-container {
+	background-color: #222222;
+	padding-top: .2%;
+}
+
+.greeting {
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	font-weight: 100;
+	color: white;
+	text-align: center;
+	font-size: 190%;
+}
+
+.page-content {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	background-color: #222222;
+}
+

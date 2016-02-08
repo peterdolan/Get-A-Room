@@ -116,6 +116,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Administrator login redirect
+# https://docs.djangoproject.com/en/1.9/ref/settings/#login-redirect-url
+
+LOGIN_URL = '/booker/login/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -132,9 +137,14 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
+# http://www.tangowithdjango.com/book17/chapters/templates_static.html#serving-static-media
+STATIC_PATH = os.path.join(BASE_DIR,'static')
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    STATIC_PATH,
+)
 
 # Allow all host hosts/domain names for this site
 ALLOWED_HOSTS = ['*']

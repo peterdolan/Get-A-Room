@@ -1,0 +1,28 @@
+.container {
+	width: 100%;
+	height: 100%;
+	background-color: #222222 !important;
+}
+
+h1, h3, p {
+	color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif !important;
+    font-weight: 100;
+}
+
+p {
+	padding-top: 10px;
+	font-style: italic;
+}
+
+span.name {
+	color: #fed100;
+}
+
+span.location {
+	color: #fed100;
+}
+
+span.time {
+	color: #fed100;
+}

@@ -1,4 +1,6 @@
 from django import forms
+from booker.models import AdminUser
+from django.contrib.auth.models import User
 
 class RoomForm(forms.Form):
 	date_choices = (
@@ -87,3 +89,15 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+class AdminUserForm(forms.ModelForm):
+    class Meta:
+        model = AdminUser
+        fields = ('organization', 'picture')
