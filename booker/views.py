@@ -9,6 +9,7 @@ from django.utils import timezone
 
 from .models import *
 from .forms import RoomForm
+from .forms import ReservationForm
 
 def index(request):
 	if request.method == 'POST':
@@ -100,15 +101,21 @@ def getActualDate(date_str, time_str):
 def confirm(request):
 	form = ReservationForm(request.POST)
 	if form.is_valid():
-		#do work to get all info about the room so we can display on html page
 		room_obj = Room.objects.all().filter(name=form.cleaned_data['room'])[0]
 		user_obj = []
-
-		# NEED to get real start/end times!!
-		fake_start_time = timezone.now()
-		fake_end_time = fake_start_time + timedelta(hours=1)
+		res_start_time = getActualDate(form.cleaned_data['date'],form.cleaned_data['time'])
+		duration = form.cleaned_data['duration']
+		if duration == "thirty":
+			dur_dt = timedelta(minutes=30)
+		elif duration == "one":
+			dur_dt = timedelta(hours=1)
+		elif duration == "two":
+			dur_dt = timedelta(hours=2)
+		else: #as long as u want??
+			dur_dt = timedelta(hours=3)
+		res_end_time = res_start_time + dur_dt
 		#insert into database
-		res = Reservation.objects.get_or_create(room=room_obj, user_name='Alec Powell', user_email='atpowell@stanford.edu', description='!!', start_time=fake_start_time, end_time=fake_end_time)[0]
+		res = Reservation.objects.get_or_create(room=room_obj, user_name='Alec Powell', user_email='atpowell@stanford.edu', description='!!', start_time=res_start_time, end_time=res_end_time)[0]
 		return render(request, 'booker/confirm.html', {'res_object':res})
 	else:
 		return render(request, 'booker/uhmmm.html')
