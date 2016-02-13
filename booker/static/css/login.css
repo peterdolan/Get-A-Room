@@ -21,6 +21,9 @@
 
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px #222222 inset;
+    -webkit-text-fill-color: white !important;
+    border: 2px solid white !important;
+    margin-bottom: 5px;
 }
 
 .textbox {

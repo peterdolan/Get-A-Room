@@ -121,6 +121,7 @@ def confirm(request):
 			dur_dt = timedelta(hours=2)
 		else: #as long as u want??
 			dur_dt = timedelta(hours=3)
+		res_start_time -= timedelta(hours=8)
 		res_end_time = res_start_time + dur_dt
 		#insert into database
 		username = 'guest'

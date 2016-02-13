@@ -16,7 +16,7 @@
 			<div class="list-group" id="room-list">
 				{% for room in rooms %}
 					<a id="{{ room.name }}" onclick="updateActiveRoom('{{room.name}}')" href="#" class="list-group-item">
-						<h3><span>{{ room.building.name }}</span> <span>{{ room.name }}</span>:</h3>
+						<h3><span>{{ room.name }}</span> <span>{{ room.building.name }}</span>:</h3>
 						<h5>Amenities:</h5>
 						<ul>
 							{% if room.has_projector %}

@@ -32,7 +32,7 @@ function checkIfListsEmpty() {
 function bookRoom(date, time, duration) {
 	var block = document.getElementsByClassName("list-group-item active")[0];
 	var room_info = block.getElementsByTagName("SPAN");
-	var room_name = room_info[1].innerHTML;
+	var room_name = room_info[0].innerHTML;
 	var input = document.getElementById("room-input");
 	input.value = room_name;
     document.forms['param_form'].submit();
