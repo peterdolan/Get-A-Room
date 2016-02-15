@@ -23,10 +23,16 @@ def index(request, org):
 		form = RoomForm(request.POST)
 		if form.is_valid():
 			rooms = getValidRooms(request,form)
-			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'isOrg': org})
+			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form})
 	else:
 		form = RoomForm()
-	return render(request, 'booker/index.html', {'form':form})
+
+		org_search = request.session.get('org_search', False)
+		if org_search:
+			form.fields['organization'].queryset = UserProfile.objects.all().filter(user=request.user).groups
+			form.fields['organization'].required = True
+			form.field['weekly'].required = True
+		return render(request, 'booker/index.html', {'form':form, 'org_search':org_search})
 
 
 def getValidRooms(request, form):

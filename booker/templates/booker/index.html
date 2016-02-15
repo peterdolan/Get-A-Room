@@ -41,6 +41,12 @@
         {% csrf_token %}
         <div id="timePage">
           <h2>Time and Duration</h2>
+          {% if org_search %}
+            <div class = "form-group">
+              {{ form.organization.label_tag }}
+              {{ form.organization }}
+            </div>
+          {% endif %}
           <div class = "form-group">
             {{ form.date.label_tag }}
             {{ form.date }}
@@ -57,6 +63,12 @@
             {{ form.capacity.label_tag }}
             {{ form.capacity }}
           </div>
+          {% if org_search %}
+            <div class = "form-group">
+              {{ form.weekly.label_tag }}
+              {{ form.weekly }}
+            </div>
+          {% endif %}
         </div>
         <div id="amnetiesPage" style = "display:none">
           <h2>Amenities</h2>

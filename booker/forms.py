@@ -3,7 +3,11 @@ from booker.models import AdminUser
 from django.contrib.auth.models import User
 
 class RoomForm(forms.Form):
-	
+	organization = forms.ModelChoiceField(
+		label = "Group",
+		required = False,
+		queryset = None
+	)
 	
 	date_choices = (
 		('today', 'Today'),
@@ -50,20 +54,26 @@ class RoomForm(forms.Form):
 		initial = 3
 	)
 
-	projector = forms.BooleanField(
+	weekly = forms.BooleanField(
+		label = "Make Weekly",
 		required = False,
-		initial = False,
-		label = "Projector"
+		initial = False
+	)
+
+	projector = forms.BooleanField(
+		label = "Projector",
+		required = False,
+		initial = False
 	)
 	whiteboard = forms.BooleanField(
+		label = "Whiteboard",
 		required = False,
-		initial = False,
-		label = "Whiteboard"
+		initial = False
 	)
 	windows = forms.BooleanField(
+		label = "Windows",
 		required = False,
-		initial = False,
-		label = "Windows"
+		initial = False
 	)
 
 	area_choices = (
@@ -81,9 +91,9 @@ class RoomForm(forms.Form):
 	)
 
 	flexible = forms.BooleanField(
+		label = "Accept other locations?",
 		required = False,
-		initial = False,
-		label = "Accept other locations?"
+		initial = False
 	)
 
 class ReservationForm(forms.Form):
