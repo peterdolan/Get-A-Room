@@ -130,18 +130,15 @@ def post_reservation(request):
 			username = request.user.username
 			useremail = request.user.email
 		res = Reservation.objects.get_or_create(room=room_obj, user_name=username, user_email=useremail, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
-		return HttpResponseRedirect('/booker/?username=%s&room_name=%s&building_name=%s&start_time=%s&end_time=%s',username,room_obj.name, room_obj.building.name, res_start_time, res_end_time)
+		res_id = res.id
+		return HttpResponseRedirect('/booker/confirm/?res_id='+str(res_id))
 	else:
 		return render(request, 'booker/uhmmm.html')
 
-def confirm(request, *args, **kwargs):
-	username = request.GET.get('username', None)
-	room_name = request.GET.get('room_name', None)
-	building_name = request.GET.get('building_name', None)
-	start_time = request.GET.get('start_time', None)
-	end_time = request.GET.get('end_time', None)
-	context = {'username': username, 'room_name':room_name, 'building_name':building_name, 'start_time':start_time, 'end_time':end_time}
-	return render(request,'booker/confirm.html', context)
+def confirm(request):
+	res_id = int(request.GET.get('res_id', 0))
+	res = Reservation.objects.all().get(pk=res_id)
+	return render(request,'booker/confirm.html', {'res':res})
 
 @login_required
 def admin_dashboard(request):

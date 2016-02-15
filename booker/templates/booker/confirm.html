@@ -1,20 +1,20 @@
 {% extends 'booker/base.html' %}
 {% load static %}
 {% block head_block %}
-  	<link rel="stylesheet" type="text/css" href="{% static "css/confirm.css" %} ">
+    <link rel="stylesheet" type="text/css" href="{% static "css/confirm.css" %} ">
 {% endblock %}
 
 {% block body_block %}
   <div class="container">
     {% if user.is_authenticated %}
-  	 <h1>Congratulations, <span class="name">{{ username }}</span>, <br />
-  		You've booked a room!</h1>
+     <h1>Congratulations, <span class="name">{{ user.get_username}}</span>, <br />
+      You've booked a room!</h1>
     {% else %}
       <h1>Congratulations, you've booked a room!</h1>
     {% endif %}
 
-  	<h3>Room: <span class="location">{{room_name}} {{building_name}}</span></h3>
-  	<h3>Time: <span class="time">{{start_time}}</span> to <span class="time">{{end_time}}</span></h3>
+    <h3>Room: <span class="location">{{res.room.name}} {{res.room.building.name}}</span></h3>
+    <h3>Time: <span class="time">{{res.start_time}}</span> to <span class="time">{{res.end_time}}</span></h3>
     <p> Thanks for using Get-A-Room! </p>
   </div>
 {% endblock %}
