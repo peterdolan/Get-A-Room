@@ -18,12 +18,12 @@ from .models import *
 from .forms import RoomForm
 from .forms import ReservationForm
 
-def index(request):
+def index(request, org):
 	if request.method == 'POST':
 		form = RoomForm(request.POST)
 		if form.is_valid():
 			rooms = getValidRooms(request,form)
-			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form})
+			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'isOrg': org})
 	else:
 		form = RoomForm()
 	return render(request, 'booker/index.html', {'form':form})

@@ -3,6 +3,8 @@ from booker.models import AdminUser
 from django.contrib.auth.models import User
 
 class RoomForm(forms.Form):
+	
+	
 	date_choices = (
 		('today', 'Today'),
 		('tomorrow', 'Tomorrow'),
