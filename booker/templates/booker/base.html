@@ -23,10 +23,14 @@
                     <img class="logo" src="{% static "images/logoheader.png" %}" alt="Get-A-Room" />
                 </a>
             </div>
+            <div class="motto-div">
+                The dankmeme of reservation apps.
+            </div>
             <div class="links-container">
                 {% if user.is_authenticated %}
                     <a class="header-link" href="/admin/">Admin Portal</a><br />
                     <a class="header-link" href="/booker/logout/">Logout</a><br />
+                    <a class="header-link" href="/booker/profile/">My Profile</a><br />
                 {% else %}
                     <a class="header-link" href="/booker/register/">Register Here</a><br />
                     <a class="header-link" href="/booker/login/">Login</a><br />

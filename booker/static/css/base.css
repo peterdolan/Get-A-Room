@@ -42,6 +42,12 @@ li {
 	padding-right: 10%;*/
 }
 
+.motto-div {
+	float:left;
+	font-style: italic;
+	padding-top: 4.5%;
+}
+
 .logo-div:hover img {
     -webkit-transform:scale(1.05); /* Safari and Chrome */
     -moz-transform:scale(1.05); /* Firefox */

@@ -254,3 +254,9 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect('/booker/')
+
+@login_required
+def user_profile(request):
+	profile = request.user.userprofile
+	return render(request, 'booker/profile.html', {'profile':profile})
+
