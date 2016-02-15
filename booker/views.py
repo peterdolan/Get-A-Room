@@ -153,13 +153,16 @@ def register(request):
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
-        # username is just the email for that user
-      	user_form['username'] = user_form['email']
         user_profile_form = UserProfileForm(data=request.POST)
 
         # If the two forms are valid...
         if user_form.is_valid() and user_profile_form.is_valid():
             # Save the user's form data to the database.
+            email = user_form.cleaned_data['email']
+            # username is just the email for that user
+            username = email
+            password = user_form.cleaned_data['password']
+            user = User.objects.create_user(username, email, password)
             user = user_form.save()
 
             # Now we hash the password with the set_password method.
@@ -194,7 +197,7 @@ def register(request):
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        user_profile_form = AdminUserForm()
+        user_profile_form = UserProfileForm()
 
     # Render the template depending on the context.
     return render_to_response(
