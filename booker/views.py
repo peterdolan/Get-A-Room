@@ -130,13 +130,13 @@ def post_reservation(request):
 			username = request.user.username
 			useremail = request.user.email
 		res = Reservation.objects.get_or_create(room=room_obj, user_name=username, user_email=useremail, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
-		res_id = res.id
-		return HttpResponseRedirect('/booker/confirm/?res_id='+str(res_id))
+		request.session['res_id'] = res.id
+		return HttpResponseRedirect('/booker/confirm/')
 	else:
 		return render(request, 'booker/uhmmm.html')
 
 def confirm(request):
-	res_id = int(request.GET.get('res_id', 0))
+	res_id = request.session.get('res_id', None)
 	res = Reservation.objects.all().get(pk=res_id)
 	context = RequestContext(request)
 	return render_to_response('booker/confirm.html', {'res':res},context)
