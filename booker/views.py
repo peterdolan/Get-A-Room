@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -106,7 +106,7 @@ def getActualDate(date_str, time_str):
 		timestamp += timedelta(hours=2)
 	return timestamp
 
-def confirm(request):
+def post_reservation(request):
 	form = ReservationForm(request.POST)
 	if form.is_valid():
 		room_obj = Room.objects.all().filter(name=form.cleaned_data['room'])[0]
@@ -130,9 +130,18 @@ def confirm(request):
 			username = request.user.username
 			useremail = request.user.email
 		res = Reservation.objects.get_or_create(room=room_obj, user_name=username, user_email=useremail, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
-		return render(request, 'booker/confirm.html', {'res':res})
+		return HttpResponseRedirect('/booker/?username=%s&room_name=%s&building_name=%s&start_time=%s&end_time=%s',username,room_obj.name, room_obj.building.name, res_start_time, res_end_time)
 	else:
 		return render(request, 'booker/uhmmm.html')
+
+def confirm(request, *args, **kwargs):
+	username = request.GET.get('username', None)
+	room_name = request.GET.get('room_name', None)
+	building_name = request.GET.get('building_name', None)
+	start_time = request.GET.get('start_time', None)
+	end_time = request.GET.get('end_time', None)
+	context = {'username': username, 'room_name':room_name, 'building_name':building_name, 'start_time':start_time, 'end_time':end_time}
+	return render(request,'booker/confirm.html', context)
 
 @login_required
 def admin_dashboard(request):

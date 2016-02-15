@@ -32,7 +32,7 @@
 					</a>
 				{% endfor %}
 			</div>
-			<form style="display:none" method="POST" action="./confirm/" name="param_form">
+			<form style="display:none" method="POST" action="post_reservation/" name="param_form">
 				{% csrf_token %}
 				<input type="text" name="room" id="room-input" />
 				<input type="text" name="date" value="{{form.data.date}}" />
