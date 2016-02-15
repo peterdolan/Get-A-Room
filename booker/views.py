@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from booker.forms import UserForm, AdminUserForm
+from booker.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 
 from .models import *
@@ -153,10 +153,12 @@ def register(request):
         # Attempt to grab information from the raw form information.
         # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(data=request.POST)
-        adminuser_form = AdminUserForm(data=request.POST)
+        # username is just the email for that user
+      	user_form['username'] = user_form['email']
+        user_profile_form = UserProfileForm(data=request.POST)
 
         # If the two forms are valid...
-        if user_form.is_valid() and adminuser_form.is_valid():
+        if user_form.is_valid() and user_profile_form.is_valid():
             # Save the user's form data to the database.
             user = user_form.save()
 
@@ -168,16 +170,16 @@ def register(request):
             # Now sort out the UserProfile instance.
             # Since we need to set the user attribute ourselves, we set commit=False.
             # This delays saving the model until we're ready to avoid integrity problems.
-            adminuser = adminuser_form.save(commit=False)
-            adminuser.user = user
+            profile = user_profile_form.save(commit=False)
+            profile.user = user
 
             # Did the user provide a profile picture?
             # If so, we need to get it from the input form and put it in the UserProfile model.
-            # if 'picture' in request.FILES:
-            #     profile.picture = request.FILES['picture']
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
 
             # Now we save the UserProfile model instance.
-            adminuser.save()
+            profile.save()
 
             # Update our variable to tell the template registration was successful.
             registered = True
@@ -186,18 +188,18 @@ def register(request):
         # Print problems to the terminal.
         # They'll also be shown to the user.
         else:
-            print user_form.errors, adminuser_form.errors
+            print user_form.errors, user_profile_form.errors
 
     # Not a HTTP POST, so we render our form using two ModelForm instances.
     # These forms will be blank, ready for user input.
     else:
         user_form = UserForm()
-        adminuser_form = AdminUserForm()
+        user_profile_form = AdminUserForm()
 
     # Render the template depending on the context.
     return render_to_response(
             'booker/register.html',
-            {'user_form': user_form, 'adminuser_form': adminuser_form, 'registered': registered},
+            {'user_form': user_form, 'user_profile_form': user_profile_form, 'registered': registered},
             context)
 
 

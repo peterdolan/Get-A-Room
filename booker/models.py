@@ -4,11 +4,38 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+class UserProfile(models.Model):
+    # This line is required. Links UserProfile to a User model instance.
+    user = models.OneToOneField(User)
+
+    # The user's first name
+    first_name = models.CharField(max_length=30)
+    # The user's last name
+    last_name = models.CharField(max_length=30)
+    # Organizations the user is a member of
+    organizations = models.ManyToManyField('Organization',null=True)
+    # Groups the user is a member of
+    groups = models.ManyToManyField('Group',null=True)
+    # Allows for faster check of OrgAdmin status
+    is_org_admin = models.BooleanField(default=False)
+    # Allows for faster check of GroupAdmin status
+    is_group_admin = models.BooleanField(default=False)
+    # Profile picture
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+
+    # Override the __unicode__() method to return out something meaningful!
+    def __unicode__(self):
+        return self.user.username
+
+class Organization(models.Model):
+	name = models.CharField(max_length=200)
+	admins = models.ManyToManyField(UserProfile)
+
 class Building(models.Model):
 	name = models.CharField(max_length=200)
+	organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.name
-
 
 class Room(models.Model):
 	name = models.CharField(max_length=200)
@@ -27,8 +54,7 @@ class Room(models.Model):
 
 class Reservation(models.Model):
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
-	user_name = models.CharField(max_length=200)
-	user_email = models.EmailField()
+	user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 	description = models.TextField()
 	start_time = models.DateTimeField()
 	end_time = models.DateTimeField()
@@ -43,17 +69,12 @@ class Reservation(models.Model):
 	# 		self.user_name,
 	# 	])
 
-class AdminUser(models.Model):
-    # This line is required. Links UserProfile to a User model instance.
-    user = models.OneToOneField(User)
+class Group(models.Model):
+	name = models.CharField(max_length=200)
+	admins = models.ManyToManyField(UserProfile)
+	vso = models.IntegerField()
 
-    # The additional attributes we wish to include.
-    organization = models.CharField(max_length=200)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
 
-    # Override the __unicode__() method to return out something meaningful!
-    def __unicode__(self):
-        return self.user.username
 
 
 

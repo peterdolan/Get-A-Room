@@ -1,5 +1,5 @@
 from django import forms
-from booker.models import AdminUser
+from booker.models import UserProfile
 from django.contrib.auth.models import User
 
 class RoomForm(forms.Form):
@@ -95,9 +95,9 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('email', 'password')
 
-class AdminUserForm(forms.ModelForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = AdminUser
-        fields = ('organization', 'picture')
+        model = UserProfile
+        fields = ('first_name','last_name','picture')
