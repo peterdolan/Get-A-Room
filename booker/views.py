@@ -138,7 +138,8 @@ def post_reservation(request):
 def confirm(request):
 	res_id = int(request.GET.get('res_id', 0))
 	res = Reservation.objects.all().get(pk=res_id)
-	return render(request,'booker/confirm.html', {'res':res})
+	context = RequestContext(request)
+	return render_to_response('booker/confirm.html', {'res':res},context)
 
 @login_required
 def admin_dashboard(request):
