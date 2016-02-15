@@ -18,6 +18,7 @@ from .models import *
 from .forms import RoomForm
 from .forms import ReservationForm
 
+@login_required
 def index(request):
 	if request.method == 'POST':
 		form = RoomForm(request.POST)
@@ -124,12 +125,8 @@ def confirm(request):
 		res_start_time -= timedelta(hours=8)
 		res_end_time = res_start_time + dur_dt
 		#insert into database
-		username = 'guest'
-		useremail = 'atpowell@stanford.edu'
-		if request.user.is_authenticated():
-			username = request.user.username
-			useremail = request.user.email
-		res = Reservation.objects.get_or_create(room=room_obj, user_name=username, user_email=useremail, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
+
+		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
 		return render(request, 'booker/confirm.html', {'res':res})
 	else:
 		return render(request, 'booker/uhmmm.html')

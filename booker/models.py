@@ -13,9 +13,9 @@ class UserProfile(models.Model):
     # The user's last name
     last_name = models.CharField(max_length=30)
     # Organizations the user is a member of
-    organizations = models.ManyToManyField('Organization',null=True)
+    organizations = models.ManyToManyField('Organization',null=True,blank=True)
     # Groups the user is a member of
-    groups = models.ManyToManyField('Group',null=True)
+    groups = models.ManyToManyField('Group',null=True,blank=True)
     # Allows for faster check of OrgAdmin status
     is_org_admin = models.BooleanField(default=False)
     # Allows for faster check of GroupAdmin status
