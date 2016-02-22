@@ -30,14 +30,27 @@ function addClasses() {
 	flexible.className = "form-control";
 }
 
+function getToday(){
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	if(dd<10) {
+	    dd='0'+dd
+	} 
+	if(mm<10) {
+	    mm='0'+mm
+	} 
+	today = mm+'/'+dd+'/'+yyyy;
+	return today;
+}
+
 function checkTimeValues() {
 	var date = document.getElementById("id_date");
-	console.log("We back");
 	date.onchange = function() {
 		var options = document.getElementsByTagName("option");
 		var today = getToday();		
 		if(today === date.value){
-			console.log("We back");
 			var startToday = new Date();
 			var year = startToday.getUTCFullYear();
  			var month = startToday.getUTCMonth();
