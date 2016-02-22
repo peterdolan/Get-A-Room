@@ -8,13 +8,13 @@
 	<div class="container">
 		<div class="inner-container">
 			<div class= "column one-forth">
-				{% if profile.picture != None %}
+				{% if profile.picture %}
 					<div class="profile-pic-container">
 						<div class="profile-pic" style="background-image: url({% static profile_pic %});">
 						</div>
 					</div>
 				{% else %}
-					<input type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+					<input class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
 				{% endif %}
 				<h2 class="user-name">
 				<a class="name-link" href=".">{{ profile.first_name }} {{ profile.last_name }}</a>
@@ -51,45 +51,24 @@
 						{% endif %}
 					</div>
 				 	<div id="groups" class="tab-pane fade">
-						{% if groups.count == 0 %}
-							<div class="button-bar">
-								<div class="header-container">
-									<h3>My Groups</h3>
+				 		<div class="button-bar">
+							<div class="header-container">
+								<h3>My Groups</h3>
 								</div>
 								<a href="/booker/create-group" class="btn">Create Group</a>
 							</div>
+						{% if groups.count == 0 %}
 							<p>Get social and join some groups! Or start one of your own!</p>
 						{% else %}
-							{% if profile.is_group_admin %}
-								<div class="button-bar">
-									<div class="header-container">
-										<h3>Groups I Manage</h3>
-									</div>
-									<a href="/booker/create-group" class="btn">Create Group</a>
-								</div>
-								<div id="main" class="half-list">
-									<div class="list-group" id="admin-group-list">
-										{% for group in admin_groups %}
-											<a id="{{ group.name }}" onclick="updateActiveRoom('{{room.name}}')" href="#" class="list-group-item">
-												<h4><span>{{ group.name }}</span></h4>
-												<span class="badge">{{group.get_member_count}}</span>
-											</a>
-										{% endfor %}
-									</div>
-								</div>
-							{% endif %}
-							<div class="button-bar">
-									<div class="header-container">
-										<h3>My Groups</h3>
-									</div>
-									<!-- <a href="/booker/create-group" class="btn">Create Group</a> -->
-							</div>
 							<div id="main" class="half-list">
 								<div class="list-group" id="group-list">
 									{% for group in groups %}
-										<a id="{{ group.name }}" onclick="updateActiveRoom('{{room.name}}')" href="#" class="list-group-item">
+										<a id="{{ group.name }}" onclick="updateActiveRoom('{{room.name}}')" href="/booker/group/{{group.id}}" class="list-group-item">
 											<h4><span>{{ group.name }}</span></h4>
 											<span class="badge">{{group.get_member_count}}</span>
+											{% if group in admin_groups %}
+												<span class="glyphicon glyphicon-tower" aria-hidden="true">
+											{% endif %}
 										</a>
 									{% endfor %}
 								</div>
@@ -97,46 +76,23 @@
 						{% endif %}
 					</div>
 					<div id="organizations" class="tab-pane fade">
-						{% if profile.organizations.count == 0 %}
-							<div class="button-bar">
-								<div class="header-container">
-									<h3>My Organizations</h3>
-								</div>
-								<!-- <a href="/booker/create-group" class="btn">Create Group</a> -->
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>My Organizations</h3>
 							</div>
+								<!-- <a href="/booker/create-group" class="btn">Create Group</a> -->
+						</div>
+						{% if profile.organizations.count == 0 %}
 							<p>Uh oh, you haven't joined any organizations yet! Join an organization in order to book a reservation on its calendar.</p>
 						{% else %}
-							{% if profile.is_org_admin %}
-								<div class="button-bar">
-									<div class="header-container">
-										<h3>Organizations I Manage</h3>
-									</div>
-									<!-- <a href="/booker/create-group" class="btn">Create Group</a> -->
-								</div>
-								<div id="main">
-									<div class="list-group" id="org-admin-list">
-										{% for org in admin_orgs %}
-											<a id="{{ org.name }}" onclick="updateActiveRoom('{{org.name}}')" href="#" class="list-group-item">
-												<h4><span>{{ org.name }}</span></h4>
-												<span class="badge">{{org.get_member_count}}</span>
-											</a>
-										{% endfor %}
-									</div>
-								</div>
-							{% endif %}
-							<div class="button-bar">
-									<div class="header-container">
-										<h3>My Organizations</h3>
-									</div>
-									<a href="maito:getaroomsuperuser@gmail.com" class="btn">Create Organization</a>
-							</div>
 							<div id="main">
 								<div class="list-group" id="org-list">
-								<!-- {{organizations}} -->
 									{% for org in organizations %}
-										<!-- {{org}} -->
 										<a id="{{ org.name }}" onclick="updateActiveRoom('{{org.name}}')" href="#" class="list-group-item">
 											<h4><span>{{ org.name }}</span></h4>
+											{% if group in admin_groups %}
+												<span class="glyphicon glyphicon-tower" aria-hidden="true">
+											{% endif %}
 										</a>
 									{% endfor %}
 								</div>

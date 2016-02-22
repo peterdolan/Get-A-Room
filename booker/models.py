@@ -28,7 +28,10 @@ class UserProfile(models.Model):
         return self.user.username
 
     def get_profile_pic_url(self):
-    	return self.picture.url[len('booker/static/'):]
+    	if self.picture:
+    		return self.picture.url[len('booker/static/'):]
+    	else:
+    		return None
 
     # This returns the set of groups this user is the admin of
     # it is NOT necessarily the same set as the groups this user

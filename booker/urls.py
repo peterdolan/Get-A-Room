@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^profile/$', views.user_profile, name='profile'),
     url(r'^create-group/$', views.create_group, name='create_group'),
+    url(r'^group/(?P<group_id>[0-9]+)/$', views.group, name='create_group'),
     ]

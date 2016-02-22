@@ -157,7 +157,13 @@ def register(request):
 			# Save the user's form data to the database.
 			email = user_form.cleaned_data['email']
 
-			if User.objects.get(username=email):
+			user = None
+			try:
+				user = User.objects.get(email=email)
+			except User.DoesNotExist:
+				user = None
+
+			if user:
 				return HttpResponse('User with that email already exists!!')
 			# username is just the email for that user
 			# username = email
@@ -334,3 +340,8 @@ def create_group(request):
 			'booker/create-group.html',
 			{'group_form': group_form,'group_created': group_created},
 			context)
+
+def group(request, group_id):
+	group = Group.objects.get(pk=group_id)
+	return render(request, 'booker/group.html', {'group':group})
+

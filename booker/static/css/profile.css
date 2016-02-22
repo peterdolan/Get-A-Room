@@ -157,6 +157,12 @@ h4 {
     margin-top: 10px;
 }
 
+.glyphicon-tower {
+    float: right;
+    margin-top: 11px;
+    margin-right: 10px;
+}
+
 .half-list {
     height: 40%;
 }
