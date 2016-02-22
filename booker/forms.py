@@ -71,10 +71,13 @@ class RoomForm(forms.Form):
 	)
 
 	duration_choices = (
-		('thirty', 'Half an hour'),
-		('one', 'An hour'),
-		('two', 'Two hours'),
-		('long', 'As long as possible')
+		(30, '30 Minutes'),
+		(60, '1 Hour'),
+		(90, '90 Minutes'),
+		(120, '2 Hours'),
+		(150, '2.5 Hours'),
+		(180, '3 Hours'),
+		('max', 'As long as possible')
 	)
 	duration = forms.ChoiceField(
 		label = "Duration",

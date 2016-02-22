@@ -71,3 +71,26 @@ function checkTimeValues() {
 		}
 	}
 }
+
+function convertTimeToMinutes(hour){
+	return hour * 60;
+}
+
+function checkDurationValues() {
+	var cutOffTime = convertTimeToMinutes(2); // Put 150 for 2:30 am, 18.5* 60 for 6:30 pm etc
+	var restartTime = convertTimeToMinutes(8);
+	console.log(cutOffTime);
+	var time = document.getElementById("id_time");
+	time.onchange = function() {
+		var curTime = document.getElementById("id_time");
+		var options = document.getElementsByTagName("option");
+		for(var i = 37; i < 43;i++){
+			var until = (+(curTime.value * 30) + +options[i].value)%1440;
+			if(until > cutOffTime && until < restartTime){
+				options[i].style.display = 'none';
+			} else {
+				options[i].style.display = 'inline';
+			}
+		}
+	}
+}
