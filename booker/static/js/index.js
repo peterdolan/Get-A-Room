@@ -32,10 +32,12 @@ function addClasses() {
 
 function checkTimeValues() {
 	var date = document.getElementById("id_date");
+	console.log("We back");
 	date.onchange = function() {
 		var options = document.getElementsByTagName("option");
 		var today = getToday();		
 		if(today === date.value){
+			console.log("We back");
 			var startToday = new Date();
 			var year = startToday.getUTCFullYear();
  			var month = startToday.getUTCMonth();

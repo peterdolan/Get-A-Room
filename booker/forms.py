@@ -19,18 +19,10 @@ def getStarterNum():
 	return toReturn
 
 class RoomForm(forms.Form):
-	date_choices = (
-		('today', 'Today'),
-		('tomorrow', 'Tomorrow'),
-		('two', 'In two days')
+	date = forms.CharField(
+		widget=forms.TextInput(attrs={'class': 'datepicker'})
 	)
-	date = forms.ChoiceField(
-		label = "Date",
-		required = False,
-		choices = date_choices,
-		initial = 'today'
-	)
-
+	
 	time_choices = (
 		(0, '12:00 AM'),
 		(1, '12:30 AM'),
