@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from booker.forms import UserForm, UserProfileForm
+from booker.forms import UserForm, UserProfileForm, GroupForm
 from django.contrib.auth import authenticate, login, logout
 
 from .models import *
@@ -263,6 +263,74 @@ def user_logout(request):
 def user_profile(request):
 	profile = request.user.userprofile
 	profile_pic = profile.get_profile_pic_url()
-	reservations = Reservation.objects.all().filter(user=profile,start_time__gte=datetime.today())
-	return render(request, 'booker/profile.html', {'profile':profile,'profile_pic':profile_pic,'reservations':reservations})
+	reservations = Reservation.objects.all().filter(user=profile,end_time__gte=datetime.today()- timedelta(hours=8))
+	admin_groups = []
+	if profile.is_group_admin:
+		admin_groups = profile.get_admin_groups()
+	groups = profile.groups.all()
+	print groups
+	admin_organizations = []
+	if profile.is_org_admin:
+		admin_organizations = profile.get_admin_organizations()
+	organizations = profile.organizations.all()
+	# print organizations
+	return render(request, 'booker/profile.html', {'profile':profile,
+													'profile_pic':profile_pic,
+													'reservations':reservations,
+													'admin_groups':admin_groups,
+													'groups':groups,
+													'admin_organizations':admin_organizations,
+													'organizations':organizations,
+													})
 
+
+@login_required
+def create_group(request):
+	# Like before, get the request's context.
+	context = RequestContext(request)
+
+	# A boolean value for telling the template whether the registration was successful.
+	# Set to False initially. Code changes value to True when registration succeeds.
+	group_created = False
+
+	# If it's a HTTP POST, we're interested in processing form data.
+	if request.method == 'POST':
+		# Attempt to grab information from the raw form information.
+		# Note that we make use of both UserForm and UserProfileForm.
+		group_form = GroupForm(data=request.POST)
+
+		print "CHECKING IF VALID"
+		# If valid...
+		if group_form.is_valid():
+			print "IS VALID"
+
+			admin = request.user.userprofile
+
+			group = group_form.save(commit=False)
+			group.save()
+			group.admins.add(admin)
+			admin.is_group_admin = True
+			admin.groups.add(group)
+			admin.save()
+			
+			print "SAVE SUCCESS"
+
+			# Update our variable to tell the template registration was successful.
+			group_created = True
+
+		# Invalid form or forms - mistakes or something else?
+		# Print problems to the terminal.
+		# They'll also be shown to the user.
+		else:
+			print group_form.errors
+
+	# Not a HTTP POST, so we render our form using two ModelForm instances.
+	# These forms will be blank, ready for user input.
+	else:
+		group_form = GroupForm()
+
+	# Render the template depending on the context.
+	return render_to_response(
+			'booker/create-group.html',
+			{'group_form': group_form,'group_created': group_created},
+			context)

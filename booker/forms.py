@@ -1,5 +1,5 @@
 from django import forms
-from booker.models import UserProfile
+from booker.models import UserProfile, Group
 from django.contrib.auth.models import User
 
 class RoomForm(forms.Form):
@@ -89,6 +89,11 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+
+class GroupForm(forms.ModelForm):
+	class Meta:
+		model = Group
+		fields = ('name',)
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

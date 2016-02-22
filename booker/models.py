@@ -25,14 +25,23 @@ class UserProfile(models.Model):
 
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
-        return self.picture.url
+        return self.user.username
 
     def get_profile_pic_url(self):
     	return self.picture.url[len('booker/static/'):]
 
+    # This returns the set of groups this user is the admin of
+    # it is NOT necessarily the same set as the groups this user
+    # belongs to.
+    def get_admin_groups(self):
+    	return self.group_set.all()
+
 class Organization(models.Model):
 	name = models.CharField(max_length=200)
 	admins = models.ManyToManyField(UserProfile,null=True)
+
+	def __str__(self):
+		return self.name
 
 class Building(models.Model):
 	name = models.CharField(max_length=200)
@@ -75,7 +84,13 @@ class Reservation(models.Model):
 class Group(models.Model):
 	name = models.CharField(max_length=200)
 	admins = models.ManyToManyField(UserProfile)
-	vso = models.IntegerField()
+	# vso = models.IntegerField()
+
+	def get_member_count(self):
+		return len(self.userprofile_set.all())
+
+	def __str__(self):
+		return self.name
 
 
 

@@ -128,3 +128,39 @@ p {
     background-color: #fed100;
     color: #222222;
 }
+
+#main {
+    /* Provide scrollbars if needed, position below header, and derive height from top/bottom */
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    top: 33%;
+    bottom: 0;
+}
+
+.list-group-item {
+    margin: 10px;
+    width: 90%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.list-group-item li {
+    color: #222222;
+}
+
+h4 {
+    display: inline-block;
+}
+
+.badge {
+    margin-top: 10px;
+}
+
+.half-list {
+    height: 40%;
+}
+
+.full-list {
+    height: 80%;
+}
