@@ -1,6 +1,22 @@
 from django import forms
-from booker.models import AdminUser
+from django.db import models
+from functools import partial
+from datetime import datetime
+import time
 from django.contrib.auth.models import User
+
+
+def getStarterNum():
+	# This function returns the time that should b shown initially
+	t = time.localtime()
+	h = t.tm_hour
+	toReturn = (h - 7) # Accounts for tz
+	toReturn = 2 * toReturn
+	if(toReturn > 4 and toReturn < 16): # Times we don't have numbers
+		toReturn = 16
+	if(toReturn > 47):
+		toReturn = 0
+	return toReturn
 
 class RoomForm(forms.Form):
 	date_choices = (
@@ -16,16 +32,50 @@ class RoomForm(forms.Form):
 	)
 
 	time_choices = (
-		('now', 'Now'),
-		('thirty', 'In 30 minutes'),
-		('one', 'In an hour'),
-		('two', 'In two hours')
+		(0, '12:00 AM'),
+		(1, '12:30 AM'),
+		(2, '1:00 AM'),
+		(3, '1:30 AM'),
+		(4, '2:00 AM'),
+		(16, '8:00 AM'),
+		(17, '8:30 AM'),
+		(18, '9:00 AM'),
+		(19, '9:30 AM'),
+		(20, '10:00 AM'),
+		(21, '10:30 AM'),
+		(22, '11:00 AM'),
+		(23, '11:30 AM'),
+		(24, '12:00 PM'),
+		(25, '12:30 PM'),
+		(26, '1:00 PM'),
+		(27, '1:30 PM'),
+		(28, '2:00 PM'),
+		(29, '2:30 PM'),
+		(30, '3:00 PM'),
+		(31, '3:30 PM'),
+		(32, '4:00 PM'),
+		(33, '4:30 PM'),
+		(34, '5:00 PM'),
+		(35, '5:30 PM'),
+		(36, '6:00 PM'),
+		(37, '6:30 PM'),
+		(38, '7:00 PM'),
+		(39, '7:30 PM'),
+		(40, '8:00 PM'),
+		(41, '8:30 PM'),
+		(42, '9:00 PM'),
+		(43, '9:30 PM'),
+		(44, '10:00 PM'),
+		(45, '10:30 PM'),
+		(46, '11:00 PM'),
+		(47, '11:30 PM'),
 	)
+
 	time = forms.ChoiceField(
 		label = "What Time?",
 		required = False,
 		choices = time_choices,
-		initial = 'now'
+		initial = getStarterNum()
 	)
 
 	duration_choices = (
@@ -97,7 +147,3 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password')
 
-class AdminUserForm(forms.ModelForm):
-    class Meta:
-        model = AdminUser
-        fields = ('organization', 'picture')

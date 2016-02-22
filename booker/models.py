@@ -3,7 +3,16 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
+def getCurDate():
+	return (datetime.datetime.now(), "Today")
+
+def make_custom_datefield(f):
+    formfield = f.formfield()
+    if isinstance(f, models.DateField):
+        formfield.widget.format = '%m/%d/%Y'
+        formfield.widget.attrs.update({'class':'datePicker', 'readonly':'true'})
+    return formfield
+
 class Building(models.Model):
 	name = models.CharField(max_length=200)
 	def __str__(self):

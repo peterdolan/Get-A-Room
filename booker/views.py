@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from booker.forms import UserForm, AdminUserForm
+from booker.forms import UserForm
 from django.contrib.auth import authenticate, login, logout
 
 from .models import *
