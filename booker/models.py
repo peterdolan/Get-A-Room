@@ -21,11 +21,14 @@ class UserProfile(models.Model):
     # Allows for faster check of GroupAdmin status
     is_group_admin = models.BooleanField(default=False)
     # Profile picture
-    picture = models.ImageField(upload_to='profile_images', blank=True)
+    picture = models.ImageField(upload_to='booker/static/images/profile_images', blank=True)
 
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
-        return self.user.username
+        return self.picture.url
+
+    def get_profile_pic_url(self):
+    	return self.picture.url[len('booker/static/'):]
 
 class Organization(models.Model):
 	name = models.CharField(max_length=200)

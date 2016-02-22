@@ -262,5 +262,7 @@ def user_logout(request):
 @login_required
 def user_profile(request):
 	profile = request.user.userprofile
-	return render(request, 'booker/profile.html', {'profile':profile})
+	profile_pic = profile.get_profile_pic_url()
+	reservations = Reservation.objects.all().filter(user=profile,start_time__gte=datetime.today())
+	return render(request, 'booker/profile.html', {'profile':profile,'profile_pic':profile_pic,'reservations':reservations})
 

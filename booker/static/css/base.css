@@ -20,6 +20,12 @@ h1 {
 	color: white;
 }
 
+h2 {
+	margin: 0px;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	color: white;
+}
+
 li {
 	font-family: Futura,Trebuchet MS,Arial,sans-serif;
 	color: white;

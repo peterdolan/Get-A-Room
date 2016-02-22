@@ -1,0 +1,63 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/profile.css" %} ">
+{% endblock %}
+
+{% block body_block %}
+	<div class="container">
+		<div class="inner-container">
+			<div class= "column one-forth">
+				{% if profile.picture != None %}
+					<div class="profile-pic-container">
+						<div class="profile-pic" style="background-image: url({% static profile_pic %});">
+						</div>
+					</div>
+				{% else %}
+					<input type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+				{% endif %}
+				<h2 class="user-name">
+				<a class="name-link" href=".">{{ profile.first_name }} {{ profile.last_name }}</a>
+				</h2>
+				<a class="user-email" href="mailto:{{profile.user.username}}" "Email">{{profile.user.username}}</a>
+			</div>
+			<div class="column three-fourths">
+				<ul class="nav nav-tabs">
+					<li class="tab active"><a class="tab-link" data-toggle="tab" href="#reservations">Reservations</a></li>
+					<li class="tab"><a class="tab-link" data-toggle="tab" href="#groups">Groups</a></li>
+					<li class="tab"><a class="tab-link" data-toggle="tab" href="#organizations">Organizations</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="reservations" class="tab-pane fade in active">
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>My Reservations</h3>
+							</div>
+							<a href=".." class="btn">Make Reservation</a>
+						</div>
+						{% if profile.groups.count == 0 %}
+							<p>Your schedule looks all clear!</p>
+						{% else %}
+							{% for group in profile.groups %}
+								<p>{{group.name}}</p>
+							{% endfor %}
+						{% endif %}
+					</div>
+				 	<div id="groups" class="tab-pane fade">
+				 		<div class="button-bar">
+							<div class="header-container">
+								<h3>My Groups</h3>
+							</div>
+							<a href=".." class="btn">Create Group</a>
+						</div>
+						<p>Get social and join some groups! Or start one of your own!</p>
+					</div>
+					<div id="organizations" class="tab-pane fade">
+						<h3>My Organizations</h3>
+						<p>Uh oh, you haven't joined any organizations yet! Join an organization in order to book a reservation on its calendar.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
