@@ -1,5 +1,6 @@
 from datetime import datetime, date, time, timedelta
 from sets import Set
+import pytz
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -33,6 +34,9 @@ def getValidRooms(request, form):
 	date = form.cleaned_data['date']
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
+	print date
+	print start_time
+	print duration
 	capacity = int(form.cleaned_data['capacity'])
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
@@ -50,17 +54,9 @@ def getValidRooms(request, form):
 	room_objects_filtered = Room.objects.all().filter(**kwargs)
 	room_objects_ordered = room_objects_filtered.order_by('name')
 
-	# res = Reservation.objects.all()
-	# bldgs = Building.objects.all()
 	start_time = getActualDate(date,start_time)
-	if duration == "thirty":
-		dur_dt = timedelta(minutes=30)
-	elif duration == "one":
-		dur_dt = timedelta(hours=1)
-	elif duration == "two":
-		dur_dt = timedelta(hours=2)
-	else: #as long as u want??
-		dur_dt = timedelta(hours=3)
+	print "Start Time is", start_time
+	dur_dt = timedelta(minutes=int(duration))
 	end_time = start_time + dur_dt
 	time_tuple = (start_time, end_time)
 	return checkReservations(room_objects_ordered, time_tuple)
@@ -90,21 +86,18 @@ def checkValidRes(res_obj, time_tuple):
 	res_end = res_obj.end_time
 	return ((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))
 
+def zeroPad(toPad):
+	if(len(toPad) == 1):
+		return "0" + toPad
+	return toPad
+
 def getActualDate(date_str, time_str):
-	#first date
-	timestamp = timezone.now()
-	if date_str == "tomorrow":
-		timestamp += timedelta(days=1)
-	elif date_str == "two": #two
-		timestamp += timedelta(days=2)
-	#now times
-	if time_str == "thirty":
-		timestamp += timedelta(minutes=30)
-	elif time_str == "one":
-		timestamp += timedelta(hours=1)
-	elif time_str == "two": #two hrs
-		timestamp += timedelta(hours=2)
-	return timestamp
+	utc = pytz.UTC
+	hourString = zeroPad(str(int(time_str)/2))
+	minuteString = zeroPad(str((int(time_str)%2) * 30))
+	timeStamp = str(date_str) + " " + hourString + ":" + minuteString
+	date = datetime.strptime(timeStamp, "%m/%d/%Y %H:%M")
+	return utc.localize(date)
 
 def post_reservation(request):
 	form = ReservationForm(request.POST)
@@ -112,16 +105,10 @@ def post_reservation(request):
 		room_obj = Room.objects.all().filter(name=form.cleaned_data['room'])[0]
 		user_obj = []
 		res_start_time = getActualDate(form.cleaned_data['date'],form.cleaned_data['time'])
+		print "Start time: ", res_start_time
 		duration = form.cleaned_data['duration']
-		if duration == "thirty":
-			dur_dt = timedelta(minutes=30)
-		elif duration == "one":
-			dur_dt = timedelta(hours=1)
-		elif duration == "two":
-			dur_dt = timedelta(hours=2)
-		else: #as long as u want??
-			dur_dt = timedelta(hours=3)
-		res_start_time -= timedelta(hours=8)
+		dur_dt = timedelta(minutes = int(duration))
+		#res_start_time -= timedelta(hours=8)
 		res_end_time = res_start_time + dur_dt
 		#insert into database
 		username = 'guest'
