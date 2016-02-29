@@ -46,21 +46,23 @@ function getToday(){
 }
 
 function checkTimeValues() {
+	console.log("testing hello");
 	var date = document.getElementById("id_date");
 	date.onchange = function() {
 		var options = document.getElementsByTagName("option");
 		var today = getToday();		
 		if(today === date.value){
 			var startToday = new Date();
-			var year = startToday.getUTCFullYear();
- 			var month = startToday.getUTCMonth();
- 			var day = startToday.getUTCDate();
+			var year = startToday.getFullYear();
+ 			var month = startToday.getMonth();
+ 			var day = startToday.getDate();
  			var finalNewDate = new Date(year, month, day, 0, 0, 0, 0);
  			var curDayStart = finalNewDate.valueOf()/1000;
-
 			var cur = Date.now();
 			for(var i = 0; i < 37; i++){
+				console.log(curDayStart + (options[i].value * 1800));
 				if((curDayStart + (options[i].value * 1800)) < cur/1000){
+					console.log(options[i]);
 					options[i].style.display = 'none';
 				}
 			}
