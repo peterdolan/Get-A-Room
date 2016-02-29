@@ -79,7 +79,7 @@ function convertTimeToMinutes(hour){
 }
 
 function checkDurationValues() {
-	var cutOffTime = convertTimeToMinutes(2); // Put 150 for 2:30 am, 18.5* 60 for 6:30 pm etc
+	var cutOffTime = convertTimeToMinutes(2); // Put 2 for 2am, 1.5 for 1:30 etc
 	var restartTime = convertTimeToMinutes(8);
 	console.log(cutOffTime);
 	var time = document.getElementById("id_time");
