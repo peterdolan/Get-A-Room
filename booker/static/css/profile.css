@@ -143,10 +143,15 @@ p {
     width: 90%;
     background-color: #fff;
     border: 1px solid #ddd;
+    transition: all 0.3s ease 0s;
 }
 
 .list-group-item li {
     color: #222222;
+}
+
+.list-group-item:hover {
+    background-color: #9ED2FF !important;
 }
 
 h4 {
@@ -154,17 +159,61 @@ h4 {
 }
 
 .badge {
-    margin-top: 10px;
+    margin-top: -4px;
+    margin-right: 5px;
 }
 
 .glyphicon-tower {
-    float: right;
-    margin-top: 11px;
+    margin-top: 12px;
     margin-right: 10px;
 }
 
-.half-list {
-    height: 40%;
+
+.glyphicon-remove {
+    font-size: 1.2em;
+}
+
+.remove-group-button {
+    display: none;
+}
+
+.remove-group-button.active {
+    display: inline;
+    border-style: none;
+    padding: 0px;
+    margin-top: 0px;
+    color: #fff;
+    background-color: transparent;
+    transition: all 0.3s ease 0s;
+}
+
+.remove-group-button:hover {
+    color: #FF4057;
+    background-color: transparent;
+}
+
+.remove-reservation-button {
+    display: none;
+}
+
+.remove-reservation-button.active {
+    display: inline;
+    border-style: none;
+    padding: 0px;
+    margin-top: 0px;
+    color: #fff;
+    background-color: transparent;
+    transition: all 0.3s ease 0s;
+}
+
+.remove-reservation-button:hover {
+    color: #FF4057;
+    background-color: transparent;
+}
+
+.list-group-item.active {
+    transition: all 0.3s ease 0s !important;
+    background-color: #63B7FF !important;
 }
 
 .full-list {

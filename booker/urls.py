@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^profile/$', views.user_profile, name='profile'),
     url(r'^create-group/$', views.create_group, name='create_group'),
     url(r'^group/(?P<group_id>[0-9]+)/$', views.group, name='create_group'),
+    url(r'delete_profile_info/(?P<reservation_ids>(\d+)(,\s*\d+)*)/$',views.delete_profile_info,name='delete_profile_info'),
     ]

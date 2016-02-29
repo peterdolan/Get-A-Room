@@ -345,3 +345,7 @@ def group(request, group_id):
 	group = Group.objects.get(pk=group_id)
 	return render(request, 'booker/group.html', {'group':group})
 
+def delete_profile_information(request, reservation_ids):
+	print reservation_ids
+	
+
