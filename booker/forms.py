@@ -31,8 +31,10 @@ class RoomForm(forms.Form):
 	duration_choices = (
 		('thirty', 'Half an hour'),
 		('one', 'An hour'),
-		('two', 'Two hours'),
-		('long', 'As long as possible')
+		('one5', '1.5 hours'),
+		('two', '2 hours'),
+		('two5', '2.5 hours'),
+		('three', '3 hours')
 	)
 	duration = forms.ChoiceField(
 		label = "Duration",
@@ -89,6 +91,19 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+
+class CalendarViewForm(forms.Form):
+	building_choices = (
+		('Old Union', 'Old Union'),
+		('Huang', 'Huang'),
+		('Main Quad', 'Main Quad')
+	)
+
+	building = forms.ChoiceField(
+		label = "Choose building",
+		required = True,
+		choices = building_choices
+	)
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

@@ -1,5 +1,6 @@
 from datetime import datetime, date, time, timedelta
 from sets import Set
+import json
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
@@ -15,8 +16,7 @@ from booker.forms import UserForm, AdminUserForm
 from django.contrib.auth import authenticate, login, logout
 
 from .models import *
-from .forms import RoomForm
-from .forms import ReservationForm
+from .forms import *
 
 def index(request):
 	if request.method == 'POST':
@@ -57,9 +57,13 @@ def getValidRooms(request, form):
 		dur_dt = timedelta(minutes=30)
 	elif duration == "one":
 		dur_dt = timedelta(hours=1)
+	elif duration == "one5":
+		dur_dt = timedelta(hours=1, minutes=30)
 	elif duration == "two":
 		dur_dt = timedelta(hours=2)
-	else: #as long as u want??
+	elif duration == "two5":
+		dur_dt = timedelta(hours=2, minutes=30)
+	else:
 		dur_dt = timedelta(hours=3)
 	end_time = start_time + dur_dt
 	time_tuple = (start_time, end_time)
@@ -117,9 +121,13 @@ def confirm(request):
 			dur_dt = timedelta(minutes=30)
 		elif duration == "one":
 			dur_dt = timedelta(hours=1)
+		elif duration == "one5":
+			dur_dt = timedelta(hours=1, minutes=30)
 		elif duration == "two":
 			dur_dt = timedelta(hours=2)
-		else: #as long as u want??
+		elif duration == "two5":
+			dur_dt = timedelta(hours=2, minutes=30)
+		else:
 			dur_dt = timedelta(hours=3)
 		res_start_time -= timedelta(hours=8)
 		res_end_time = res_start_time + dur_dt
@@ -133,6 +141,57 @@ def confirm(request):
 		return render(request, 'booker/confirm.html', {'res':res})
 	else:
 		return render(request, 'booker/uhmmm.html')
+
+def calendar_view(request):
+	context = RequestContext(request)
+	if request.method == 'POST':
+		form = CalendarViewForm(data=request.POST)
+		if form.is_valid():
+			building_obj = Building.objects.all().filter(name__contains=form.cleaned_data['building'])[0]
+			rooms_list = Room.objects.all().filter(building=building_obj)
+			res_array = Reservation.objects.all().filter(room__in=rooms_list, start_time__gte=timezone.now())
+			return render(request, 'booker/calendar.html', {'form':form, 'building':building_obj, 'res_array':res_array})
+		else:
+			return render(request, 'booker/uhmmm.html')
+	else: #GET
+		form = CalendarViewForm(data=request.POST)
+		return render(request, 'booker/calendar.html', {'form':form, 'res_array':[]})
+		# return render_to_response('booker/calendar.html', {}, context)
+
+def eventsFeed(request, building_name):
+	from django.utils.timezone import utc
+	from django.core.serializers.json import DjangoJSONEncoder
+
+	# print building_name
+
+	if request.is_ajax():
+		print 'Its ajax from fullCalendar()'
+
+	try:
+		start = datetime.fromtimestamp(int(request.GET.get('start', False))).replace(tzinfo=utc)
+		end = datetime.fromtimestamp(int(request.GET.get('end',False)))
+	except ValueError:
+		start = datetime.now.replace(tzinfo=utc)
+		end = start + timedelta(days=7)
+
+	# entries = Reservation.objects.filter(start_time__gte=start).filter(end_time__lte=end)
+	building_objs = Building.objects.all().filter(name__contains=building_name)
+	rooms_list = Room.objects.all().filter(building__in=building_objs)
+	entries = Reservation.objects.all().filter(room__in=rooms_list, start_time__gte=start).filter(end_time__lte=end)
+	print entries
+	json_list = []
+	for entry in entries:
+		# id = entry.id
+		room = entry.room
+		username = entry.user_name
+		useremail = entry.user_email
+		description = entry.description
+		start = entry.start_time.strftime("%Y-%m-%dT%H:%M:%S")
+		end = entry.end_time.strftime("%Y-%m-%dT%H:%M:%S")
+		allDay = False
+		json_entry = {'start':start, 'end':end, 'allDay':allDay, 'title': description}
+		json_list.append(json_entry)
+	return HttpResponse(json.dumps(json_list), content_type='application/json')
 
 @login_required
 def admin_dashboard(request):

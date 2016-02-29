@@ -1,0 +1,51 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+  	<link rel="stylesheet" type="text/css" href="{% static "css/calendar.css" %} ">
+    <script src="{% static "js/calendar.js" %}"></script>
+    <!-- CSS -->
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link href="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <!-- <link href="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.print.css" rel="stylesheet" /> -->
+    
+    <!-- SCRIPTS -->
+    <script class="cssdesk" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js" type="text/javascript"></script>
+    <script class="cssdesk" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js" type="text/javascript"></script>
+    <script class="cssdesk" src="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+{% endblock %}
+
+{% block body_block %}
+  <div class="container">
+    <br></br>
+
+    <form id="building_form" action="/booker/calendar/" method="post">
+        {% csrf_token %}
+        <div id="calview_bldg">
+          <div class = "form-group">
+            {{ form.building.label_tag }}
+            {{ form.building }}
+            <input id="submit" type="submit"/>
+          </div>
+        </div>
+    </form>
+
+    <h1>Reservation Calendar</h1>
+
+    <div id='calendar'></div>
+
+    <!-- <ul>
+    {% for res in res_array %}
+      <li>
+        <h2>Reservations for {{res.room.building.name}}:{{res.room.name}}</h2>
+        <h3>User: <span class="user"> {{res.user_name}} </span></h3>
+      	<h3>Time: <span class="time">{{res.start_time.date}} {{res.start_time.time}} - {{res.end_time.time}}</span></h3>
+      </li>
+    {% endfor %}
+    </ul> -->
+
+    <br></br>
+
+
+  </div>
+{% endblock %}
