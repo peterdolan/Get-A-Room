@@ -30,7 +30,27 @@
         </div>
     </form>
 
-    <h1>Reservation Calendar</h1>
+    
+
+      <label class="form_field"><h1>Reservation Calendar for <span id="aggregator_name"></h1></span></label>
+
+    
+
+    <script type="text/javascript">
+      function notEmpty(){
+
+        var e = document.getElementById("building_form");
+        var value = document.getElementById("id_building");
+        var building = value.options[value.selectedIndex].value;
+        console.log("building is " + building);
+
+        document.getElementById('aggregator_name').innerHTML = building;
+      }
+      notEmpty()
+            
+      document.getElementById("building_form").onsubmit = notEmpty;
+    </script>
+
 
     <div id='calendar'></div>
 

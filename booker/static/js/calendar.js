@@ -13,16 +13,25 @@ $(document).ready(function () {
 	var value = document.getElementById("id_building");
 	var building = value.options[value.selectedIndex].value;
 	console.log(building);
+	var h = window.innerHeight;
+	console.log("Height is " + h);
+	var newh =  $('header').height();
+	console.log("height of obj is " + newh);
+
 
 	$('#calendar').fullCalendar({
 		header: {
 			left: 'prev,next today',
 			center: 'title',
-			right: 'agendaWeek,agendaDay'
+			right: 'agendaWeek,agendaDay',
+			start: '08:00',
+			end: '02:00'
 		},
+		height: 1200,
 		editable: true,
 		defaultView: 'agendaWeek',
-		eventColor: 'blue',
+		eventColor: '#fed100',
+		eventTextColor: '#222222',
 		// eventSources: [
 	 //        // your event source
 	 //        {
@@ -40,3 +49,13 @@ $(document).ready(function () {
 	 	events: 'eventsfeed/'+building
 	});
 });
+
+/*function notEmpty(){
+	var value = document.getElementById("id_building");
+    var building = value.options[value.selectedIndex].value;
+	document.getElementById('aggregator_name').innerHTML = building;
+}
+
+notEmpty();        
+document.getElementById("building_form").onsubmit = notEmpty;
+*/
