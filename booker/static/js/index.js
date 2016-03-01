@@ -59,11 +59,19 @@ function checkTimeValues() {
  			var finalNewDate = new Date(year, month, day, 0, 0, 0, 0);
  			var curDayStart = finalNewDate.valueOf()/1000;
 			var cur = Date.now();
+			var available = true;
 			for(var i = 0; i < 37; i++){
-				console.log(curDayStart + (options[i].value * 1800));
 				if((curDayStart + (options[i].value * 1800)) < cur/1000){
-					console.log(options[i]);
 					options[i].style.display = 'none';
+				} else {
+					if(available){
+						if(i < 5){
+							$('#id_time').val(i);
+						} else {
+							$('#id_time').val(i + 11);
+						}
+						available = false;
+					}
 				}
 			}
 		} else {
