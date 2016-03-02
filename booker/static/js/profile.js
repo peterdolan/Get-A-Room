@@ -132,27 +132,81 @@ function updateActiveReservation(nname) {
 }
 
 function removeReservation(nname) {
-	delete_called = true;
-	nname = "#" + nname;
-	$(nname).removeClass('active');
-	$(nname).addClass('deleted-reservation');
-	$(nname).css("display","none");
+	swal({   
+		title: "Are you sure?",   
+		text: "You will permanently lose this reservation!",   
+		type: "warning",   
+		showCancelButton: true,   
+		confirmButtonColor: "#DD6B55",   
+		confirmButtonText: "Yes, cancel it!",   
+		closeOnConfirm: false 
+	},
+	function() {
+		delete_called = true;
+		nname = "#" + nname;
+		$(nname).removeClass('active');
+		$(nname).addClass('deleted-reservation');
+		$(nname).css("display","none");
+		swal({
+			title: "Reservation canceled!",
+			type: "success",
+		},
+		function() {
+			location.reload();
+		}); 
+	});
 }
 
 function removeGroup(nname) {
-	delete_called = true;
-	nname = "#" + nname;
-	$(nname).removeClass('active');
-	$(nname).addClass('deleted-group');
-	$(nname).css("display","none");
+	swal({   
+		title: "Are you sure?",
+		text: "You will have to rejoin to see this group's reservations.",
+		type: "warning",   
+		showCancelButton: true,   
+		confirmButtonColor: "#DD6B55",   
+		confirmButtonText: "Yes, leave group!",   
+		closeOnConfirm: false 
+	},
+	function() {
+		delete_called = true;
+		nname = "#" + nname;
+		$(nname).removeClass('active');
+		$(nname).addClass('deleted-group');
+		$(nname).css("display","none");
+		swal({
+			title: "You have left the group!",
+			type: "success",
+		},
+		function() {
+			location.reload();
+		}); 
+	});
 }
 
 function removeOrg(nname) {
-	delete_called = true;
-	nname = "#" + nname;
-	$(nname).removeClass('active');
-	$(nname).addClass('deleted-org');
-	$(nname).css("display","none");
+	swal({   
+		title: "Are you sure?",
+		text: "You will no longer be able to schedule reservations in rooms owned by this organization.",
+		type: "warning",   
+		showCancelButton: true,   
+		confirmButtonColor: "#DD6B55",   
+		confirmButtonText: "Yes, leave organization!",   
+		closeOnConfirm: false 
+	},
+	function() {
+		delete_called = true;
+		nname = "#" + nname;
+		$(nname).removeClass('active');
+		$(nname).addClass('deleted-org');
+		$(nname).css("display","none");
+		swal({
+			title: "You have left the organization!",
+			type: "success",
+		},
+		function() {
+			location.reload();
+		}); 
+	});
 }
 
 function makeContentInactive() {
@@ -181,6 +235,7 @@ function joinGroupPopup() {
 	swal.withForm({   
 		title: "Join a Group!", 
 		text: 'Search existing groups:',
+		confirmButtonColor: '#FED100',
 		showCancelButton: true,   
 		closeOnConfirm: false,   
 		showLoaderOnConfirm: true, 
@@ -226,7 +281,8 @@ function joinOrgPopup() {
 	swal.withForm({   
 		title: "Join an Organization!", 
 		text: 'Search existing organizations:',
-		showCancelButton: true,   
+		showCancelButton: true,
+		confirmButtonColor: '#FED100',   
 		closeOnConfirm: false,   
 		showLoaderOnConfirm: true, 
 		html: true,
