@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
 	var csrftoken = Cookies.get('csrftoken');
 	function csrfSafeMethod(method) {
 		// these HTTP methods do not require CSRF protection
@@ -152,7 +153,7 @@ function removeReservation(nname) {
 			type: "success",
 		},
 		function() {
-			location.reload();
+			location.replace("/booker/profile/?tab=reservation");
 		}); 
 	});
 }
@@ -178,7 +179,7 @@ function removeGroup(nname) {
 			type: "success",
 		},
 		function() {
-			location.reload();
+			location.replace("/booker/profile/?tab=group");
 		}); 
 	});
 }
@@ -204,7 +205,7 @@ function removeOrg(nname) {
 			type: "success",
 		},
 		function() {
-			location.reload();
+			location.replace("/booker/profile/?tab=organization");
 		}); 
 	});
 }
@@ -259,7 +260,7 @@ function joinGroupPopup() {
 						type: "success",
 					},
 					function() {
-						location.reload();
+						location.replace("/booker/profile/?tab=group");
 					});   
 	    		}, 2000);
 			} else {
@@ -305,7 +306,7 @@ function joinOrgPopup() {
 						type: "success",
 					},
 					function() {
-						location.reload();
+						location.replace("/booker/profile/?tab=organization");
 					});   
 	    		}, 2000);
 			} else {
@@ -352,7 +353,7 @@ function createGroupPopup() {
 							type: "success",
 						},
 						function() {
-							location.reload();
+							location.replace("/booker/profile/?tab=group");
 						});   
 	    			}, 2000);
 				} else {

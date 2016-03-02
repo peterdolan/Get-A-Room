@@ -270,6 +270,20 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
+	active_tab_array = ['','','']
+	active_tab = request.GET.get('tab')
+	if active_tab is None:
+		active_tab = 'reservation'
+
+	if active_tab == 'reservation':
+		active_tab_array[0] = ' active'
+	elif active_tab == 'group':
+		active_tab_array[1] = ' active'
+	elif active_tab == 'organization':
+		active_tab_array[2] = ' active'
+
+	print active_tab_array
+
 	profile = request.user.userprofile
 	profile_pic = profile.get_profile_pic_url()
 	reservations = Reservation.objects.all().filter(user=profile,end_time__gte=datetime.today()- timedelta(hours=8))
@@ -290,6 +304,7 @@ def user_profile(request):
 													'groups':groups,
 													'admin_organizations':admin_organizations,
 													'organizations':organizations,
+													'active_tab_array':active_tab_array
 													})
 
 
