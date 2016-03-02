@@ -12,7 +12,10 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^profile/$', views.user_profile, name='profile'),
-    url(r'^create-group/$', views.create_group, name='create_group'),
-    url(r'^group/(?P<group_id>[0-9]+)/$', views.group, name='create_group'),
-    url(r'delete_profile_info/(?P<reservation_ids>(\d+)(,\s*\d+)*)/$',views.delete_profile_info,name='delete_profile_info'),
+    url(r'^create_group/$', views.create_group, name='create_group'),
+    url(r'^delete_profile_info/$',views.delete_profile_info,name='delete_profile_info'),
+    url(r'^get_group_list/$',views.get_group_list,name='get_group_list'),
+    url(r'^get_org_list/$',views.get_org_list,name='get_org_list'),
+    url(r'^join_group/$',views.join_group,name='join_group'),
+    url(r'^join_org/$',views.join_org,name='join_org'),
     ]

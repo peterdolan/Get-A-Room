@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from booker.forms import UserForm, UserProfileForm, GroupForm
 from django.contrib.auth import authenticate, login, logout
+from django.core.serializers.json import DjangoJSONEncoder
+from django.views.decorators.csrf import ensure_csrf_cookie
+import json
 
 from .models import *
 from .forms import RoomForm
@@ -291,61 +294,106 @@ def user_profile(request):
 
 
 @login_required
+@ensure_csrf_cookie
 def create_group(request):
-	# Like before, get the request's context.
-	context = RequestContext(request)
-
-	# A boolean value for telling the template whether the registration was successful.
-	# Set to False initially. Code changes value to True when registration succeeds.
-	group_created = False
-
 	# If it's a HTTP POST, we're interested in processing form data.
 	if request.method == 'POST':
 		# Attempt to grab information from the raw form information.
 		# Note that we make use of both UserForm and UserProfileForm.
-		group_form = GroupForm(data=request.POST)
+		print request.POST.get('group_name')
+		group_name = request.POST.get('group_name')
+		group = Group(name=group_name)
+		group.save()
+		admin = request.user.userprofile
+		group.admins.add(admin)
+		admin.is_group_admin = True
+		admin.groups.add(group)
+		admin.save()
 
-		print "CHECKING IF VALID"
-		# If valid...
-		if group_form.is_valid():
-			print "IS VALID"
+	return HttpResponse(0)
 
-			admin = request.user.userprofile
+@ensure_csrf_cookie
+def delete_profile_info(request):
+	if request.method == 'POST':
+		# Get the current user's profile
+		profile = request.user.userprofile
 
-			group = group_form.save(commit=False)
-			group.save()
-			group.admins.add(admin)
-			admin.is_group_admin = True
-			admin.groups.add(group)
-			admin.save()
-			
-			print "SAVE SUCCESS"
+		# Delete reservation objects specified by reservation_ids
+		reservation_ids_strs = json.loads(request.POST.get('reservation_ids'))
+		reservation_ids = [int(x) for x in reservation_ids_strs]
+		Reservation.objects.filter(pk__in=reservation_ids).delete()
 
-			# Update our variable to tell the template registration was successful.
-			group_created = True
+		# Handle groups deleted from user's profile
+		group_ids_strs = json.loads(request.POST.get('group_ids'))
+		group_ids = [int(x) for x in group_ids_strs]
+		for group_id in group_ids:
+			group = Group.objects.get(pk=group_id)
+			# Remove group from user's groupset
+			profile.groups.remove(group)
+			# If user is an admin for this group, remove user from group's admin set
+			if profile in group.admins.all():
+				group.admins.remove(profile)
+				# If user is admin of no groups, turn off admin status
+				if len(profile.group_set.all()) == 0:
+					profile.is_group_admin = False
+				# If group has no more admins, delete group
+				if len(group.admins.all()) == 0:
+					group.delete()
 
-		# Invalid form or forms - mistakes or something else?
-		# Print problems to the terminal.
-		# They'll also be shown to the user.
-		else:
-			print group_form.errors
+		# Handle orgs deleted from user's profile
+		org_ids_strs = json.loads(request.POST.get('org_ids'))
+		org_ids = [int(x) for x in org_ids_strs]
+		for org_id in org_ids:
+			org = Organization.objects.get(pk=org_id)
+			# Remove group from user's groupset
+			profile.organizations.remove(org)
 
-	# Not a HTTP POST, so we render our form using two ModelForm instances.
-	# These forms will be blank, ready for user input.
-	else:
-		group_form = GroupForm()
 
-	# Render the template depending on the context.
-	return render_to_response(
-			'booker/create-group.html',
-			{'group_form': group_form,'group_created': group_created},
-			context)
 
-def group(request, group_id):
-	group = Group.objects.get(pk=group_id)
-	return render(request, 'booker/group.html', {'group':group})
+	return HttpResponse(0)
 
-def delete_profile_information(request, reservation_ids):
-	print reservation_ids
+@ensure_csrf_cookie
+def get_group_list(request):
+	all_group_names = []
+	all_groups = Group.objects.all()
+	for group in all_groups:
+		all_group_names.append(group.name)
+	print all_group_names
+	print json.dumps(all_group_names)
+	return HttpResponse(json.dumps(all_group_names))
+
+@ensure_csrf_cookie
+def get_org_list(request):
+	all_org_names = []
+	all_orgs = Organization.objects.all()
+	for org in all_orgs:
+		all_org_names.append(org.name)
+	print all_org_names
+	print json.dumps(all_org_names)
+	return HttpResponse(json.dumps(all_org_names))
+
+@ensure_csrf_cookie
+def join_group(request):
+	if request.method == 'POST':
+		group_name = request.POST.get('group_name')
+		group = Group.objects.get(name=group_name)
+		request.user.userprofile.groups.add(group)
+		# Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def join_org(request):
+	if request.method == 'POST':
+		org_name = request.POST.get('org_name')
+		org = Organization.objects.get(name=org_name)
+		request.user.userprofile.organizations.add(org)
+		# Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+	return HttpResponse(0)
+
+
+
+
 	
 

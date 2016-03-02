@@ -131,7 +131,16 @@ p {
 
 #main {
     /* Provide scrollbars if needed, position below header, and derive height from top/bottom */
-    overflow-y: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    top: 33%;
+    bottom: 0;
+}
+
+.list-group {
+    height: 80%;
+    overflow-y: scroll;
     overflow-x: hidden;
     width: 100%;
     top: 33%;
@@ -173,11 +182,11 @@ h4 {
     font-size: 1.2em;
 }
 
-.remove-group-button {
+.remove-group-button, .remove-org-button {
     display: none;
 }
 
-.remove-group-button.active {
+.remove-group-button.active, .remove-org-button.active {
     display: inline;
     border-style: none;
     padding: 0px;
@@ -187,7 +196,7 @@ h4 {
     transition: all 0.3s ease 0s;
 }
 
-.remove-group-button:hover {
+.remove-group-button:hover,.remove-org-button:hover {
     color: #FF4057;
     background-color: transparent;
 }
@@ -217,5 +226,13 @@ h4 {
 }
 
 .full-list {
-    height: 80%;
+    height: 500px;
+}
+
+.ui-autocomplete {
+    z-index: 100000 !important;
+}
+
+#name {
+    display: inherit !important;
 }

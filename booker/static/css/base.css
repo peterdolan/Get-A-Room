@@ -10,10 +10,6 @@ body {
 	background-color: #222222;
 }
 
-* {
-	border-radius: 0 !important;
-}
-
 h1 {
 	margin: 0px;
 	font-family: Futura,Trebuchet MS,Arial,sans-serif;
@@ -106,4 +102,9 @@ li {
 	margin: 0px;
 	background-color: #222222;
 }
+
+.container {
+	height: 85.2% !important;
+}
+
 
