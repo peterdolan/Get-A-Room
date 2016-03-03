@@ -13,7 +13,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from booker.forms import UserForm, UserProfileForm, GroupForm
+from booker.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
 from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -165,8 +165,7 @@ def eventsFeed(request, building_name):
 	for entry in entries:
 		# id = entry.id
 		room = entry.room
-		username = entry.user_name
-		useremail = entry.user_email
+		username = entry.user.first_name + " " + entry.user.last_name
 		description = entry.description
 		start = entry.start_time.strftime("%Y-%m-%dT%H:%M:%S")
 		end = entry.end_time.strftime("%Y-%m-%dT%H:%M:%S")
