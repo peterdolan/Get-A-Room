@@ -3,6 +3,7 @@ from django.db import models
 from functools import partial
 from datetime import datetime
 import time
+from booker.models import UserProfile, Group
 from django.contrib.auth.models import User
 
 
@@ -153,5 +154,9 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('email', 'password')
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('first_name','last_name','picture')

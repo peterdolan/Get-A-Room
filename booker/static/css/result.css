@@ -66,6 +66,15 @@ button {
     color: #222222;
     font-family: Futura,Trebuchet MS,Arial,sans-serif;
     font-weight: 100;
+
+    
+}
+
+.btn {
+    padding-left: 15px;
+    padding-right: 15px;
+    -webkit-border-radius: 50px !important;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
 }
 
 button.active {

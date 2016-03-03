@@ -1,0 +1,238 @@
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: #222222;
+    padding-top: 10px;
+}
+
+.inner-container {
+    width: 85%;
+    height: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.column {
+    float: left;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px; 
+}
+
+.one-fourth {
+    width: 25%;
+}
+
+.three-fourths {
+    width: 75%;
+}
+
+.profile-pic-container {
+    overflow: hidden;
+    width: 230px;
+    height: 230px;
+}
+
+.profile-pic {
+    width: 230px;
+    height: 230px;
+    -webkit-border-radius: 5px !important;
+    background-position: center center;
+    background-size: 230px auto;
+    background-repeat: no-repeat;
+}
+
+.nav-tabs {
+    display: block;
+}
+
+.tab-link {
+    color: white !important;
+}
+
+.tab-link:hover{
+    background-color: transparent !important;
+}
+
+.active .tab-link {
+    color: #555 !important;
+}
+
+.active .tab-link:hover{
+    background-color: white !important;
+}
+
+.user-name {
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+}
+
+.name-link {
+    color: white;
+}
+
+.name-link:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.user-email {
+    font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif;
+    color: #AFAFAF;
+    font-weight: 100;
+    font-size: 100%;
+}
+
+.user-email:hover {
+    color: white;
+}
+
+.button-bar {
+    width: 100%;
+    height: 56px;
+}
+
+.header-container {
+    display: inline-block;
+    height: 100%;
+    float:left;
+    margin-right: 20px;
+}
+
+h3 {
+    color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+}
+
+p {
+    color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+    font-weight: 100;
+}
+
+.btn {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 18px;
+    -webkit-border-radius: 50px !important;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+    background-color: #AFAFAF;
+    color: white;
+    transition: all 0.3s ease 0s;
+    opacity: 1;
+}
+
+.btn:hover {
+    background-color: #fed100;
+    color: #222222;
+}
+
+#main {
+    /* Provide scrollbars if needed, position below header, and derive height from top/bottom */
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    top: 33%;
+    bottom: 0;
+}
+
+.list-group {
+    height: 80%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    top: 33%;
+    bottom: 0;
+}
+
+.list-group-item {
+    margin: 10px;
+    width: 90%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease 0s;
+}
+
+.list-group-item li {
+    color: #222222;
+}
+
+.list-group-item:hover {
+    background-color: #9ED2FF !important;
+}
+
+h4 {
+    display: inline-block;
+}
+
+.badge {
+    margin-top: -4px;
+    margin-right: 5px;
+}
+
+.glyphicon-tower {
+    margin-top: 12px;
+    margin-right: 10px;
+}
+
+
+.glyphicon-remove {
+    font-size: 1.2em;
+}
+
+.remove-group-button, .remove-org-button {
+    display: none;
+}
+
+.remove-group-button.active, .remove-org-button.active {
+    display: inline;
+    border-style: none;
+    padding: 0px;
+    margin-top: 0px;
+    color: #fff;
+    background-color: transparent;
+    transition: all 0.3s ease 0s;
+}
+
+.remove-group-button:hover,.remove-org-button:hover {
+    color: #FF4057;
+    background-color: transparent;
+}
+
+.remove-reservation-button {
+    display: none;
+}
+
+.remove-reservation-button.active {
+    display: inline;
+    border-style: none;
+    padding: 0px;
+    margin-top: 0px;
+    color: #fff;
+    background-color: transparent;
+    transition: all 0.3s ease 0s;
+}
+
+.remove-reservation-button:hover {
+    color: #FF4057;
+    background-color: transparent;
+}
+
+.list-group-item.active {
+    transition: all 0.3s ease 0s !important;
+    background-color: #63B7FF !important;
+}
+
+.full-list {
+    height: 500px;
+}
+
+.ui-autocomplete {
+    z-index: 100000 !important;
+}
+
+#name {
+    display: inherit !important;
+}

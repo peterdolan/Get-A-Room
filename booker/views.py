@@ -13,12 +13,16 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from booker.forms import UserForm
+from booker.forms import UserForm, UserProfileForm, GroupForm
 from django.contrib.auth import authenticate, login, logout
+from django.core.serializers.json import DjangoJSONEncoder
+from django.views.decorators.csrf import ensure_csrf_cookie
+import json
 
 from .models import *
 from .forms import *
 
+# @login_required
 def index(request):
 	if request.method == 'POST':
 		form = RoomForm(request.POST)
@@ -108,13 +112,7 @@ def post_reservation(request):
 		duration = form.cleaned_data['duration']
 		dur_dt = timedelta(minutes = int(duration))
 		res_end_time = res_start_time + dur_dt
-		#insert into database
-		username = 'guest'
-		useremail = 'atpowell@stanford.edu'
-		if request.user.is_authenticated():
-			username = request.user.username
-			useremail = request.user.email
-		res = Reservation.objects.get_or_create(room=room_obj, user_name=username, user_email=useremail, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
+		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
 		request.session['res_id'] = res.id
 		return HttpResponseRedirect('/booker/confirm/')
 	else:
@@ -184,111 +182,274 @@ def admin_dashboard(request):
 # taken from:
 # http://www.tangowithdjango.com/book/chapters/login.html
 def register(request):
-    # Like before, get the request's context.
-    context = RequestContext(request)
+	# Like before, get the request's context.
+	context = RequestContext(request)
 
-    # A boolean value for telling the template whether the registration was successful.
-    # Set to False initially. Code changes value to True when registration succeeds.
-    registered = False
+	# A boolean value for telling the template whether the registration was successful.
+	# Set to False initially. Code changes value to True when registration succeeds.
+	registered = False
 
-    # If it's a HTTP POST, we're interested in processing form data.
-    if request.method == 'POST':
-        # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
-        user_form = UserForm(data=request.POST)
-        adminuser_form = AdminUserForm(data=request.POST)
+	# If it's a HTTP POST, we're interested in processing form data.
+	if request.method == 'POST':
+		# Attempt to grab information from the raw form information.
+		# Note that we make use of both UserForm and UserProfileForm.
+		user_form = UserForm(data=request.POST)
+		user_profile_form = UserProfileForm(data=request.POST)
 
-        # If the two forms are valid...
-        if user_form.is_valid() and adminuser_form.is_valid():
-            # Save the user's form data to the database.
-            user = user_form.save()
+		# If the two forms are valid...
+		if user_form.is_valid() and user_profile_form.is_valid():
+			# Save the user's form data to the database.
+			email = user_form.cleaned_data['email']
 
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
-            user.set_password(user.password)
-            user.save()
+			user = None
+			try:
+				user = User.objects.get(email=email)
+			except User.DoesNotExist:
+				user = None
 
-            # Now sort out the UserProfile instance.
-            # Since we need to set the user attribute ourselves, we set commit=False.
-            # This delays saving the model until we're ready to avoid integrity problems.
-            adminuser = adminuser_form.save(commit=False)
-            adminuser.user = user
+			if user:
+				return HttpResponse('User with that email already exists!!')
+			# username is just the email for that user
+			# username = email
+			password = user_form.cleaned_data['password']
+			# user = User.objects.create_user(username, email, password)
+			user = user_form.save()
 
-            # Did the user provide a profile picture?
-            # If so, we need to get it from the input form and put it in the UserProfile model.
-            # if 'picture' in request.FILES:
-            #     profile.picture = request.FILES['picture']
+			# Now we hash the password with the set_password method.
+			# Once hashed, we can update the user object.
+			user.set_password(user.password)
+			user.save()
 
-            # Now we save the UserProfile model instance.
-            adminuser.save()
+			user = User.objects.get(pk=user.id)
+			user.username = email
+			user.save()
 
-            # Update our variable to tell the template registration was successful.
-            registered = True
+			# Now sort out the UserProfile instance.
+			# Since we need to set the user attribute ourselves, we set commit=False.
+			# This delays saving the model until we're ready to avoid integrity problems.
+			profile = user_profile_form.save(commit=False)
+			profile.user = user
 
-        # Invalid form or forms - mistakes or something else?
-        # Print problems to the terminal.
-        # They'll also be shown to the user.
-        else:
-            print user_form.errors, adminuser_form.errors
+			# Did the user provide a profile picture?
+			# If so, we need to get it from the input form and put it in the UserProfile model.
+			if 'picture' in request.FILES:
+				profile.picture = request.FILES['picture']
 
-    # Not a HTTP POST, so we render our form using two ModelForm instances.
-    # These forms will be blank, ready for user input.
-    else:
-        user_form = UserForm()
-        adminuser_form = AdminUserForm()
+			# Now we save the UserProfile model instance.
+			profile.save()
 
-    # Render the template depending on the context.
-    return render_to_response(
-            'booker/register.html',
-            {'user_form': user_form, 'adminuser_form': adminuser_form, 'registered': registered},
-            context)
+			# Update our variable to tell the template registration was successful.
+			registered = True
+
+		# Invalid form or forms - mistakes or something else?
+		# Print problems to the terminal.
+		# They'll also be shown to the user.
+		else:
+			print user_form.errors, user_profile_form.errors
+
+	# Not a HTTP POST, so we render our form using two ModelForm instances.
+	# These forms will be blank, ready for user input.
+	else:
+		user_form = UserForm()
+		user_profile_form = UserProfileForm()
+
+	# Render the template depending on the context.
+	return render_to_response(
+			'booker/register.html',
+			{'user_form': user_form, 'user_profile_form': user_profile_form, 'registered': registered},
+			context)
 
 
 def user_login(request):
-    # Like before, obtain the context for the user's request.
-    context = RequestContext(request)
+	# Like before, obtain the context for the user's request.
+	context = RequestContext(request)
 
-    # If the request is a HTTP POST, try to pull out the relevant information.
-    if request.method == 'POST':
-        # Gather the username and password provided by the user.
-        # This information is obtained from the login form.
-        username = request.POST['username']
-        password = request.POST['password']
+	# If the request is a HTTP POST, try to pull out the relevant information.
+	if request.method == 'POST':
+		# Gather the username and password provided by the user.
+		# This information is obtained from the login form.
+		username = request.POST['username']
+		password = request.POST['password']
 
-        # Use Django's machinery to attempt to see if the username/password
-        # combination is valid - a User object is returned if it is.
-        user = authenticate(username=username, password=password)
+		# Use Django's machinery to attempt to see if the username/password
+		# combination is valid - a User object is returned if it is.
+		user = authenticate(username=username, password=password)
 
-        # If we have a User object, the details are correct.
-        # If None (Python's way of representing the absence of a value), no user
-        # with matching credentials was found.
-        if user:
-            # Is the account active? It could have been disabled.
-            if user.is_active:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
-                login(request, user)
-                return HttpResponseRedirect('/booker/')
-            else:
-                # An inactive account was used - no logging in!
-                return HttpResponse("Your Rango account is disabled.")
-        else:
-            # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
+		# If we have a User object, the details are correct.
+		# If None (Python's way of representing the absence of a value), no user
+		# with matching credentials was found.
+		if user:
+			# Is the account active? It could have been disabled.
+			if user.is_active:
+				# If the account is valid and active, we can log the user in.
+				# We'll send the user back to the homepage.
+				login(request, user)
+				return HttpResponseRedirect('/booker/')
+			else:
+				# An inactive account was used - no logging in!
+				return HttpResponse("Your Get-A-Room account is disabled.")
+		else:
+			# Bad login details were provided. So we can't log the user in.
+			print "Invalid login details: {0}, {1}".format(username, password)
+			return HttpResponse("Invalid login details supplied.")
 
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
-    else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
-        return render_to_response('booker/login.html', {}, context)
+	# The request is not a HTTP POST, so display the login form.
+	# This scenario would most likely be a HTTP GET.
+	else:
+		# No context variables to pass to the template system, hence the
+		# blank dictionary object...
+		return render_to_response('booker/login.html', {}, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
 def user_logout(request):
-    # Since we know the user is logged in, we can now just log them out.
-    logout(request)
+	# Since we know the user is logged in, we can now just log them out.
+	logout(request)
 
-    # Take the user back to the homepage.
-    return HttpResponseRedirect('/booker/')
+	# Take the user back to the homepage.
+	return HttpResponseRedirect('/booker/')
+
+@login_required
+def user_profile(request):
+	active_tab_array = ['','','']
+	active_tab = request.GET.get('tab')
+	if active_tab is None:
+		active_tab = 'reservation'
+
+	if active_tab == 'reservation':
+		active_tab_array[0] = ' active'
+	elif active_tab == 'group':
+		active_tab_array[1] = ' active'
+	elif active_tab == 'organization':
+		active_tab_array[2] = ' active'
+
+	print active_tab_array
+
+	profile = request.user.userprofile
+	profile_pic = profile.get_profile_pic_url()
+	reservations = Reservation.objects.all().filter(user=profile,end_time__gte=datetime.today()- timedelta(hours=8))
+	admin_groups = []
+	if profile.is_group_admin:
+		admin_groups = profile.get_admin_groups()
+	groups = profile.groups.all()
+	print groups
+	admin_organizations = []
+	if profile.is_org_admin:
+		admin_organizations = profile.get_admin_organizations()
+	organizations = profile.organizations.all()
+	# print organizations
+	return render(request, 'booker/profile.html', {'profile':profile,
+													'profile_pic':profile_pic,
+													'reservations':reservations,
+													'admin_groups':admin_groups,
+													'groups':groups,
+													'admin_organizations':admin_organizations,
+													'organizations':organizations,
+													'active_tab_array':active_tab_array
+													})
+
+
+@login_required
+@ensure_csrf_cookie
+def create_group(request):
+	# If it's a HTTP POST, we're interested in processing form data.
+	if request.method == 'POST':
+		# Attempt to grab information from the raw form information.
+		# Note that we make use of both UserForm and UserProfileForm.
+		print request.POST.get('group_name')
+		group_name = request.POST.get('group_name')
+		group = Group(name=group_name)
+		group.save()
+		admin = request.user.userprofile
+		group.admins.add(admin)
+		admin.is_group_admin = True
+		admin.groups.add(group)
+		admin.save()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def delete_profile_info(request):
+	if request.method == 'POST':
+		# Get the current user's profile
+		profile = request.user.userprofile
+
+		# Delete reservation objects specified by reservation_ids
+		reservation_ids_strs = json.loads(request.POST.get('reservation_ids'))
+		reservation_ids = [int(x) for x in reservation_ids_strs]
+		Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+		# Handle groups deleted from user's profile
+		group_ids_strs = json.loads(request.POST.get('group_ids'))
+		group_ids = [int(x) for x in group_ids_strs]
+		for group_id in group_ids:
+			group = Group.objects.get(pk=group_id)
+			# Remove group from user's groupset
+			profile.groups.remove(group)
+			# If user is an admin for this group, remove user from group's admin set
+			if profile in group.admins.all():
+				group.admins.remove(profile)
+				# If user is admin of no groups, turn off admin status
+				if len(profile.group_set.all()) == 0:
+					profile.is_group_admin = False
+				# If group has no more admins, delete group
+				if len(group.admins.all()) == 0:
+					group.delete()
+
+		# Handle orgs deleted from user's profile
+		org_ids_strs = json.loads(request.POST.get('org_ids'))
+		org_ids = [int(x) for x in org_ids_strs]
+		for org_id in org_ids:
+			org = Organization.objects.get(pk=org_id)
+			# Remove group from user's groupset
+			profile.organizations.remove(org)
+
+
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def get_group_list(request):
+	all_group_names = []
+	all_groups = Group.objects.all()
+	for group in all_groups:
+		all_group_names.append(group.name)
+	print all_group_names
+	print json.dumps(all_group_names)
+	return HttpResponse(json.dumps(all_group_names))
+
+@ensure_csrf_cookie
+def get_org_list(request):
+	all_org_names = []
+	all_orgs = Organization.objects.all()
+	for org in all_orgs:
+		all_org_names.append(org.name)
+	print all_org_names
+	print json.dumps(all_org_names)
+	return HttpResponse(json.dumps(all_org_names))
+
+@ensure_csrf_cookie
+def join_group(request):
+	if request.method == 'POST':
+		group_name = request.POST.get('group_name')
+		group = Group.objects.get(name=group_name)
+		request.user.userprofile.groups.add(group)
+		# Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def join_org(request):
+	if request.method == 'POST':
+		org_name = request.POST.get('org_name')
+		org = Organization.objects.get(name=org_name)
+		request.user.userprofile.organizations.add(org)
+		# Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+	return HttpResponse(0)
+
+
+
+
+	
+

@@ -1,0 +1,28 @@
+from django.conf.urls import include, url
+
+from . import views
+
+app_name = 'booker'
+urlpatterns = [
+    # ex: /booker/
+    url(r'^$', views.index, name='index'),
+    url(r'^post_reservation/$', views.post_reservation, name='post_reservation'),
+    url(r'^confirm/$', views.confirm, name='confirm'),
+    url(r'^admin_dashboard/$', views.admin_dashboard, name='admin_dashboard'),
+    url(r'^register/$', views.register, name='register'),
+    url(r'^login/$', views.user_login, name='login'),
+    url(r'^logout/$', views.user_logout, name='logout'),
+<<<<<<< HEAD
+    url(r'^calendar/$', views.calendar_view, name='calendar'),
+    url(r'^calendar/eventsfeed/(?P<building_name>.+)/$', views.eventsFeed, name='eventsfeed')
+	]
+=======
+    url(r'^profile/$', views.user_profile, name='profile'),
+    url(r'^create_group/$', views.create_group, name='create_group'),
+    url(r'^delete_profile_info/$',views.delete_profile_info,name='delete_profile_info'),
+    url(r'^get_group_list/$',views.get_group_list,name='get_group_list'),
+    url(r'^get_org_list/$',views.get_org_list,name='get_org_list'),
+    url(r'^join_group/$',views.join_group,name='join_group'),
+    url(r'^join_org/$',views.join_org,name='join_org'),
+    ]
+>>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96

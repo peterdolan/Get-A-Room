@@ -10,11 +10,13 @@ body {
 	background-color: #222222;
 }
 
-* {
-	border-radius: 0 !important;
+h1 {
+	margin: 0px;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	color: white;
 }
 
-h1 {
+h2 {
 	margin: 0px;
 	font-family: Futura,Trebuchet MS,Arial,sans-serif;
 	color: white;
@@ -40,6 +42,12 @@ li {
 	margin: 0;
 /*	padding-left: 10%;
 	padding-right: 10%;*/
+}
+
+.motto-div {
+	float:left;
+	font-style: italic;
+	padding-top: 4.5%;
 }
 
 .logo-div:hover img {
@@ -94,4 +102,9 @@ li {
 	margin: 0px;
 	background-color: #222222;
 }
+
+.container {
+	height: 85.2% !important;
+}
+
 

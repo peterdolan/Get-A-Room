@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Get-A-Room</title>
+        <link rel="stylesheet" href="{% static "css/base.css" %}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="{% static "js/js.cookie.js" %}"></script>
+        <!-- <script src="{% static "js/jquery.cookie.js" %}"></script> -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+        {% block head_block %}{% endblock %}
+
+    </head>
+
+    <body>
+    	<div class="header">
+            <div class="logo-div">
+                <a class="logo-link" href="/booker/">
+                    <img class="logo" src="{% static "images/logoheader.png" %}" alt="Get-A-Room" />
+                </a>
+            </div>
+            <div class="motto-div">
+                The dankmeme of reservation apps.
+            </div>
+            <div class="links-container">
+                {% if user.is_authenticated %}
+                    <a class="header-link" href="/admin/">Admin Portal</a><br />
+                    <a class="header-link" href="/booker/logout/">Logout</a><br />
+<<<<<<< HEAD
+                    <a class="header-link" href="/booker/calendar/">Calendar View</a><br />
+=======
+                    <a class="header-link" href="/booker/profile/">My Profile</a><br />
+>>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96
+                {% else %}
+                    <a class="header-link" href="/booker/register/">Register Here</a><br />
+                    <a class="header-link" href="/booker/login/">Login</a><br />
+                    <a class="header-link" href="/booker/calendar/">Calendar View</a><br />
+                {% endif %}
+            </div>
+
+        </div>
+
+<!--         <div class="greeting-container">
+            <h1 class="greeting">You're about to change the world.<br> You're gonna need a room.</h1>
+        </div> -->
+
+
+        {% block body_block %}{% endblock %}
+    </body>
+</html>
