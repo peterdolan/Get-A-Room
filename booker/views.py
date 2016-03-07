@@ -335,6 +335,7 @@ def user_profile(request):
 	admin_organizations = []
 	if profile.is_org_admin:
 		admin_organizations = profile.get_admin_organizations()
+	print "Admin Orgs", admin_organizations
 	organizations = profile.organizations.all()
 	# print organizations
 	return render(request, 'booker/profile.html', {'profile':profile,

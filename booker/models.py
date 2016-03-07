@@ -48,6 +48,8 @@ class UserProfile(models.Model):
     # belongs to.
     def get_admin_groups(self):
     	return self.group_set.all()
+    def get_admin_organizations(self):
+    	return self.organization_set.all()
 
 class Organization(models.Model):
 	name = models.CharField(max_length=200)
