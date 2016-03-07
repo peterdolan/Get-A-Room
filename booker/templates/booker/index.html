@@ -52,10 +52,10 @@
         {% csrf_token %}
         <div id="timePage">
           <h2>Time and Duration</h2>
-          {% if org_search %}
+          {% if group_search %}
             <div class = "form-group">
-              {{ form.organization.label_tag }}
-              {{ form.organization }}
+              {{ form.group.label_tag }}
+              {{ form.group }}
             </div>
           {% endif %}
           <div class = "form-group">
@@ -78,13 +78,13 @@
             {{ form.description.label_tag }}
             {{ form.description }}
           </div> -->
-          {% if org_search %}
+          {% if group_search %}
             <div class = "form-group">
               {{ form.weekly.label_tag }}
               {{ form.weekly }}
             </div>
           {% endif %}
-          {% if org_search %}
+          {% if group_search %}
             <div class = "form-group">
               {{ form.nmeetings.label_tag }}
               {{ form.nmeetings }}

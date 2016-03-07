@@ -25,7 +25,7 @@ class RoomForm(forms.Form):
 		new_choices = []
 		for choice in group_choices:
 			new_choices.append(choice)
-		self.fields['group'].choices = []
+		self.fields['group'].choices = new_choices
 
 	group = forms.ChoiceField(
 		label = "Group",
@@ -166,6 +166,8 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+	weekly = forms.CharField(max_length=200)
+	nmeetings = forms.CharField(max_length=200)
 	# description = forms.CharField(max_length=200)
 
 class CalendarViewForm(forms.Form):

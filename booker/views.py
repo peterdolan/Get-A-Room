@@ -27,13 +27,13 @@ def index(request):
 	empty_list = []
 	if request.method == 'POST':
 		form = RoomForm(empty_list, request.POST)
-		group_search = request.session.get('group_search', True)
+		group_search = request.session.get('group_search', False)
 		if form.is_valid():
-			rooms = getValidRooms(request, form, group_search)
+			rooms = getValidRooms(form, group_search)
 			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form})
 	else:
 		form = RoomForm(empty_list)
-		group_search = request.session.get('group_search', True)
+		group_search = request.session.get('group_search', False)
 		if group_search:
 			groups = getGroupsByUser(request)
 			print groups
@@ -47,7 +47,7 @@ def getGroupsByUser(request):
 		names.append(toAppend)
 	return names
 
-def getValidRooms(request, form, group_search):
+def getValidRooms(form, group_search):
 	date = form.cleaned_data['date']
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
@@ -138,17 +138,41 @@ def post_reservation(request):
 		dur_dt = timedelta(minutes = int(duration))
 		res_end_time = res_start_time + dur_dt
 		# description = form.cleaned_data['description']
-		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
-		request.session['res_id'] = res.id
+		if form.cleaned_data['weekly']:
+			res_ids = []
+			for x in range(0, form.cleaned_data['nmeetings']):
+				offset = 7*x
+				res_start_time = res_start_time + timedelta(days=offset)
+				res_end_time = res_end_time + timedelta(days=offset)
+				res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
+				res_ids.append(res.id)
+			request.session['res_ids'] = res_ids
+			request.session['weekly'] = True
+		else:
+			res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
+			request.session['res_id'] = res.id
 		return HttpResponseRedirect('/booker/confirm/')
 	else:
 		return render(request, 'booker/uhmmm.html')
 
 def confirm(request):
-	res_id = request.session.get('res_id', None)
-	res = Reservation.objects.all().get(pk=res_id)
-	context = RequestContext(request)
-	return render_to_response('booker/confirm.html', {'res':res},context)
+	request.session['group_search'] = False
+	if request.session.get('weekly', False):
+		res_ids = request.session.get('res_ids', [])
+		reservations = []
+		for res_id in res_ids:
+			res = Reservation.objects.all().get(pk=res_id)
+			reservations.append(res)
+		context = RequestContext(request)
+		return render_to_response('booker/confirm.html', {'multiple': True, 'reservations': reservations}, context)
+		request.session['weekly'] = False
+	
+	else:
+		res_id = request.session.get('res_id', None)
+		res = Reservation.objects.all().get(pk=res_id)
+		context = RequestContext(request)
+		return render_to_response('booker/confirm.html', {'multiple': False, 'res':res}, context)
+	# request.session['group_search'] = False
 
 def calendar_view(request):
 	context = RequestContext(request)
