@@ -94,6 +94,10 @@ class RoomForm(forms.Form):
 		initial = 3
 	)
 
+	# description = forms.CharField(
+	# 	widget=forms.TextInput	
+	# )
+
 	projector = forms.BooleanField(
 		required = False,
 		initial = False,
@@ -135,6 +139,7 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+	# description = forms.CharField(max_length=200)
 
 class CalendarViewForm(forms.Form):
 	building_choices = (

@@ -112,7 +112,8 @@ def post_reservation(request):
 		duration = form.cleaned_data['duration']
 		dur_dt = timedelta(minutes = int(duration))
 		res_end_time = res_start_time + dur_dt
-		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description='!!', start_time=res_start_time, end_time=res_end_time)[0]
+		# description = form.cleaned_data['description']
+		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
 		request.session['res_id'] = res.id
 		return HttpResponseRedirect('/booker/confirm/')
 	else:
