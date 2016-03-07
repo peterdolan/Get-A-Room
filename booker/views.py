@@ -24,17 +24,30 @@ from .forms import *
 
 # @login_required
 def index(request):
+	empty_list = []
 	if request.method == 'POST':
-		form = RoomForm(request.POST)
+		form = RoomForm(empty_list, request.POST)
+		group_search = request.session.get('group_search', True)
 		if form.is_valid():
-			rooms = getValidRooms(request,form)
+			rooms = getValidRooms(request, form, group_search)
 			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form})
 	else:
-		form = RoomForm()
-	return render(request, 'booker/index.html', {'form':form})
+		form = RoomForm(empty_list)
+		group_search = request.session.get('group_search', True)
+		if group_search:
+			groups = getGroupsByUser(request)
+			print groups
+			form = RoomForm(groups)
+	return render(request, 'booker/index.html', {'form':form, 'group_search':group_search})
 
+def getGroupsByUser(request):
+	names = []
+	for group in request.user.userprofile.groups.all():
+		toAppend = (group.name, group.name)
+		names.append(toAppend)
+	return names
 
-def getValidRooms(request, form):
+def getValidRooms(request, form, group_search):
 	date = form.cleaned_data['date']
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
@@ -42,6 +55,8 @@ def getValidRooms(request, form):
 	print start_time
 	print duration
 	capacity = int(form.cleaned_data['capacity'])
+	weekly = form.cleaned_data['weekly']
+	nmeetings = form.cleaned_data['nmeetings']
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
 	windows_bool = bool(form.cleaned_data['windows'])
@@ -61,10 +76,10 @@ def getValidRooms(request, form):
 	start_time = getActualDate(date,start_time)
 	dur_dt = timedelta(minutes=int(duration))
 	end_time = start_time + dur_dt
-	time_tuple = (start_time, end_time)
-	return checkReservations(room_objects_ordered, time_tuple)
+	time_tuple = (start_time, end_time, weekly, nmeetings)
+	return checkReservations(room_objects_ordered, time_tuple, group_search)
 
-def checkReservations(room_objects_list, time_tuple):
+def checkReservations(room_objects_list, time_tuple, group_search):
 	#look for overlap by comparing reservation times to times desired
 	#any rooms taken for time slice x are taken off the available rooms list
 	available_rooms_list = []
@@ -73,7 +88,7 @@ def checkReservations(room_objects_list, time_tuple):
 		is_valid_flag = True
 		room_reservation_list = Reservation.objects.all().filter(room=room_obj)
 		for res_obj in room_reservation_list:
-			if checkValidRes(res_obj, time_tuple) == False: #we have an overlapping reservation
+			if checkValidRes(res_obj, time_tuple, group_search) == False: #we have an overlapping reservation
 				is_valid_flag = False
 				break
 		if is_valid_flag:
@@ -82,12 +97,22 @@ def checkReservations(room_objects_list, time_tuple):
 	# reservations = Reservation.objects.all().filter(~(st_queryfilter1 | st_queryfilter2) & (et_queryfilter1 | et_queryfilter2))
 	return available_rooms_list
 
-def checkValidRes(res_obj, time_tuple):
-	request_start = time_tuple[0]
-	request_end = time_tuple[1]
+def checkValidRes(res_obj, time_tuple, group_search):
 	res_start = res_obj.start_time
 	res_end = res_obj.end_time
-	return ((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))
+	if group_search and time_tuple[2]:
+		for x in range(0, time_tuple[3]):
+			offset = 7*x
+			request_start = time_tuple[0] + timedelta(days=offset)
+			request_end = time_tuple[1] + timedelta(days=offset)
+			if not (((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))):
+				return False
+		return True
+
+	else:
+		request_start = time_tuple[0]
+		request_end = time_tuple[1]
+		return ((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))
 
 def zeroPad(toPad):
 	if(len(toPad) == 1):

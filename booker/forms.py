@@ -20,6 +20,19 @@ def getStarterNum():
 	return toReturn
 
 class RoomForm(forms.Form):
+	def __init__(self, group_choices, *args, **kwargs):
+		super(RoomForm, self).__init__(*args, **kwargs)
+		new_choices = []
+		for choice in group_choices:
+			new_choices.append(choice)
+		self.fields['group'].choices = []
+
+	group = forms.ChoiceField(
+		label = "Group",
+		required = False,
+		choices = ()
+	)
+
 	date = forms.CharField(
 		widget=forms.TextInput(attrs={'class': 'datepicker'})
 	)
@@ -92,6 +105,20 @@ class RoomForm(forms.Form):
 		min_value = 1,
 		max_value = 20,
 		initial = 3
+	)
+
+	weekly = forms.BooleanField(
+		label = "Make Weekly",
+		required = False,
+		initial = False
+	)
+
+	nmeetings = forms.IntegerField(
+		label = "Number of Weeks",
+		min_value = 2,
+		max_value = 10,
+		initial = 10,
+		required = False
 	)
 
 	# description = forms.CharField(
