@@ -20,12 +20,6 @@ option {
     font-weight: 100 !important;
 }
 
-.container label {
-    color: white;
-    font-family: Futura,Trebuchet MS,Arial,sans-serif;
-    font-weight: 100;
-}
-
 .container li {
     list-style-type: none;
     padding-right: 30px;
@@ -84,6 +78,7 @@ input[type=submit] {
 
 .pill.icon.active {
     opacity: 1;
+    transform: scale(1.2);
 }
 
 .pill-link {
@@ -127,46 +122,72 @@ input[type=submit] {
   /*-vendor-animation-iteration-count: infinite;*/
 }
 
+/** {
+    border: 1px solid red !important;
+}*/
+
+.form-group label {
+    color: white;
+    font-family: Futura,Trebuchet MS,Arial,sans-serif;
+    font-weight: 100;
+}
+
 form {
     width: 50%;
+    /*height: 100%;*/
+    display:block;
     margin: 0 auto;
 }
 
 .pane-container {
     width: 80%;
     position: relative;
-    display: block;
+    height: auto;
+    /*display: block;*/
     margin-left: auto;
     margin-right: auto;
 }
 
 .arrow {
-    height: 100%;
+    height: auto;
     width: 25px;
     display: inline-block;
     position: absolute;
     margin: 0px;
-    top: 50%;
+    top: 60%;
     margin-top: -29px;
-    transition: all .5s ease-in-out;
+    z-index: 10;
 }
 
 #rightarrow {
-    right: 0px;
+    right: 13%;
     -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
     animation-duration: .5s;
 }
 
 #leftarrow {
+    left: 13%;
     -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
     animation-duration: .5s;  
 }
 
-.arrow>img:hover {
-    transform: scale(1.5);
-}
-
-.arrow > img {
+.arrow>a>img {
+    transition: all .3s ease-in-out;
     width: 100%;
     height: auto;
+}
+
+.arrow>a>img:hover {
+    transform: scale(1.2);
+}
+
+.arrow>label>img {
+    transition: all .3s ease-in-out;
+    width: 100%;
+    height: auto;
+}
+
+.arrow>label>img:hover {
+    transform: scale(1.2);
+    cursor: pointer;
 }

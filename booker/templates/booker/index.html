@@ -28,17 +28,17 @@
 {% block body_block %}
   <div class="container">
     <ul class="nav nav-pills">
-      <li class="pill active grow icon">
+      <li class="pill active grow icon" id="time-pill">
         <a class="pill-link" data-toggle="pill" href="#time" onclick="transitionPane('time')">
           <img src="{% static "images/clock_icon.png" %}" alt="Time" />
         </a>
       </li>
-      <li class="pill grow icon">
+      <li class="pill grow icon" id="amenities-pill">
         <a class="pill-link" data-toggle="pill" href="#amenities" onclick="transitionPane('amenities')">
           <img src="{% static "images/checkbox.png"%}" alt="Amenities" /> 
         </a>
       </li>
-      <li class="pill grow icon">
+      <li class="pill grow icon" id="location-pill">
         <a class="pill-link" data-toggle="pill" href="#location" onclick="transitionPane('location')">
           <img src="{% static "images/location_point.png" %}" alt="Location" /> 
         </a>
@@ -48,10 +48,12 @@
       </li>
     </ul>
 
-    <div class="pane-container">
-      <div class="arrow" id="leftarrow">
+    <div class="arrow" id="leftarrow">
+      <a id="leftarrowlink" data-toggle="pill" href="#" onclick="transitionPane(-1)">
         <img src="{% static "images/leftarrow.png" %}" alt="Left" /> 
-      </div>
+      </a>
+    </div>
+    <div class="pane-container">
       <form action="." method="post">
         {% csrf_token %}
         <div class="centered-container tab-content">
@@ -103,9 +105,11 @@
         </div>
         <input type="submit" id='submit-form' class = "hidden" />
       </form>
-      <div class="arrow" id="rightarrow">
-          <img src="{% static "images/rightarrow.png" %}" alt="Right" /> 
-      </div>
+    </div>
+    <div class="arrow" id="rightarrow">
+      <a id="rightarrowlink" data-toggle="pill" href="#amenities" onclick="transitionPane(1)">
+        <img src="{% static "images/rightarrow.png" %}" alt="Right" /> 
+      </a>
     </div>
   </div>
 
