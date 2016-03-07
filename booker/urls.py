@@ -22,4 +22,4 @@ urlpatterns = [
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
     url(r'^buildings/$',views.buildings,name='buildings')
-    ]
+]

@@ -1,5 +1,19 @@
 /* Javascript */
 $(document).ready(function () {
+	var csrftoken = Cookies.get('csrftoken');
+	function csrfSafeMethod(method) {
+		// these HTTP methods do not require CSRF protection
+		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+    		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    		}
+		}
+	});
+
+
 	getBuildings();
 	calendar_refresh();
 	// var date = new Date();
@@ -74,8 +88,8 @@ function building_submit() {
 function calendar_refresh() {
 	var value = document.getElementById("calview_room");
 	var room = value.options[value.selectedIndex].value;
-	console.log(value);
-	console.log(room);
+	// console.log(value);
+	// console.log(room);
 	$('#calendar').remove()
 	var new_div = document.createElement("div");
 	new_div.id = 'calendar';
@@ -101,9 +115,10 @@ function calendar_refresh() {
 }
 
 function make_reservation(date) {
-	console.log("Date is: " + date);
+	var value = document.getElementById("calview_room");
+	var room = value.options[value.selectedIndex].value;
 	swal.withForm({
-	    title: 'Make a reservation!',
+	    title: 'Make a reservation \non ' + grabDate(date) + '\n at '+ grabTime(date) + '\n in ' + room + '?',
 	    text: 'Make reservations for your friends, teammates, etc.',
 	    showCancelButton: true,
 	    confirmButtonColor: '#FED100',
@@ -111,37 +126,92 @@ function make_reservation(date) {
 	    closeOnConfirm: false,   
 		showLoaderOnConfirm: true,
 	    formFields: [
-			{ id: 'name', placeholder: 'Name your group' },
-			{ id: 'description', placeholder: 'Add a description for your group' },
-			{ id: 'duration', placeholder: 'Duration of your booking' },
+			{ id: 'description', placeholder: 'Add a description for your booking' },
+			{ id: 'length', placeholder: 'Duration of your booking' },
 		]
 		}, 
 		function (isConfirm) {
 			if (isConfirm) {
-				group_name = this.swalForm.name;
-				if ($.inArray(group_name, group_list) === -1) {
-					$.ajax({
-						url : "/booker/create_group/",
-						type: "POST",
-						data : {group_name:group_name},
+				// group_name = this.swalForm.name;
+				$.ajax({
+					url : "../post_reservation/",
+					type: "POST",
+					data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), duration:this.swalForm.length},
+				});
+				setTimeout(function(){ 
+					swal({
+						title: "Successfully created " + "res" + "!",
+						type: "success",
+					},
+					function() {
+						// location.replace("/booker/profile/?tab=reservation");
+						location.replace("/booker/calendar/");
 					});
-					setTimeout(function(){ 
-						swal({
-							title: "Successfully created " + group_name + "!",
-							type: "success",
-						},
-						function() {
-							location.replace("/booker/profile/?tab=group");
-						});   
-	    			}, 2000);
-				} else {
-					setTimeout(function(){ 
-						swal("Whoops! A group called " + group_name + " already exists! Please use another name.");   
-		    		}, 2000);
-				}
+    			}, 2000);
 		    }
 		}
 	);
+	calendar_refresh();
+}
+
+function grabTime(date) {
+	var toReturn = "";
+	var ampm = "";
+	var hour = date.getHours()%12;
+	if(hour == 0) {
+		hour = 12;
+	}
+	if(date.getHours() < 12) {
+		ampm = "AM";
+	}
+	else {
+		ampm = "PM";
+	}
+	var halfhr = "";
+	if(date.getMinutes() == 30){
+		halfhr = "30";
+	}
+	else {
+		halfhr = "00";
+	}
+	toReturn = hour + ":" + halfhr + " " + ampm;
+	return toReturn;
+}
+
+//the following three helper functions were found on StackOverflow
+function grabDate(date) {
+	var monthNames = ["January", "February", "March", "April", "May", "June",
+  		"July", "August", "September", "October", "November", "December"
+	];
+	return monthNames[date.getMonth()] + " " + ordinal_suffix_of(date.getDate());
+}
+
+function ordinal_suffix_of(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+}
+
+function getFormattedDate(date) {
+	var year = date.getFullYear();
+	var month = (1 + date.getMonth()).toString();
+	month = month.length > 1 ? month : '0' + month;
+	var day = date.getDate().toString();
+	day = day.length > 1 ? day : '0' + day;
+	return month + '/' + day + '/' + year;
+}
+
+function getFormattedTime(date) {
+	return (60*date.getHours() + date.getMinutes())/30;
 }
 
 function getCurrentRoom(){

@@ -108,12 +108,11 @@ def post_reservation(request):
 		room_obj = Room.objects.all().filter(name=form.cleaned_data['room'])[0]
 		user_obj = []
 		res_start_time = getActualDate(form.cleaned_data['date'],form.cleaned_data['time'])
-		print "Start time: ", res_start_time
 		duration = form.cleaned_data['duration']
 		dur_dt = timedelta(minutes = int(duration))
 		res_end_time = res_start_time + dur_dt
 		# description = form.cleaned_data['description']
-		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
+		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="newbs", start_time=res_start_time, end_time=res_end_time)[0]
 		request.session['res_id'] = res.id
 		return HttpResponseRedirect('/booker/confirm/')
 	else:
@@ -158,11 +157,6 @@ def buildings(request):
 def eventsFeed(request, room_name):
 	from django.utils.timezone import utc
 	from django.core.serializers.json import DjangoJSONEncoder
-
-	# print building_name
-
-	if request.is_ajax():
-		print 'Its ajax from fullCalendar()'
 
 	try:
 		start = datetime.fromtimestamp(int(request.GET.get('start', False))).replace(tzinfo=utc)
