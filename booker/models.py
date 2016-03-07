@@ -58,7 +58,7 @@ class Organization(models.Model):
 
 class Building(models.Model):
 	name = models.CharField(max_length=200)
-	organization = models.ForeignKey(Organization, on_delete=models.CASCADE,null=True)
+	organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.name
 

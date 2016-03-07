@@ -127,21 +127,35 @@ def confirm(request):
 
 def calendar_view(request):
 	context = RequestContext(request)
-	if request.method == 'POST':
-		form = CalendarViewForm(data=request.POST)
-		if form.is_valid():
-			building_obj = Building.objects.all().filter(name__contains=form.cleaned_data['building'])[0]
-			rooms_list = Room.objects.all().filter(building=building_obj)
-			res_array = Reservation.objects.all().filter(room__in=rooms_list, start_time__gte=timezone.now())
-			return render(request, 'booker/calendar.html', {'form':form, 'building':building_obj, 'res_array':res_array})
-		else:
-			return render(request, 'booker/uhmmm.html')
-	else: #GET
-		form = CalendarViewForm(data=request.POST)
-		return render(request, 'booker/calendar.html', {'form':form, 'res_array':[]})
+	# if request.method == 'POST':
+		# form = CalendarViewForm(data=request.POST)
+		# if form.is_valid():
+	profile = request.user.userprofile
+	organizations = profile.organizations.all()
+	# building_obj = Building.objects.all().filter(organization__in=organizations, name__contains=form.cleaned_data['building'])[0]
+	buildings = Building.objects.all().filter(organization__in=organizations)
+	rooms_list = Room.objects.all().filter(building__in=buildings)
+	res_array = Reservation.objects.all().filter(room__in=rooms_list, start_time__gte=timezone.now())
+
+	return render(request, 'booker/calendar.html', {'buildings':buildings, 'res_array':res_array})
+		# else:
+			# return render(request, 'booker/uhmmm.html')
+	# else: #GET
+		# form = CalendarViewForm(data=request.POST)
+		# return render(request, 'booker/calendar.html', {'form':form, 'res_array':[]})
 		# return render_to_response('booker/calendar.html', {}, context)
 
-def eventsFeed(request, building_name):
+def buildings(request):
+	profile = request.user.userprofile
+	organizations = profile.organizations.all()
+	buildings = Building.objects.all().filter(organization__in=organizations)
+	building_map = {}
+	for building in buildings:
+		rooms_list = [str(x) for x in Room.objects.all().filter(building=building).values_list('name',flat=True)]
+		building_map[building.name] = rooms_list
+	return HttpResponse(json.dumps(building_map))
+
+def eventsFeed(request, room_name):
 	from django.utils.timezone import utc
 	from django.core.serializers.json import DjangoJSONEncoder
 
@@ -158,10 +172,9 @@ def eventsFeed(request, building_name):
 		end = start + timedelta(days=7)
 
 	# entries = Reservation.objects.filter(start_time__gte=start).filter(end_time__lte=end)
-	building_objs = Building.objects.all().filter(name__contains=building_name)
-	rooms_list = Room.objects.all().filter(building__in=building_objs)
-	entries = Reservation.objects.all().filter(room__in=rooms_list, start_time__gte=start).filter(end_time__lte=end)
-	print entries
+	room_obj = Room.objects.all().filter(name=room_name)
+	entries = Reservation.objects.all().filter(room=room_obj, start_time__gte=start).filter(end_time__lte=end)
+	# print entries
 	json_list = []
 	for entry in entries:
 		# id = entry.id

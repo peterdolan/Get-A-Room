@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^calendar/$', views.calendar_view, name='calendar'),
-    url(r'^calendar/eventsfeed/(?P<building_name>.+)/$', views.eventsFeed, name='eventsfeed'),
+    url(r'^calendar/eventsfeed/(?P<room_name>.+)/$', views.eventsFeed, name='eventsfeed'),
     url(r'^profile/$', views.user_profile, name='profile'),
     url(r'^create_group/$', views.create_group, name='create_group'),
     url(r'^delete_profile_info/$',views.delete_profile_info,name='delete_profile_info'),
@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^get_org_list/$',views.get_org_list,name='get_org_list'),
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
+    url(r'^buildings/$',views.buildings,name='buildings')
     ]

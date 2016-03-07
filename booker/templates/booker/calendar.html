@@ -19,15 +19,19 @@
   <div class="container">
     <br></br>
 
-    <form id="building_form" action="/booker/calendar/" method="post">
-        {% csrf_token %}
-        <div id="calview_bldg">
-          <div class = "form-group">
-            {{ form.building.label_tag }}
-            {{ form.building }}
-            <input id="submit" type="submit"/>
-          </div>
-        </div>
+    <form id="building_form">
+        <select id="calview_bldg" onchange="building_submit()">
+          {% for building in buildings %}
+            <option value="{{building.name}}"> {{building.name}} </option>
+
+          {% endfor %}
+
+        </select>
+        <!-- <button id="submit" onclick="building_submit()">Submit</button> -->
+    </form>
+
+    <form id="room_form">
+      <select id="calview_room" onchange="calendar_refresh()"></select>
     </form>
 
     
@@ -36,7 +40,7 @@
 
     
 
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
       function notEmpty(){
 
         var e = document.getElementById("building_form");
@@ -49,23 +53,9 @@
       notEmpty()
             
       document.getElementById("building_form").onsubmit = notEmpty;
-    </script>
-
+    </script> -->
 
     <div id='calendar'></div>
-
-    <!-- <ul>
-    {% for res in res_array %}
-      <li>
-        <h2>Reservations for {{res.room.building.name}}:{{res.room.name}}</h2>
-        <h3>User: <span class="user"> {{res.user_name}} </span></h3>
-      	<h3>Time: <span class="time">{{res.start_time.date}} {{res.start_time.time}} - {{res.end_time.time}}</span></h3>
-      </li>
-    {% endfor %}
-    </ul> -->
-
     <br></br>
-
-
   </div>
 {% endblock %}
