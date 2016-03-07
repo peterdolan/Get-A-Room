@@ -50,14 +50,6 @@ li {
 	padding-top: 4.5%;
 }
 
-.logo-div:hover img {
-    -webkit-transform:scale(1.05); /* Safari and Chrome */
-    -moz-transform:scale(1.05); /* Firefox */
-    -ms-transform:scale(1.05); /* IE 9 */
-    -o-transform:scale(1.05); /* Opera */
-     transform:scale(1.05);
-}
-
 .logo {
 	display:block;
    	padding-top: 7%;
@@ -106,5 +98,8 @@ li {
 .container {
 	height: 85.2% !important;
 }
+
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.1); }
 
 

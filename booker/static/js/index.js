@@ -1,3 +1,10 @@
+$(document).ready(function () {
+	activePane = 'time';
+});
+
+var activePane;
+var paneKey = {"time":0,"amenities":1,"location":2};
+
 function addClasses() {
 	var date = document.getElementById("id_date");
 	date.className = "form-control";
@@ -102,5 +109,38 @@ function checkDurationValues() {
 				options[i].style.display = 'inline';
 			}
 		}
+	}
+}
+
+function paneShift(oldPane,dirOut,newPane,dirIn) {
+	var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+
+	console.log($("#"+oldPane));
+	// console.log($("#"+newPane));
+	// $("#"+oldPane).addClass('animated fadeOut'+dirOut).one(animationEnd, function() {
+	// 	console.log(oldPane,'addClass','animated fadeOut'+dirOut);
+	// 	$("#"+oldPane).removeClass('animated fadeOut'+dirOut);
+	// 	console.log(oldPane,'removeClass','animated fadeOut'+dirOut);
+	// });
+	$("#"+newPane).addClass('animated fadeIn'+dirIn).one(animationEnd, function() {
+		console.log(newPane,'addClass','animated fadeIn'+dirIn);
+		$("#"+newPane).removeClass('animated fadeIn'+dirIn);
+		console.log(newPane,'removeClass','animated fadeIn'+dirIn);
+	});
+}
+
+function transitionPane(newPane) {
+	if (newPane !== activePane) {
+		console.log(activePane);
+		oldPaneId = paneKey[activePane];
+		newPaneId = paneKey[newPane];
+		if (oldPaneId < newPaneId) {
+			console.log(oldPaneId, newPaneId);
+			paneShift(activePane,"Left",newPane,"Right");
+		} else {
+			console.log(oldPaneId, newPaneId);
+			paneShift(activePane,"Right",newPane,"Left");
+		}
+		activePane = newPane;
 	}
 }

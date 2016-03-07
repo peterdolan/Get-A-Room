@@ -7,6 +7,7 @@
         <meta charset="UTF-8">
         <title>Get-A-Room</title>
         <link rel="stylesheet" href="{% static "css/base.css" %}" />
+        <link rel="stylesheet" href="{% static "css/animate.min.css" %}" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -19,10 +20,10 @@
     </head>
 
     <body>
-    	<div class="header">
+        <div class="header">
             <div class="logo-div">
                 <a class="logo-link" href="/booker/">
-                    <img class="logo" src="{% static "images/logoheader.png" %}" alt="Get-A-Room" />
+                    <img id="logo-img" class="logo grow" src="{% static "images/logoheader.png" %}" alt="Get-A-Room" />
                 </a>
             </div>
             <div class="motto-div">

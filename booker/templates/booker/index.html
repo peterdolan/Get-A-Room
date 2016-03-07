@@ -27,76 +27,85 @@
 
 {% block body_block %}
   <div class="container">
-  <ul class="row nav nav-pill">
-        <li class="col-md-3">
-          <a href="#" style="text-align:center;" onclick="return show('timePage', 'amnetiesPage', 'locationPage');">
-            <img src="{% static "images/clock_icon.png" %}" alt="Time" /> 
-          </a>
-        </li>
-        <li class="col-md-3">
-          <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timePage', 'locationPage');">
-            <img src="{% static "images/checkbox.png"%}" alt="Time" /> 
-          </a>
-        </li>
-        <li class="col-md-3">
-          <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timePage', 'amnetiesPage');">
-            <img src="{% static "images/location_point.png" %}" alt="Time" /> 
-          </a>
-        </li>
-        <li class="col-md-3">
-          <label for="submit-form" id="submit">Go!</label>
-        </li>
-      </ul>
-  <div class="centered-container">
+    <ul class="nav nav-pills">
+      <li class="pill active grow icon">
+        <a class="pill-link" data-toggle="pill" href="#time" onclick="transitionPane('time')">
+          <img src="{% static "images/clock_icon.png" %}" alt="Time" />
+        </a>
+      </li>
+      <li class="pill grow icon">
+        <a class="pill-link" data-toggle="pill" href="#amenities" onclick="transitionPane('amenities')">
+          <img src="{% static "images/checkbox.png"%}" alt="Amenities" /> 
+        </a>
+      </li>
+      <li class="pill grow icon">
+        <a class="pill-link" data-toggle="pill" href="#location" onclick="transitionPane('location')">
+          <img src="{% static "images/location_point.png" %}" alt="Location" /> 
+        </a>
+      </li>
+      <li class="pill">
+        <label for="submit-form" id="submit" class="grow">Go!</label>
+      </li>
+    </ul>
+
+    <div class="pane-container">
+      <div class="arrow" id="leftarrow">
+        <img src="{% static "images/leftarrow.png" %}" alt="Left" /> 
+      </div>
       <form action="." method="post">
         {% csrf_token %}
-        <div id="timePage">
-          <h2>Time and Duration</h2>
-          <div class = "form-group">
-            {{ form.date.label_tag }}
-            {{ form.date }}
+        <div class="centered-container tab-content">
+          <div id="time" class="tab-pane fade in active">
+            <h2>Time and Duration</h2>
+            <div class = "form-group">
+              {{ form.date.label_tag }}
+              {{ form.date }}
+            </div>
+            <div class = "form-group">
+              {{ form.time.label_tag }}
+              {{ form.time }}
+            </div>
+            <div class = "form-group">
+              {{ form.duration.label_tag }}
+              {{ form.duration }}
+            </div>
+            <div class = "form-group">
+              {{ form.capacity.label_tag }}
+              {{ form.capacity }}
+            </div>
           </div>
-          <div class = "form-group">
-            {{ form.time.label_tag }}
-            {{ form.time }}
+          <div id="amenities" class="tab-pane fade">
+            <h2>Amenities</h2>
+            <div class = "form-group">
+              {{ form.projector.label_tag }}
+              {{ form.projector }}
+            </div>
+            <div class = "form-group">
+              {{ form.whiteboard.label_tag }}
+              {{ form.whiteboard }}
+            </div>
+            <div class = "form-group">
+              {{ form.windows.label_tag }}
+              {{ form.windows }}
+            </div>
           </div>
-          <div class = "form-group">
-            {{ form.duration.label_tag }}
-            {{ form.duration }}
-          </div>
-          <div class = "form-group">
-            {{ form.capacity.label_tag }}
-            {{ form.capacity }}
-          </div>
-        </div>
-        <div id="amnetiesPage" style = "display:none">
-          <h2>Amenities</h2>
-          <div class = "form-group">
-            {{ form.projector.label_tag }}
-            {{ form.projector }}
-          </div>
-          <div class = "form-group">
-            {{ form.whiteboard.label_tag }}
-            {{ form.whiteboard }}
-          </div>
-          <div class = "form-group">
-            {{ form.windows.label_tag }}
-            {{ form.windows }}
-          </div>
-        </div>
-        <div id="locationPage" style = "display:none">
-          <h2>Location</h2>
-          <div class = "form-group">
-            {{ form.area.label_tag }}
-            {{ form.area }}
-          </div>
-          <div class = "form-group">
-            {{ form.flexible.label_tag }}
-            {{ form.flexible }}
+          <div id="location" class="tab-pane fade">
+            <h2>Location</h2>
+            <div class = "form-group">
+              {{ form.area.label_tag }}
+              {{ form.area }}
+            </div>
+            <div class = "form-group">
+              {{ form.flexible.label_tag }}
+              {{ form.flexible }}
+            </div>
           </div>
         </div>
         <input type="submit" id='submit-form' class = "hidden" />
       </form>
+      <div class="arrow" id="rightarrow">
+          <img src="{% static "images/rightarrow.png" %}" alt="Right" /> 
+      </div>
     </div>
   </div>
 

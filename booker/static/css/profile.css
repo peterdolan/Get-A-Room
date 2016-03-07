@@ -131,7 +131,7 @@ p {
 
 #main {
     /* Provide scrollbars if needed, position below header, and derive height from top/bottom */
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
     top: 33%;
@@ -140,7 +140,7 @@ p {
 
 .list-group {
     height: 80%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
     top: 33%;

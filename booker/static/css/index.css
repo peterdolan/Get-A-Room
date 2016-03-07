@@ -28,13 +28,15 @@ option {
 
 .container li {
     list-style-type: none;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
-.container ul {
+/*.container ul {
     width: 80%;
     display: block;
     margin: 0 auto;
-}
+}*/
 
 .container a:hover, a:focus {
     background-color: #222222 !important;
@@ -42,9 +44,7 @@ option {
 
 
 .centered-container {
-    width: 50%;
     display: block;
-    margin: 0 auto;
 }
 
 input[type=submit] {
@@ -56,14 +56,43 @@ input[type=submit] {
     border-radius: 5px; 
 }
 
-.container img {
+
+
+.nav-pills {
+    width: 75%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.pill {
+    display: inline-block;
+    margin: 0px !important;
+    width: 25%;
+    background-color: inherit !important;
+}
+
+.pill.icon:hover {
+    opacity: 1;
+}
+
+.pill.icon {
+    opacity: .7;
+}
+
+.pill.icon.active {
+    opacity: 1;
+}
+
+.pill-link {
+    background-color: inherit !important;  
+}
+
+.pill img {
     height: 70px;
     width: auto;
-    -webkit-transform:scale(1.05); /* Safari and Chrome */
-    -moz-transform:scale(1.05); /* Firefox */
-    -ms-transform:scale(1.05); /* IE 9 */
-    -o-transform:scale(1.05); /* Opera */
-     transform:scale(1.05);
 }
 
 #submit {
@@ -73,9 +102,71 @@ input[type=submit] {
     padding-top: -10px;
     margin-top: -15px;
     padding-left: 15px;
+    transition: all .2s ease-in-out;
 }
 
 #submit:hover {
 	cursor: pointer;
 	color: #fed100;
+}
+
+#time {
+    -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
+    animation-duration: .5s;
+}
+
+#amenities {
+    -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
+    animation-duration: .5s;
+  /*-vendor-animation-iteration-count: infinite;*/
+}
+
+#location {
+    -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
+    animation-duration: .5s;
+  /*-vendor-animation-iteration-count: infinite;*/
+}
+
+form {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.pane-container {
+    width: 80%;
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.arrow {
+    height: 100%;
+    width: 25px;
+    display: inline-block;
+    position: absolute;
+    margin: 0px;
+    top: 50%;
+    margin-top: -29px;
+    transition: all .5s ease-in-out;
+}
+
+#rightarrow {
+    right: 0px;
+    -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
+    animation-duration: .5s;
+}
+
+#leftarrow {
+    -webkit-animation-duration: .5s; /* Chrome, Safari, Opera */
+    animation-duration: .5s;  
+}
+
+.arrow>img:hover {
+    transform: scale(1.5);
+}
+
+.arrow > img {
+    width: 100%;
+    height: auto;
 }
