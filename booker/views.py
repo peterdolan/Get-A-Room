@@ -27,7 +27,11 @@ def index(request):
 	empty_list = []
 	if request.method == 'POST':
 		form = RoomForm(empty_list, request.POST)
-		group_search = request.session.get('group_search', True)
+		# group_search = request.session.get('group_search', True)
+		group_search = True
+		if group_search:
+			form = RoomForm(getGroupsByUser(request), request.POST)
+			
 		if form.is_valid():
 			nmeetings = form.cleaned_data['nmeetings']
 			if nmeetings is None:
@@ -36,9 +40,10 @@ def index(request):
 			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'nmeetings':nmeetings})
 	else:
 		form = RoomForm(empty_list)
-		group_search = request.session.get('group_search', True)
+		# group_search = request.session.get('group_search', True)
+		group_search = True
 		if group_search:
-			print "hi"
+			print "hiii"
 			print request.user.userprofile
 			groups = getGroupsByUser(request)
 			print groups
@@ -147,9 +152,7 @@ def post_reservation(request):
 			res_ids = []
 			for x in range(0, int(form.cleaned_data['nmeetings'])):
 				offset = 7*x
-				res_start_time = res_start_time + timedelta(days=offset)
-				res_end_time = res_end_time + timedelta(days=offset)
-				res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
+				res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time+timedelta(days=offset), end_time=res_end_time+timedelta(days=offset))[0]
 				res_ids.append(res.id)
 			request.session['res_ids'] = res_ids
 			request.session['weekly'] = True
