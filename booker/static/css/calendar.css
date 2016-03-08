@@ -31,12 +31,20 @@ span.time {
 	float: left;
 }
 
-.form-group > label {
+.CalendarTitle > label {
 	color: black;
+	font-size: 30px;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif !important;
+    font-weight: 100;
+
+}
+
+.form-inline {
+	padding-bottom: 0px;
+	margin-bottom: 0px !important;
 }
 
 body {
-	margin-top: 40px;
 	text-align: center;
 	font-size: 14px;
 	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
@@ -46,3 +54,12 @@ body {
 	width: 100%;
 	margin: 0 auto;
 }
+
+form_field{
+	color: black;
+}
+
+
+/**{
+	border: 1px solid red !important;
+}*/

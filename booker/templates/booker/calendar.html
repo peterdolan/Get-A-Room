@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/swal-forms.css" %} ">
     <script src="{% static "js/calendar.js" %}"></script>
     <!-- CSS -->
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <!-- <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.0/css/bootstrap-combined.min.css" rel="stylesheet" /> -->
     <link href="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.css" rel="stylesheet" />
     <!-- <link href="//arshaw.com/js/fullcalendar-1.5.3/fullcalendar/fullcalendar.print.css" rel="stylesheet" /> -->
 
@@ -22,27 +22,24 @@
 
 {% block body_block %}
   <div class="container">
-    <br></br>
+    <div class="row">
+      <form role="form" class="form-inline">  
+          Building:
+            <select id="calview_bldg" onchange="building_submit()">
+              {% for building in buildings %}
+                <option value="{{building.name}}"> {{building.name}} </option>
+              {% endfor %}
 
-    <form id="building_form">
-        <select id="calview_bldg" onchange="building_submit()">
-          {% for building in buildings %}
-            <option value="{{building.name}}"> {{building.name}} </option>
-
-          {% endfor %}
-
-        </select>
-    </form>
-
-    <form id="room_form">
-      <select id="calview_room" onchange="calendar_refresh()"></select>
-    </form>
+            </select>
+        Room:
+        <select class = "room_form" id="calview_room" onchange="calendar_refresh()"></select>
+    <!--   </form> -->
+    </div>
 
     
-
-      <label class="form_field"><h1>Reservation Calendar for <span id="aggregator_name"></h1></span></label>
-      
+    <div class = "CalendarTitle">
+      <label class="form_field">Reservation Calendar for <span id="aggregator_name"></span></label>
+    </div> 
     <div id='calendar'></div>
-    <br></br>
   </div>
 {% endblock %}
