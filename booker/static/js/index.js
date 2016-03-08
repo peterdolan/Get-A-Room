@@ -1,3 +1,14 @@
+$(document).ready(function () {
+	activePane = 'time';
+	rightArrowSrc = $('#rightarrowlink img').attr('src');
+	$("#leftarrow").hide();
+});
+
+var rightArrowSrc;
+var activePane;
+var paneKey = {"time":0,"amenities":1,"location":2};
+var paneKeyReverse = {0:"time",1:"amenities",2:"location"};
+
 function addClasses() {
 	var date = document.getElementById("id_date");
 	date.className = "form-control";
@@ -102,5 +113,68 @@ function checkDurationValues() {
 				options[i].style.display = 'inline';
 			}
 		}
+	}
+}
+
+function paneShift(oldPane,dirOut,newPane,dirIn,arrowClick) {
+	var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+	console.log($('#'+oldPane+'-pill'));
+	console.log($('#'+newPane+'-pill'));
+	var nextRightPaneId = paneKey[newPane] + 1;
+	var nextLeftPaneId = paneKey[newPane] - 1;
+	if (nextLeftPaneId < 0) {
+			$("#leftarrow").hide();
+	}
+	if (arrowClick) {
+		$('#'+oldPane+'-pill').removeClass('active');
+		$('#'+newPane+'-pill').addClass('active');
+	}
+	$("#"+newPane).addClass('animated fadeIn'+dirIn).one(animationEnd, function() {
+		$("#"+newPane).removeClass('animated fadeIn'+dirIn);
+		if (nextRightPaneId >= Object.keys(paneKey).length) {
+			$("#rightarrowlink").replaceWith($('<label for="submit-form" id="rightarrowlink"><img alt="Right" /></label>'));
+			$("#rightarrowlink img").attr('src',rightArrowSrc);
+		} else {
+			var nextRightPane = paneKeyReverse[paneKey[newPane]+1];
+			$("#rightarrowlink").replaceWith($('<a id="rightarrowlink" data-toggle="pill" onclick="transitionPane(1)"><img alt="Right" /></a>'));
+			$("#rightarrowlink").attr("href","#"+nextRightPane);
+			$("#rightarrowlink img").attr('src',rightArrowSrc);
+		}
+
+		if (nextLeftPaneId < 0) {
+			$("#leftarrow").hide();
+		} else {
+			var nextLeftPane = paneKeyReverse[paneKey[newPane]-1];
+			$("#leftarrowlink").attr("href","#"+nextLeftPane);
+			$("#leftarrow").show();
+			console.log($("#leftarrow"));
+		}	
+	});
+}
+
+function transitionPane(newPane) {
+	console.log("New Pane", newPane);
+	if (newPane !== activePane) {
+		var oldPaneId = paneKey[activePane];
+		var newPaneId;
+		var arrowClick = false;
+		if (Number.isInteger(newPane)) {
+			newPaneId = oldPaneId + newPane;
+			arrowClick = true;
+		} else {
+			newPaneId = paneKey[newPane];
+		}
+		console.log(oldPaneId);
+		console.log(newPaneId);
+		activePane = paneKeyReverse[oldPaneId];
+		newPane = paneKeyReverse[newPaneId];
+		console.log(activePane);
+		console.log(newPane);
+		if (oldPaneId < newPaneId) {
+			paneShift(activePane,"Left",newPane,"Right",arrowClick);
+		} else {
+			paneShift(activePane,"Right",newPane,"Left",arrowClick);
+		}
+		activePane = newPane;
 	}
 }

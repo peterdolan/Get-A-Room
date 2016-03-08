@@ -91,6 +91,41 @@
               {{ form.windows }}
             </div>
           </div>
+<<<<<<< HEAD
+          <div class = "form-group">
+            {{ form.capacity.label_tag }}
+            {{ form.capacity }}
+          </div>
+          <!-- <div class = "form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+          </div> -->
+        </div>
+        <div id="amnetiesPage" style = "display:none">
+          <h2>Amenities</h2>
+          <div class = "form-group">
+            {{ form.projector.label_tag }}
+            {{ form.projector }}
+          </div>
+          <div class = "form-group">
+            {{ form.whiteboard.label_tag }}
+            {{ form.whiteboard }}
+          </div>
+          <div class = "form-group">
+            {{ form.windows.label_tag }}
+            {{ form.windows }}
+          </div>
+        </div>
+        <div id="locationPage" style = "display:none">
+          <h2>Location</h2>
+          <div class = "form-group">
+            {{ form.area.label_tag }}
+            {{ form.area }}
+          </div>
+          <div class = "form-group">
+            {{ form.flexible.label_tag }}
+            {{ form.flexible }}
+=======
           <div id="location" class="tab-pane fade">
             <h2>Location</h2>
             <div class = "form-group">
@@ -101,6 +136,7 @@
               {{ form.flexible.label_tag }}
               {{ form.flexible }}
             </div>
+>>>>>>> 85ebba8515d5682a19814fbc2757353163318b13
           </div>
         </div>
         <input type="submit" id='submit-form' class = "hidden" />
