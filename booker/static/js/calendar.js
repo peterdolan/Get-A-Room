@@ -21,33 +21,15 @@ $(document).ready(function () {
 	// var m = date.getMonth();
 	// var y = date.getFullYear();
 	
-	// var value = document.getElementById("calview_bldg");
-	// var building = value.options[value.selectedIndex].value;
-	// console.log(building);
+	
 	var h = window.innerHeight;
 	// console.log("Height is " + h);
 	var newh =  $('header').height();
 	// console.log("height of obj is " + newh);
-
-	// $('#calendar').fullCalendar({
-	//     dayClick: function(date, jsEvent, view) {
-
-	//         alert('Clicked on: ' + date.format());
-
-	//         alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-
-	//         alert('Current view: ' + view.name);
-
-	//         // change the day's background color just for fun
-	//         $(this).css('background-color', 'red');
-
-	//         make_reservation(date);
-	//     }
-	// });
-	
 });
 
 var buildings_map;
+var reservations_list;
 
 function getBuildings() {
 	jQuery.get("/booker/buildings",function(building_list) {
@@ -85,6 +67,16 @@ function building_submit() {
 	getCurrentRoom();
 }
 
+//function to get a day's reservations given a room - needs to be called inside each time user clicks sweetalert
+//goal is to stop user (error msg) whne htye try to reserve something that overlaps
+
+//also look at getbuilding
+// function getReservationList(room_name, date) {
+// 	jQuery.get("/booker/get_reservation_list/",function(res_list) {
+// 		reservations_list = JSON.parse(res_list)
+// 	});
+// }
+
 function calendar_refresh() {
 	var value = document.getElementById("calview_room");
 	var room = value.options[value.selectedIndex].value;
@@ -100,11 +92,19 @@ function calendar_refresh() {
 			center: 'title',
 			right: 'agendaWeek,agendaDay'
 		},
-		start: '08:00',
-		end: '02:00',
+		views:
+        {
+        	agendaWeek: {
+        		// start: '08:00', 
+            	// end: '23:59',
+            	minTime: "05:00:00",
+        	}
+        },
+		// start: '08:00',
+		// end: '02:00',
 		allDaySlot: false,
 		height: 1200,
-		editable: true,
+		editable: false,
 		defaultView: 'agendaWeek',
 		eventColor: '#fed100',
 		eventTextColor: '#222222',
@@ -115,43 +115,52 @@ function calendar_refresh() {
 }
 
 function make_reservation(date) {
-	var value = document.getElementById("calview_room");
-	var room = value.options[value.selectedIndex].value;
-	swal.withForm({
-	    title: 'Make a reservation \non ' + grabDate(date) + '\n at '+ grabTime(date) + '\n in ' + room + '?',
-	    text: 'Make reservations for your friends, teammates, etc.',
-	    showCancelButton: true,
-	    confirmButtonColor: '#FED100',
-	    confirmButtonText: 'Make Reservation',
-	    closeOnConfirm: false,   
-		showLoaderOnConfirm: true,
-	    formFields: [
-			{ id: 'description', placeholder: 'Add a description for your booking' },
-			{ id: 'length', placeholder: 'Duration of your booking' },
-		]
-		}, 
-		function (isConfirm) {
-			if (isConfirm) {
-				// group_name = this.swalForm.name;
-				$.ajax({
-					url : "../post_reservation/",
-					type: "POST",
-					data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), duration:this.swalForm.length},
-				});
-				setTimeout(function(){ 
-					swal({
-						title: "Successfully created " + "res" + "!",
-						type: "success",
-					},
-					function() {
-						// location.replace("/booker/profile/?tab=reservation");
-						location.replace("/booker/calendar/");
+	var today = new Date();
+	if(date > today) {
+		var value = document.getElementById("calview_room");
+		var room = value.options[value.selectedIndex].value;
+		swal.withForm({
+		    title: 'Make a reservation \non ' + grabDate(date) + '\n at '+ grabTime(date) + '\n in ' + room + '?',
+		    text: 'Make reservations for your friends, teammates, etc.',
+		    showCancelButton: true,
+		    confirmButtonColor: '#FED100',
+		    confirmButtonText: 'Make Reservation',
+		    closeOnConfirm: false,   
+			showLoaderOnConfirm: true,
+		    formFields: [
+				{ id: 'description', placeholder: 'Add a description for your booking' },
+				// { id: 'length', placeholder: 'Duration of your booking' },
+				{ id: 'length', type: 'select', options: [
+					{value: '30', text: '30 minutes'},
+					{value: '60', text: '1 hour'},
+					{value: '90', text: '1 hour and a half'},
+					{value: '120', text: '2 hours'},
+					{value: '150', text: '2 and a half hours'},
+					{value: '180', text: '3 hours'},
+				]}
+			]
+			}, 
+			function (isConfirm) {
+				if (isConfirm) {
+					$.ajax({
+						url : "../post_reservation/",
+						type: "POST",
+						data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), duration:this.swalForm.length, description:this.swalForm.description},
 					});
-    			}, 2000);
-		    }
-		}
-	);
-	calendar_refresh();
+					setTimeout(function(){ 
+						swal({
+							title: "Successfully created reservation!",
+							type: "success",
+						},
+						function() {
+							location.replace("/booker/calendar/");
+						});
+	    			}, 2000);
+			    }
+			}
+		);
+		calendar_refresh();
+	}
 }
 
 function grabTime(date) {

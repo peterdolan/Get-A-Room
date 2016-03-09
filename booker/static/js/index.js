@@ -11,6 +11,9 @@ function addClasses() {
 	var capacity = document.getElementById("id_capacity");
 	capacity.className = "form-control";
 
+	var description = document.getElementById("id_description");
+	description.className = "form-control";
+
 	var projector = document.getElementById("id_projector");
 	projector.className = "form-control";
 
@@ -46,7 +49,6 @@ function getToday(){
 }
 
 function checkTimeValues() {
-	console.log("testing hello");
 	var date = document.getElementById("id_date");
 	date.onchange = function() {
 		var options = document.getElementsByTagName("option");
@@ -89,7 +91,6 @@ function convertTimeToMinutes(hour){
 function checkDurationValues() {
 	var cutOffTime = convertTimeToMinutes(2); // Put 2 for 2am, 1.5 for 1:30 etc
 	var restartTime = convertTimeToMinutes(8);
-	console.log(cutOffTime);
 	var time = document.getElementById("id_time");
 	time.onchange = function() {
 		var curTime = document.getElementById("id_time");
