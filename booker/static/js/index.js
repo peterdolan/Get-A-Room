@@ -2,6 +2,10 @@ $(document).ready(function () {
 	activePane = 'time';
 	rightArrowSrc = $('#rightarrowlink img').attr('src');
 	$("#leftarrow").hide();
+
+	addClasses();
+    checkTimeValues();
+    checkDurationValues();
 });
 
 var rightArrowSrc;

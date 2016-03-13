@@ -22,8 +22,9 @@ import json
 from .models import *
 from .forms import *
 
-# @login_required
+@login_required
 def index(request):
+	user = request.user.userprofile
 	if request.method == 'POST':
 		form = RoomForm(request.POST)
 		if form.is_valid():
@@ -448,6 +449,15 @@ def join_org(request):
 		# Reservation.objects.filter(pk__in=reservation_ids).delete()
 
 	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def user(request):
+	if request.method == 'GET':
+		user_serializable = {}
+		user_profile = UserProfile.objects.get(user=request.user)
+		profile_picture_url = str(user_profile.get_profile_pic_url())
+
+	return HttpResponse(profile_picture_url)
 
 
 

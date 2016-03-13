@@ -7,7 +7,6 @@ body {
 	height: 100%;
 	width: 100%;
 	margin: 0px;
-	background-color: #222222;
 }
 
 h1 {
@@ -29,77 +28,112 @@ li {
 
 .header {
 	background-color: #fed100;
-	height: 13%;
+	height: 100px;
 	width: 100%;
-	margin-bottom: 1%
-}
-
-.logo-div {
-	float: left;
-	display: table-cell;
-	width: 20%;
-	height: 100%;
-	margin: 0;
-/*	padding-left: 10%;
-	padding-right: 10%;*/
-}
-
-.motto-div {
-	float:left;
-	font-style: italic;
-	padding-top: 4.5%;
+	margin-bottom: 10px;
 }
 
 .logo {
-	display:block;
-   	padding-top: 7%;
-   	padding-left: 14%;
+	display: table-cell;
+	height: 70px;
 	width: auto;
-	height: 80%;
-	margin: 0;
+	margin-top: 20px;
+	margin-left: 20px;
 }
 
 .links-container {
-	float: right;
-	width: 10%;
-	height: 80%;
-	float: right;
+	width: 17%;
+	height: 100%;
 	text-align: center;
-	padding-top: 2%;
+	position: relative;
+	margin-right: 20px;
 }
 
 .header-link {
-	width: 100%;
 	font-family: Futura,Trebuchet MS,Arial,sans-serif;
+	position: absolute !important;
+	width: 40px;
+	height: 40px;
+	top: 50% !important;
+	margin-left: 5px;
+} 
+
+.glyphicon-bell {
 	color: #222222;
+	font-size: 25px;
+	margin-top: 17%;
+}
+
+.glyphicon-calendar {
+	color: #222222;
+	font-size: 25px;
+	margin-top: 16%;
+}
+
+.glyphicon-chevron-down {
+	color: #222222;
+	font-size: 15px;
+}
+
+#profile-dropdown {
+	right: 0%;
+	position: absolute !important;
+	top: 65% !important;
+	padding: 0px !important;
+	display: inline-block;
+	color: #222222 !important;
+	background-color: transparent !important;
+	border: none !important;
+	margin-top: 0px !important;
+	background-image: none !important;
+}
+
+#profile-links {
+	margin: -8px 0 0 !important;
+}
+
+#profile {
+	right: 8%;
+}
+
+#notifications {
+	right: 35%;
+}
+
+#calendar-icon {
+	right: 60%;
 }
 
 
-.greeting-container {
-	background-color: #222222;
-	padding-top: .2%;
+
+.right {
+	float: right;
 }
 
-.greeting {
-	font-family: Futura,Trebuchet MS,Arial,sans-serif;
-	font-weight: 100;
-	color: white;
-	text-align: center;
-	font-size: 190%;
-}
-
-.page-content {
-	height: 100%;
-	width: 100%;
-	margin: 0px;
-	background-color: #222222;
-}
-
-.container {
-	height: 85.2% !important;
+.left {
+	float: left;
 }
 
 .grow { transition: all .2s ease-in-out; }
 .grow:hover { transform: scale(1.1); }
+
+.profile-thumbnail {
+    width: 40px;
+    height: 40px;
+    -webkit-border-radius: 5px !important;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.container {
+	height: 84.9% !important;
+}
+
+
+/** {
+	border: solid 1px red !important;
+}*/
 
 

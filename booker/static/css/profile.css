@@ -39,8 +39,9 @@
     height: 230px;
     -webkit-border-radius: 5px !important;
     background-position: center center;
-    background-size: 230px auto;
+    background-size: cover;
     background-repeat: no-repeat;
+    display: block;
 }
 
 .nav-tabs {
