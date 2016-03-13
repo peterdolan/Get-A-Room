@@ -29,7 +29,7 @@ function checkIfListsEmpty() {
 	}
 }
 
-function bookRoom(date, time, duration) {
+function bookRoom() {
 	var block = document.getElementsByClassName("list-group-item active")[0];
 	var room_info = block.getElementsByTagName("SPAN");
 	var room_name = room_info[0].innerHTML;

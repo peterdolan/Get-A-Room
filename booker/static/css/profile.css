@@ -182,11 +182,17 @@ h4 {
     font-size: 1.2em;
 }
 
-.remove-group-button, .remove-org-button {
+.glyphicon-calendar {
+    font-size: 1.2em;
+    margin-right: 5px;
+    margin-left: 3px;
+}
+
+.remove-group-button, .remove-org-button, .group-res-button {
     display: none;
 }
 
-.remove-group-button.active, .remove-org-button.active {
+.remove-group-button.active, .remove-org-button.active, .group-res-button.active {
     display: inline;
     border-style: none;
     padding: 0px;
@@ -196,7 +202,7 @@ h4 {
     transition: all 0.3s ease 0s;
 }
 
-.remove-group-button:hover,.remove-org-button:hover {
+.remove-group-button:hover,.remove-org-button:hover,.group-res-button:hover {
     color: #FF4057;
     background-color: transparent;
 }

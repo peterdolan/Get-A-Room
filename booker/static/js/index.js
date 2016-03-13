@@ -31,6 +31,7 @@ function addClasses() {
 	var nmeetings = document.getElementById("id_nmeetings");
 	if (nmeetings !== null) {
 		nmeetings.className = "form-control";
+		nmeetings.max = nmeetings.value;
 		if (!weekly.checked) {
 			nmeetings.style.display = "none";
 		}

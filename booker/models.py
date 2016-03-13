@@ -77,9 +77,24 @@ class Room(models.Model):
 	def get_name(self):
 		return str(self.name)
 
+class Group(models.Model):
+	name = models.CharField(max_length=200)
+	admins = models.ManyToManyField(UserProfile)
+	nres = models.PositiveSmallIntegerField(default=20)
+	# vso = models.IntegerField()
+
+	def get_member_count(self):
+		return len(self.userprofile_set.all())
+
+	def __str__(self):
+		return self.name
+
 class Reservation(models.Model):
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+
+	#TODO: Should null=True for this user attribute?
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+	group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 	description = models.TextField()
 	start_time = models.DateTimeField()
 	end_time = models.DateTimeField()
@@ -93,17 +108,6 @@ class Reservation(models.Model):
 	# 		self.room.name,
 	# 		self.user_name,
 	# 	])
-
-class Group(models.Model):
-	name = models.CharField(max_length=200)
-	admins = models.ManyToManyField(UserProfile)
-	# vso = models.IntegerField()
-
-	def get_member_count(self):
-		return len(self.userprofile_set.all())
-
-	def __str__(self):
-		return self.name
 
 
 

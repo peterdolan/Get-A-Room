@@ -93,19 +93,24 @@ function updateActiveGroup(nname) {
 	}
 	var old_group = document.getElementsByClassName("list-group-item active");
 	var group = document.getElementById(nname);
-	var old_button = document.getElementsByClassName("remove-group-button active");
-	var button = document.getElementById("remove-group-button "+nname);
+	var old_remove_button = document.getElementsByClassName("remove-group-button active");
+	var remove_button = document.getElementById("remove-group-button "+nname);
+	var old_groupres_button = document.getElementsByClassName("group-res-button active");
+	var groupres_button = document.getElementById("group-res-button " + nname);
 
 	if (group === old_group[0]) {
 		group.className = "list-group-item";
-		button.className = "remove-group-button";
+		remove_button.className = "remove-group-button";
+		groupres_button.className = "group-res-button";
 	} else {
 		if (old_group.length !== 0) {
 			old_group[0].className = "list-group-item";
-			old_button[0].className = "remove-group-button"
+			old_remove_button[0].className = "remove-group-button";
+			old_groupres_button[0].className = "group-res-button";
 		}
 		group.className = "list-group-item active";
-		button.className = "remove-group-button active";
+		remove_button.className = "remove-group-button active";
+		groupres_button.className = "group-res-button active";
 	}
 }
 
@@ -156,6 +161,15 @@ function removeReservation(nname) {
 			location.replace("/booker/profile/?tab=reservation");
 		}); 
 	});
+}
+
+function toGroupRes(gname) {
+	console.log("hey");
+	var input = document.getElementById("group-input");
+	console.log("again");
+	input.value = gname;
+	console.log(input.value);
+    document.forms['groupform'].submit();
 }
 
 function removeGroup(nname) {
@@ -225,6 +239,10 @@ function makeContentInactive() {
 	active_buttons = document.getElementsByClassName("remove-group-button active");
 	for (i = 0; i < active_buttons.length; i++) {
 		active_buttons[i].className = "remove-group-button";
+	}
+	active_buttons = document.getElementsByClassName("group-res-button active");
+	for (i = 0; i < active_buttons.length; i++) {
+		active_buttons[i].className = "group-res-button";
 	}
 	active_buttons = document.getElementsByClassName("remove-org-button active");
 	for (i = 0; i < active_buttons.length; i++) {

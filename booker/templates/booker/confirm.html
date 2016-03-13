@@ -7,21 +7,20 @@
 {% block body_block %}
     <div class="container">
         {% if user.is_authenticated %}
-            <h1>Congratulations, <span class="name">{{ user.userprofile.first_name }}</span>, <br />
-  		    You've booked a room!</h1>
+            {% if group_search %}
+                <h1>Congratulations, <span class="name">{{ user.userprofile.first_name }}</span>, <br />
+                You've booked a room for group '{{group}}'!</h1>
+            {% else %}
+                <h1>Congratulations, <span class="name">{{ user.userprofile.first_name }}</span>, <br />
+                You've booked a room!</h1>
+            {% endif %}
         {% else %}
             <h1>Congratulations, you've booked a room!</h1>
         {% endif %}
-        {% if multiple %}
-            {% for res in reservations %}
-                <h3>Room: <span class="location">{{res.room.name}} {{res.room.building.name}}</span></h3>
-                <h3>Time: <span class="time">{{res.start_time}}</span> to <span class="time">{{res.end_time}}</span></h3>
-                <p> Thanks for using Get-A-Room! </p>
-            {% endfor %}
-        {% else %}
-            <h3>Room: <span class="location">{{res.room.name}} {{res.room.building.name}}</span></h3>
+        <h3>Room: <span class="location">{{room}}, {{building}}</span></h3>
+        {% for res in reservations %}
             <h3>Time: <span class="time">{{res.start_time}}</span> to <span class="time">{{res.end_time}}</span></h3>
-            <p> Thanks for using Get-A-Room! </p>
-        {% endif %}
+        {% endfor %}
+        <p> Thanks for using Get-A-Room! </p>
     </div>
 {% endblock %}
