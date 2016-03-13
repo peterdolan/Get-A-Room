@@ -1,6 +1,7 @@
 {% extends 'booker/base.html' %}
 {% load static %}
 {% block head_block %}
+  <!-- Index css/js -->
   <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %} ">
   <script src="{% static "js/index.js" %}"></script>
   <script>
@@ -12,7 +13,6 @@
   	 return false;
     }
   </script>
-  <link rel="stylesheet" type="text/css" href="http://jquery-ui.googlecode.com/svn/tags/latest/themes/base/jquery-ui.css" media="all" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
   <script type="text/javascript">
@@ -27,6 +27,7 @@
 
 {% block body_block %}
   <div class="container">
+<<<<<<< HEAD
     <ul class="nav nav-pills">
       <li class="pill active grow icon" id="time-pill">
         <a class="pill-link" data-toggle="pill" href="#time" onclick="transitionPane('time')">
@@ -75,6 +76,74 @@
               {{ form.capacity.label_tag }}
               {{ form.capacity }}
             </div>
+=======
+  <ul class="row nav nav-pill">
+        <li class="col-md-3">
+          <a href="#" style="text-align:center;" onclick="return show('timePage', 'amnetiesPage', 'locationPage');">
+            <img src="{% static "images/clock_icon.png" %}" alt="Time" /> 
+          </a>
+        </li>
+        <li class="col-md-3">
+          <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timePage', 'locationPage');">
+            <img src="{% static "images/checkbox.png"%}" alt="Time" /> 
+          </a>
+        </li>
+        <li class="col-md-3">
+          <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timePage', 'amnetiesPage');">
+            <img src="{% static "images/location_point.png" %}" alt="Time" /> 
+          </a>
+        </li>
+        <li class="col-md-3">
+          <label for="submit-form" id="submit">Go!</label>
+        </li>
+      </ul>
+  <div class="centered-container">
+    {% if group_search %}
+      <h3 style="color:#fed100;">Group: {{group}}</h3>
+    {% endif %}
+      <form action="." method="post">
+        {% csrf_token %}
+        <div id="timePage">
+          <h2>Time and Duration</h2>
+          <div class = "form-group">
+            {{ form.date.label_tag }}
+            {{ form.date }}
+          </div>
+          <div class = "form-group">
+            {{ form.time.label_tag }}
+            {{ form.time }}
+          </div>
+          <div class = "form-group">
+            {{ form.duration.label_tag }}
+            {{ form.duration }}
+          </div>
+          <div class = "form-group">
+            {{ form.capacity.label_tag }}
+            {{ form.capacity }}
+          </div>
+          <!-- <div class = "form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+          </div> -->
+          {% if group_search %}
+            <div class = "form-group">
+              {{ form.weekly.label_tag }}
+              {{ form.weekly }}
+            </div>
+          {% endif %}
+          {% if group_search %}
+            <div class = "form-group">
+              {{ form.nmeetings.label_tag }}
+              {{ form.nmeetings }}
+            </div>
+          {% endif %}
+        </div>
+        <div id="amnetiesPage" style = "display:none">
+          <h2>Amenities</h2>
+          <div class = "form-group">
+            {{ form.projector.label_tag }}
+            {{ form.projector }}
+>>>>>>> 7f8dc4066f9312c3c521c4a147f9e0251057758e
           </div>
           <div id="amenities" class="tab-pane fade">
             <h2>Amenities</h2>
@@ -91,41 +160,6 @@
               {{ form.windows }}
             </div>
           </div>
-<<<<<<< HEAD
-          <div class = "form-group">
-            {{ form.capacity.label_tag }}
-            {{ form.capacity }}
-          </div>
-          <!-- <div class = "form-group">
-            {{ form.description.label_tag }}
-            {{ form.description }}
-          </div> -->
-        </div>
-        <div id="amnetiesPage" style = "display:none">
-          <h2>Amenities</h2>
-          <div class = "form-group">
-            {{ form.projector.label_tag }}
-            {{ form.projector }}
-          </div>
-          <div class = "form-group">
-            {{ form.whiteboard.label_tag }}
-            {{ form.whiteboard }}
-          </div>
-          <div class = "form-group">
-            {{ form.windows.label_tag }}
-            {{ form.windows }}
-          </div>
-        </div>
-        <div id="locationPage" style = "display:none">
-          <h2>Location</h2>
-          <div class = "form-group">
-            {{ form.area.label_tag }}
-            {{ form.area }}
-          </div>
-          <div class = "form-group">
-            {{ form.flexible.label_tag }}
-            {{ form.flexible }}
-=======
           <div id="location" class="tab-pane fade">
             <h2>Location</h2>
             <div class = "form-group">
@@ -136,22 +170,40 @@
               {{ form.flexible.label_tag }}
               {{ form.flexible }}
             </div>
->>>>>>> 85ebba8515d5682a19814fbc2757353163318b13
           </div>
         </div>
         <input type="submit" id='submit-form' class = "hidden" />
       </form>
     </div>
+<<<<<<< HEAD
     <div class="arrow" id="rightarrow">
       <a id="rightarrowlink" data-toggle="pill" href="#amenities" onclick="transitionPane(1)">
         <img src="{% static "images/rightarrow.png" %}" alt="Right" /> 
       </a>
     </div>
+=======
+
+    <!-- Uncomment below for form validation errors to appear on this page -->
+    <!-- {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div class="alert alert-error">
+            <strong>{{ error|escape }}</strong>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-error">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %} -->
+>>>>>>> 7f8dc4066f9312c3c521c4a147f9e0251057758e
   </div>
 
-  <script>
+<!--   <script>
     addClasses();
     checkTimeValues();
     checkDurationValues();
-  </script>
+  </script> -->
   {% endblock %}

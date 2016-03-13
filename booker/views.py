@@ -24,25 +24,30 @@ from .forms import *
 
 @login_required
 def index(request):
-	user = request.user.userprofile
+	empty_list = []
 	if request.method == 'POST':
 		form = RoomForm(request.POST)
 		if form.is_valid():
-			rooms = getValidRooms(request,form)
-			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form})
+			nmeetings = form.cleaned_data['nmeetings']
+			if nmeetings is None or not form.cleaned_data['weekly']:
+				nmeetings = 1
+			rooms = getValidRooms(form)
+			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'nmeetings':nmeetings})
 	else:
 		form = RoomForm()
-	return render(request, 'booker/index.html', {'form':form})
+		if request.session.get('group_search', False):
+			group = Group.objects.all().filter(name=request.session.get('group'))[0]
+			if group.nres < 10:
+				form.fields['nmeetings'].initial = group.nres
 
+	return render(request, 'booker/index.html', {'form':form, 'group_search':request.session.get('group_search', False), 'group':request.session.get('group', '')})
 
-def getValidRooms(request, form):
+def getValidRooms(form):
 	date = form.cleaned_data['date']
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
-	print date
-	print start_time
-	print duration
 	capacity = int(form.cleaned_data['capacity'])
+	nmeetings = form.cleaned_data['nmeetings']
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
 	windows_bool = bool(form.cleaned_data['windows'])
@@ -63,9 +68,9 @@ def getValidRooms(request, form):
 	dur_dt = timedelta(minutes=int(duration))
 	end_time = start_time + dur_dt
 	time_tuple = (start_time, end_time)
-	return checkReservations(room_objects_ordered, time_tuple)
+	return checkReservations(room_objects_ordered, time_tuple, nmeetings)
 
-def checkReservations(room_objects_list, time_tuple):
+def checkReservations(room_objects_list, time_tuple, nmeetings):
 	#look for overlap by comparing reservation times to times desired
 	#any rooms taken for time slice x are taken off the available rooms list
 	available_rooms_list = []
@@ -74,7 +79,7 @@ def checkReservations(room_objects_list, time_tuple):
 		is_valid_flag = True
 		room_reservation_list = Reservation.objects.all().filter(room=room_obj)
 		for res_obj in room_reservation_list:
-			if checkValidRes(res_obj, time_tuple) == False: #we have an overlapping reservation
+			if checkValidRes(res_obj, time_tuple, nmeetings) == False: #we have an overlapping reservation
 				is_valid_flag = False
 				break
 		if is_valid_flag:
@@ -83,12 +88,16 @@ def checkReservations(room_objects_list, time_tuple):
 	# reservations = Reservation.objects.all().filter(~(st_queryfilter1 | st_queryfilter2) & (et_queryfilter1 | et_queryfilter2))
 	return available_rooms_list
 
-def checkValidRes(res_obj, time_tuple):
-	request_start = time_tuple[0]
-	request_end = time_tuple[1]
+def checkValidRes(res_obj, time_tuple, nmeetings):
 	res_start = res_obj.start_time
 	res_end = res_obj.end_time
-	return ((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))
+	for x in range(0, nmeetings):
+		offset = 7*x
+		request_start = time_tuple[0] + timedelta(days=offset)
+		request_end = time_tuple[1] + timedelta(days=offset)
+		if not (((request_start < res_start) or (request_start > res_end)) and ((request_end < res_start) or (request_end > res_end))):
+			return False
+	return True
 
 def zeroPad(toPad):
 	if(len(toPad) == 1):
@@ -104,27 +113,57 @@ def getActualDate(date_str, time_str):
 	return utc.localize(date)
 
 def post_reservation(request):
+	print "In post_rez"
 	form = ReservationForm(request.POST)
 	if form.is_valid():
+		print "form is valid"
 		room_obj = Room.objects.all().filter(name=form.cleaned_data['room'])[0]
-		user_obj = []
 		res_start_time = getActualDate(form.cleaned_data['date'],form.cleaned_data['time'])
-		print "Start time: ", res_start_time
 		duration = form.cleaned_data['duration']
 		dur_dt = timedelta(minutes = int(duration))
 		res_end_time = res_start_time + dur_dt
 		# description = form.cleaned_data['description']
-		res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, description="!!", start_time=res_start_time, end_time=res_end_time)[0]
-		request.session['res_id'] = res.id
+		# if form.cleaned_data['weekly']:
+		res_ids = []
+		print "about to build rezzies"
+		for x in range(0, int(form.cleaned_data['nmeetings'])):
+			offset = 7*x
+			group = None
+			if request.session.get('group_search', False):
+				print "Tis a group search"
+				print request.session.get('group')
+				group = Group.objects.all().filter(name=request.session.get('group', None))[0]
+				print "Got the group"
+			res = Reservation.objects.get_or_create(room=room_obj, user=request.user.userprofile, group=group, description="!!", start_time=res_start_time+timedelta(days=offset), end_time=res_end_time+timedelta(days=offset))[0]
+			res_ids.append(res.id)
+		print "Built rezzies"
+		request.session['res_ids'] = res_ids
+		request.session['first_confirm'] = True
+		if request.session.get('group_search', False):
+			group = Group.objects.all().filter(name=request.session.get('group', None))[0]
+			group.nres = group.nres - int(form.cleaned_data['nmeetings'])
+			group.save()
 		return HttpResponseRedirect('/booker/confirm/')
 	else:
 		return render(request, 'booker/uhmmm.html')
 
 def confirm(request):
-	res_id = request.session.get('res_id', None)
-	res = Reservation.objects.all().get(pk=res_id)
-	context = RequestContext(request)
-	return render_to_response('booker/confirm.html', {'res':res},context)
+	if (request.session.get('first_confirm', False)):
+		group_search = request.session.get('group_search')
+		group = request.session.get('group')
+		res_ids = request.session.get('res_ids', [])
+		request.session['group_search'] = False
+		request.session['group'] = ""
+		request.session['res_ids'] = []
+		request.session['first_confirm'] = False
+		reservations = []
+		for res_id in res_ids:
+			res = Reservation.objects.all().get(pk=res_id)
+			reservations.append(res)
+		return render(request, 'booker/confirm.html', {'reservations': reservations, 'room':res.room.name, 'building':res.room.building.name, 'group_search':group_search, 'group':group})
+
+	else:
+		return HttpResponseRedirect('/booker/profile/')
 
 def calendar_view(request):
 	context = RequestContext(request)
@@ -145,8 +184,6 @@ def calendar_view(request):
 def eventsFeed(request, building_name):
 	from django.utils.timezone import utc
 	from django.core.serializers.json import DjangoJSONEncoder
-
-	# print building_name
 
 	if request.is_ajax():
 		print 'Its ajax from fullCalendar()'
@@ -333,7 +370,6 @@ def user_profile(request):
 	if profile.is_group_admin:
 		admin_groups = profile.get_admin_groups()
 	groups = profile.groups.all()
-	print groups
 	admin_organizations = []
 	if profile.is_org_admin:
 		admin_organizations = profile.get_admin_organizations()
@@ -351,6 +387,21 @@ def user_profile(request):
 													})
 
 
+def groupres(request):
+	if request.method == 'POST':
+		form = GroupReservationForm(request.POST)
+		if form.is_valid():
+			request.session['group'] = form.cleaned_data['group']
+			request.session['group_search'] = True
+			return HttpResponseRedirect('/booker/')
+
+	return HttpResponseRedirect('/ummmm/')
+
+def singleres(request):
+	request.session['group'] = ""
+	request.session['group_search'] = False
+	return HttpResponseRedirect('/booker/')
+
 @login_required
 @ensure_csrf_cookie
 def create_group(request):
@@ -366,6 +417,7 @@ def create_group(request):
 		group.admins.add(admin)
 		admin.is_group_admin = True
 		admin.groups.add(group)
+		group.save()
 		admin.save()
 
 	return HttpResponse(0)

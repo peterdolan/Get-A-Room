@@ -14,6 +14,11 @@ var paneKey = {"time":0,"amenities":1,"location":2};
 var paneKeyReverse = {0:"time",1:"amenities",2:"location"};
 
 function addClasses() {
+	var group = document.getElementById("id_group");
+	if (group !== null) {
+		group.className = "form-control";
+	}
+
 	var date = document.getElementById("id_date");
 	date.className = "form-control";
 
@@ -25,6 +30,27 @@ function addClasses() {
 
 	var capacity = document.getElementById("id_capacity");
 	capacity.className = "form-control";
+
+	var weekly = document.getElementById("id_weekly");
+	if (weekly !== null) {
+		weekly.className = "form-control";
+		weekly.onchange = function() {
+			if (nmeetings.style.display === "none") {
+				nmeetings.style.display = "block";
+			}else {
+				nmeetings.style.display = "none";
+			}
+		};
+	}
+
+	var nmeetings = document.getElementById("id_nmeetings");
+	if (nmeetings !== null) {
+		nmeetings.className = "form-control";
+		nmeetings.max = nmeetings.value;
+		if (!weekly.checked) {
+			nmeetings.style.display = "none";
+		}
+	}
 
 	var projector = document.getElementById("id_projector");
 	projector.className = "form-control";
@@ -61,7 +87,6 @@ function getToday(){
 }
 
 function checkTimeValues() {
-	console.log("testing hello");
 	var date = document.getElementById("id_date");
 	date.onchange = function() {
 		var options = document.getElementsByTagName("option");
@@ -104,7 +129,6 @@ function convertTimeToMinutes(hour){
 function checkDurationValues() {
 	var cutOffTime = convertTimeToMinutes(2); // Put 2 for 2am, 1.5 for 1:30 etc
 	var restartTime = convertTimeToMinutes(8);
-	console.log(cutOffTime);
 	var time = document.getElementById("id_time");
 	time.onchange = function() {
 		var curTime = document.getElementById("id_time");

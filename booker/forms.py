@@ -94,6 +94,20 @@ class RoomForm(forms.Form):
 		initial = 3
 	)
 
+	weekly = forms.BooleanField(
+		label = "Make Weekly",
+		required = False,
+		initial = False
+	)
+
+	nmeetings = forms.IntegerField(
+		label = "Number of Weeks",
+		min_value = 2,
+		max_value = 10,
+		initial = 10,
+		required = False
+	)
+
 	# description = forms.CharField(
 	# 	widget=forms.TextInput	
 	# )
@@ -139,7 +153,12 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+	weekly = forms.CharField(max_length=200)
+	nmeetings = forms.CharField(max_length=200)
 	# description = forms.CharField(max_length=200)
+
+class GroupReservationForm(forms.Form):
+	group = forms.CharField(max_length=200)
 
 class CalendarViewForm(forms.Form):
 	building_choices = (

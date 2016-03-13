@@ -54,6 +54,9 @@
       </a>
     </div>
     <div class="pane-container">
+      {% if group_search %}
+        <h3 style="color:#fed100;">Group: {{group}}</h3>
+      {% endif %}
       <form action="." method="post">
         {% csrf_token %}
         <div class="centered-container tab-content">
@@ -75,6 +78,18 @@
               {{ form.capacity.label_tag }}
               {{ form.capacity }}
             </div>
+            {% if group_search %}
+              <div class = "form-group">
+                {{ form.weekly.label_tag }}
+                {{ form.weekly }}
+              </div>
+            {% endif %}
+            {% if group_search %}
+              <div class = "form-group">
+                {{ form.nmeetings.label_tag }}
+                {{ form.nmeetings }}
+              </div>
+            {% endif %}
           </div>
           <div id="amenities" class="tab-pane fade">
             <h2>Amenities</h2>
@@ -111,11 +126,27 @@
         <img src="{% static "images/rightarrow.png" %}" alt="Right" /> 
       </a>
     </div>
-  </div>
 
-<!--   <script>
+    <!-- Uncomment below for form validation errors to appear on this page -->
+    <!-- {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div class="alert alert-error">
+            <strong>{{ error|escape }}</strong>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-error">
+          <strong>{{ error|escape }}</strong>
+        </div>
+      {% endfor %}
+    {% endif %} -->
+
+  </div>
+  <script>
     addClasses();
     checkTimeValues();
     checkDurationValues();
-  </script> -->
+  </script>
   {% endblock %}
