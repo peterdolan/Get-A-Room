@@ -154,6 +154,7 @@ p {
     background-color: #fff;
     border: 1px solid #ddd;
     transition: all 0.3s ease 0s;
+    position: relative;
 }
 
 .list-group-item li {
@@ -215,8 +216,9 @@ h4 {
 .remove-reservation-button.active {
     display: inline;
     border-style: none;
-    padding: 0px;
-    margin-top: 0px;
+    position: absolute;
+    top: 35%;
+    right: 0%;
     color: #fff;
     background-color: transparent;
     transition: all 0.3s ease 0s;
@@ -242,4 +244,13 @@ h4 {
 
 #name {
     display: inherit !important;
+}
+
+.groupname {
+    display: block;
+    font-style: italic;
+    color: #555555;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin-top: -10px;
+    margin-bottom: 0;
 }
