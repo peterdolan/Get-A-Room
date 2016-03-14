@@ -91,7 +91,7 @@
 												<span class="badge">{{group.get_member_count}}</span>
 												{% if group in admin_groups %}
 													<button class="btn group-res-button" id="group-res-button group{{ group.id }}" onclick="toGroupRes('{{group.name}}')">
-														<span class="glyphicon glyphicon-calendar"></span>
+														<span class="glyphicon glyphicon-search"></span>
 													</button>
 												{% endif %}
 												<button class="btn remove-group-button" id="remove-group-button group{{ group.id }}" onclick="removeGroup('group{{group.id}}')">

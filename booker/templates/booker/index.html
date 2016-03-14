@@ -54,12 +54,12 @@
       </a>
     </div>
     <div class="pane-container">
-      {% if group_search %}
-        <h3 style="color:#fed100;">Group: {{group}}</h3>
-      {% endif %}
       <form action="." method="post">
         {% csrf_token %}
         <div class="centered-container tab-content">
+          {% if group_search %}
+            <h3 style="color:#fed100;">Group: {{group}}</h3>
+          {% endif %}
           <div id="time" class="tab-pane fade in active">
             <h2>Time and Duration</h2>
             <div class = "form-group">
