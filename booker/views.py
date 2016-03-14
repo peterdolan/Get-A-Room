@@ -31,7 +31,7 @@ def index(request):
 			nmeetings = form.cleaned_data['nmeetings']
 			if nmeetings is None or not form.cleaned_data['weekly']:
 				nmeetings = 1
-			rooms = getValidRooms(form)
+			rooms = getValidRooms(form, nmeetings)
 			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'nmeetings':nmeetings})
 	else:
 		form = RoomForm()
@@ -42,12 +42,11 @@ def index(request):
 
 	return render(request, 'booker/index.html', {'form':form, 'group_search':request.session.get('group_search', False), 'group':request.session.get('group', '')})
 
-def getValidRooms(form):
+def getValidRooms(form, nmeetings):
 	date = form.cleaned_data['date']
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
 	capacity = int(form.cleaned_data['capacity'])
-	nmeetings = form.cleaned_data['nmeetings']
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
 	windows_bool = bool(form.cleaned_data['windows'])
