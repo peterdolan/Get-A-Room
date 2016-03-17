@@ -2,6 +2,9 @@ $(document).ready(function () {
 	activePane = 'time';
 	rightArrowSrc = $('#rightarrowlink img').attr('src');
 	$("#leftarrow").hide();
+	$('#id_date').val(getToday());
+	var date = document.getElementById("id_date");
+	verifyDate();
 
 	addClasses();
     checkTimeValues();
@@ -86,39 +89,44 @@ function getToday(){
 	return today;
 }
 
+function verifyDate(){
+	var date = document.getElementById("id_date");
+	var options = document.getElementsByTagName("option");
+	var today = getToday();	
+	if(today === date.value){
+		var startToday = new Date();
+		var year = startToday.getFullYear();
+		var month = startToday.getMonth();
+		var day = startToday.getDate();
+		var finalNewDate = new Date(year, month, day, 0, 0, 0, 0);
+		var curDayStart = finalNewDate.valueOf()/1000;
+		var cur = Date.now();
+		var available = true;
+		for(var i = 0; i < 37; i++){
+			if((curDayStart + (options[i].value * 1800)) < cur/1000){
+				options[i].style.display = 'none';
+			} else {
+				if(available){
+					if(i < 5){
+						$('#id_time').val(i);
+					} else {
+						$('#id_time').val(i + 11);
+					}
+					available = false;
+				}
+			}
+		}
+	} else {
+		for(var i = 0; i < 37; i++){	
+			options[i].style.display = 'inline';
+		}
+	}
+}
+
 function checkTimeValues() {
 	var date = document.getElementById("id_date");
 	date.onchange = function() {
-		var options = document.getElementsByTagName("option");
-		var today = getToday();		
-		if(today === date.value){
-			var startToday = new Date();
-			var year = startToday.getFullYear();
- 			var month = startToday.getMonth();
- 			var day = startToday.getDate();
- 			var finalNewDate = new Date(year, month, day, 0, 0, 0, 0);
- 			var curDayStart = finalNewDate.valueOf()/1000;
-			var cur = Date.now();
-			var available = true;
-			for(var i = 0; i < 37; i++){
-				if((curDayStart + (options[i].value * 1800)) < cur/1000){
-					options[i].style.display = 'none';
-				} else {
-					if(available){
-						if(i < 5){
-							$('#id_time').val(i);
-						} else {
-							$('#id_time').val(i + 11);
-						}
-						available = false;
-					}
-				}
-			}
-		} else {
-			for(var i = 0; i < 37; i++){	
-				options[i].style.display = 'inline';
-			}
-		}
+		verifyDate()
 	}
 }
 
