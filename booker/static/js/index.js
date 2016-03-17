@@ -37,8 +37,11 @@ function addClasses() {
 		weekly.onchange = function() {
 			if (nmeetings.style.display === "none") {
 				nmeetings.style.display = "block";
+				nmeetings.previousSibling.previousSibling.style.display = "block";
+
 			}else {
 				nmeetings.style.display = "none";
+				nmeetings.previousSibling.previousSibling.style.display = "none";
 			}
 		};
 	}
@@ -49,6 +52,7 @@ function addClasses() {
 		nmeetings.max = nmeetings.value;
 		if (!weekly.checked) {
 			nmeetings.style.display = "none";
+			nmeetings.previousSibling.previousSibling.style.display = "none";
 		}
 	}
 
