@@ -52,6 +52,7 @@ function getGroupList() {
 		group_list = JSON.parse(group_objs)
 		group_names = []
 		for (var i=0; i<group_list.length; i++) {
+			console.log(1);
 			group_names.push(group_list[i]["fields"]["name"])
 		}
 	});
