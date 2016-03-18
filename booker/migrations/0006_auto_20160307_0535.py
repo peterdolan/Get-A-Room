@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='building',
             name='organization',
-            field=models.ForeignKey(default='ASSU', on_delete=django.db.models.deletion.CASCADE, to='booker.Organization'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='booker.Organization'),
             preserve_default=False,
         ),
     ]

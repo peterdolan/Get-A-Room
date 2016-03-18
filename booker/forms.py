@@ -156,10 +156,8 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
-	description = forms.CharField(max_length=200)
-	weekly = forms.CharField(max_length=200)
 	nmeetings = forms.CharField(max_length=200)
-	# description = forms.CharField(max_length=200)
+	description = forms.CharField(max_length=200, required=False)
 
 class GroupReservationForm(forms.Form):
 	group = forms.CharField(max_length=200)

@@ -180,7 +180,7 @@ function make_reservation(date) {
 							$.ajax({
 								url : "../post_reservation/",
 								type: "POST",
-								data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), duration:this.swalForm.length, description:desc},
+								data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), nmeetings:1, duration:this.swalForm.length, description:desc},
 							});
 							setTimeout(function(){ 
 								swal({
