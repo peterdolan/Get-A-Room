@@ -206,4 +206,4 @@ class ChangePasswordForm(forms.Form):
 class ChangeProfilePictureForm(forms.ModelForm):
 	class Meta:
 		model = UserProfile
-		fields = ('picture')
+		fields = ('picture',)

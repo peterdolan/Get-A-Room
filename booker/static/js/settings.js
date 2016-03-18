@@ -23,25 +23,28 @@ function addClasses() {
 
     var new2 = document.getElementById("id_new2");
     new2.className = "form-control";
+
+    var picture = document.getElementById("id_picture");
+    picture.className = "form-control";
 }
 
 function changePassword() {
     var password = document.getElementById("id_password");
     var new1 = document.getElementById("id_new1");
     var new2 = document.getElementById("id_new2");
-    var error = document.getElementById("error");
+    var errorPassword = document.getElementById("errorPassword");
 
     if (password.value === "" || new1.value == "" || new2.value === "") {
-        error.innerHTML = " - All fields must be filled out.";
+        errorPassword.innerHTML = "- All fields must be filled out.";
     }else if (new1.value !== new2.value) {
-        error.innerHTML = " - The new password and its confirmation are not equal";
+        errorPassword.innerHTML = "- The new password and its confirmation are not equal";
     }else {
         $.ajax({
             url: "/booker/change_password/",
             type: "POST",
             data: {oldp: password.value, newp: new1.value},
             success: function(response) {
-                error.innerHTML = "";
+                errorPassword.innerHTML = "";
                 password.value = "";
                 new1.value = "";
                 new2.value = "";
@@ -60,6 +63,38 @@ function changePassword() {
                 }, 2000);
             }
         });
+    }
+}
+
+function uploadPhoto() {
+    var picture = document.getElementById("id_picture");
+    var errorPicture = document.getElementById("errorPicture")
+    if (picture.value === "") {
+        errorPicture.innerHTML = "- Must select a file to upload.";
+    }else {
+        document.forms['uform'].submit();
+        // $.ajax({
+        //     url: "/booker/change_profile_picture/",
+        //     type: "POST",
+        //     data: {url: picture.value},
+        //     success: function(response) {
+        //         errorPicture.innerHTML = "";
+        //         picture.value = "";
+        //         setTimeout(function() {
+        //             swal({
+        //                 title: "Successfully changed your profile picture!",
+        //                 type: "success",
+        //             }, function() {
+        //                 location.replace("/booker/settings/");
+        //             });
+        //         }, 2000);
+        //     },
+        //     error: function(response) {
+        //         setTimeout(function() {
+        //             swal("Failed to change profile picture.");
+        //         }, 2000);
+        //     }
+        // });
     }
 }
 

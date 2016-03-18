@@ -59,3 +59,24 @@
   color: red;
   font-size: 10pt;
 }
+
+.profile-pic-container {
+    overflow: hidden;
+    width: 230px;
+    height: 230px;
+}
+
+.profile-pic {
+    width: 230px;
+    height: 230px;
+    -webkit-border-radius: 5px !important;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+#id_picture {
+  background-color: #222222;
+  color: white;
+}

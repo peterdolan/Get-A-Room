@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^join_org/$',views.join_org,name='join_org'),
     url(r'^user/$',views.user,name='user'),
     url(r'^settings/$',views.settings,name='settings'),
-    url(r'^change_password/$',views.change_password,name='change_password')
-    ]
+    url(r'^change_password/$',views.change_password,name='change_password'),
+    url(r'^change_profile_picture/$',views.change_profile_picture,name='change_profile_picture'),
+]

@@ -517,8 +517,8 @@ def user(request):
 def settings(request):
 	password_form = ChangePasswordForm()
 	profile_form = ChangeProfilePictureForm()
-	pic_url = request.user.userprofile.picture
-	return render(request, 'booker/settings.html', {'pform':password_form, 'uform':profile_form, 'pic_url', pic_url})
+	pic_url = request.user.userprofile.get_profile_pic_url()
+	return render(request, 'booker/settings.html', {'pform':password_form, 'uform':profile_form, 'pic_url':pic_url})
 
 def change_password(request):
 	if request.method == 'POST':
@@ -533,6 +533,17 @@ def change_password(request):
 				return HttpResponse(200)
 
 	return HttpResponseBadRequest(401)
+
+def change_profile_picture(request):
+	if request.method == 'POST':
+		form = ChangeProfilePictureForm(request.POST, request.FILES)
+		if form.is_valid():
+			profile = request.user.userprofile
+			profile.picture = request.FILES['picture']
+			profile.save()
+			return HttpResponseRedirect('/booker/settings')
+	return HttpResponseBadRequest(401)
+
 
 
 

@@ -19,7 +19,7 @@
 				<h1>Settings</h1>
 				<div class="tab-content">
 					<div id="change-password" class="tab-pane fade in active">
-						<h3>Change Password <span id="error"><span></h3>
+						<h3>Change Password <span id="errorPassword"><span></h3>
 						<form id="pform" name="pform" action="#" method="POST">
 				        	{% csrf_token %}
 				        	<div class="form-group">
@@ -38,9 +38,17 @@
 				        </form>
 				    </div>
 				    <div id="change-profile-pic" class="tab-pane fade">
-				    	<h3>Change Profile Picture</h3>
-				    	<img src="{{pic_url}}" />
-				    	<form id="uform" name="uform" action="#" method="POST">
+				    	<h3>Change Profile Picture <span id="errorPicture"><span></h3>
+				    	{% if pic_url %}
+							<div class="profile-pic-container">
+								<div class="profile-pic" style="background-image: url({% static pic_url %});"></div>
+							</div>
+						{% else %}
+							<p>Current Profile Picture</p>
+							<input class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+						{% endif %}
+						<br />
+				    	<form id="uform" name="uform" action="/booker/change_profile_picture/" method="POST" enctype="multipart/form-data">
 				    		{% csrf_token %}
 				    		<div class="form-group">
 				    			{{ uform.picture }}
