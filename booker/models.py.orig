@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 
-<<<<<<< HEAD
 def getCurDate():
 	return (datetime.datetime.now(), "Today")
 
@@ -14,13 +13,10 @@ def make_custom_datefield(f):
         formfield.widget.attrs.update({'class':'datePicker', 'readonly':'true'})
     return formfield
 
-class Building(models.Model):
-=======
 # Create your models here.
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
-
     # The user's first name
     first_name = models.CharField(max_length=30)
     # The user's last name
@@ -46,14 +42,10 @@ class UserProfile(models.Model):
     	else:
     		return None
 
-    # This returns the set of groups this user is the admin of
-    # it is NOT necessarily the same set as the groups this user
-    # belongs to.
-    def get_admin_groups(self):
-    	return self.group_set.all()
+    def get_admin_organizations(self):
+    	return self.organization_set.all()
 
 class Organization(models.Model):
->>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96
 	name = models.CharField(max_length=200)
 	admins = models.ManyToManyField(UserProfile,null=True)
 
@@ -62,7 +54,7 @@ class Organization(models.Model):
 
 class Building(models.Model):
 	name = models.CharField(max_length=200)
-	organization = models.ForeignKey(Organization, on_delete=models.CASCADE,null=True)
+	organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True)
 	def __str__(self):
 		return self.name
 
@@ -81,9 +73,34 @@ class Room(models.Model):
 	def get_name(self):
 		return str(self.name)
 
+class Group(models.Model):
+	name = models.CharField(max_length=200)
+	# admins of this group
+	# an admin user_profile can select the groups
+	# they are an admin of via .admin_of.all()
+	admins = models.ManyToManyField(UserProfile, related_name="admin_of")
+	nres = models.PositiveSmallIntegerField(default=20)
+	# Users requesting to join this group
+	# a user_profile can select the groups
+	# they are requesting to join via .group_requests.all()
+	member_requests = models.ManyToManyField(UserProfile, related_name="group_requests")
+	# vso = models.IntegerField()
+
+	def get_member_count(self):
+		return len(self.userprofile_set.all())
+
+	def __str__(self):
+		return self.name
+
 class Reservation(models.Model):
+	group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
+<<<<<<< HEAD
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+	group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+=======
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+>>>>>>> 975bae2adc79e3932d93eb4bd7855faf106efa95
 	description = models.TextField()
 	start_time = models.DateTimeField()
 	end_time = models.DateTimeField()
@@ -97,17 +114,6 @@ class Reservation(models.Model):
 	# 		self.room.name,
 	# 		self.user_name,
 	# 	])
-
-class Group(models.Model):
-	name = models.CharField(max_length=200)
-	admins = models.ManyToManyField(UserProfile)
-	# vso = models.IntegerField()
-
-	def get_member_count(self):
-		return len(self.userprofile_set.all())
-
-	def __str__(self):
-		return self.name
 
 
 

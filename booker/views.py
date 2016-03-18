@@ -396,7 +396,7 @@ def user_profile(request):
 	# Groups this user is an admin of
 	admin_groups = []
 	if profile.is_group_admin:
-		admin_groups = profile.get_admin_groups()
+		admin_groups = profile.admin_of.all()
 	# Groups this user is a member of
 	groups = profile.groups.all()
 	# Organizations this user is an admin of
@@ -510,11 +510,17 @@ def organizations(request):
 		return HttpResponse(serializers.serialize('json',Organization.objects.all()))
 
 @ensure_csrf_cookie
-def join_group(request):
+def user_profiles(request):
+	if request.method == "GET":
+		return HttpResponse(serializers.serialize('json',UserProfile.objects.all()))
+
+@ensure_csrf_cookie
+def join_group_request(request):
 	if request.method == 'POST':
 		group_name = request.POST.get('group_name')
 		group = Group.objects.get(name=group_name)
-		request.user.userprofile.groups.add(group)
+		group.member_requests.add(request.user.userprofile)
+		group.save()
 		# Reservation.objects.filter(pk__in=reservation_ids).delete()
 
 	return HttpResponse(0)
@@ -526,6 +532,30 @@ def join_org(request):
 		org = Organization.objects.get(name=org_name)
 		request.user.userprofile.organizations.add(org)
 		# Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def add_user_to_group(request):
+	if request.method == 'POST':
+		group_name = request.POST.get('group_name')
+		group = Group.objects.get(name=group_name)
+		user_profile_pk = int(request.POST.get('user_profile_pk'))
+		user_profile = UserProfile.objects.get(pk=user_profile_pk)
+		user_profile.groups.add(group)
+		user_profile.save()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def add_group_admin(request):
+	if request.method == 'POST':
+		group_name = request.POST.get('group_name')
+		group = Group.objects.get(name=group_name)
+		user_profile_pk = int(request.POST.get('user_profile_pk'))
+		user_profile = UserProfile.objects.get(pk=user_profile_pk)
+		group.admins.add(user_profile)
+		group.save()
 
 	return HttpResponse(0)
 

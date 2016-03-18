@@ -20,7 +20,7 @@
         {% endif %}
         <h3>Room: <span class="location">{{room}}, {{building}}</span></h3>
         {% for res in reservations %}
-            <h3>Time: <span class="time">{{res.start_time}}</span> to <span class="time">{{res.end_time}}</span></h3>
+            <h3>Time: <span class="time">{{res.start_time}}</span> to <span class="time">{{res.end_time.time}}</span></h3>
         {% endfor %}
         <p> Thanks for using Get-A-Room! </p>
     </div>

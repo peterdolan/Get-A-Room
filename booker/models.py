@@ -42,11 +42,6 @@ class UserProfile(models.Model):
     	else:
     		return None
 
-    # This returns the set of groups this user is the admin of
-    # it is NOT necessarily the same set as the groups this user
-    # belongs to.
-    def get_admin_groups(self):
-    	return self.group_set.all()
     def get_admin_organizations(self):
     	return self.organization_set.all()
 
@@ -80,8 +75,15 @@ class Room(models.Model):
 
 class Group(models.Model):
 	name = models.CharField(max_length=200)
-	admins = models.ManyToManyField(UserProfile)
+	# admins of this group
+	# an admin user_profile can select the groups
+	# they are an admin of via .admin_of.all()
+	admins = models.ManyToManyField(UserProfile, related_name="admin_of")
 	nres = models.PositiveSmallIntegerField(default=20)
+	# Users requesting to join this group
+	# a user_profile can select the groups
+	# they are requesting to join via .group_requests.all()
+	member_requests = models.ManyToManyField(UserProfile, related_name="group_requests")
 	# vso = models.IntegerField()
 
 	def get_member_count(self):
@@ -91,9 +93,9 @@ class Group(models.Model):
 		return self.name
 
 class Reservation(models.Model):
+	group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
-	group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 	description = models.TextField()
 	start_time = models.DateTimeField()
 	end_time = models.DateTimeField()

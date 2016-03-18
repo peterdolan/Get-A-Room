@@ -430,9 +430,10 @@ function createGroupPopup() {
 	)
 }
 
+<<<<<<< HEAD
 function toChangePicture() {
 	location.replace("/booker/settings/?tab=picture");
-}
+=======
 // function requestsPopup(group_name) {
 // 	swal.withForm({   
 // 		title: "Request to Join a Group!", 
@@ -585,6 +586,7 @@ function addEditAdminsPopup(group_name) {
 			source: data
 		});
 	});
+>>>>>>> 975bae2adc79e3932d93eb4bd7855faf106efa95
 }
 
 

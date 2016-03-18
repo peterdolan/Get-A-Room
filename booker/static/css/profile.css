@@ -158,7 +158,6 @@ p {
     background-color: #fff;
     border: 1px solid #ddd;
     transition: all 0.3s ease 0s;
-    position: relative;
 }
 
 .list-group-item li {
@@ -178,21 +177,35 @@ h4 {
     margin-right: 5px;
 }
 
-.glyphicon-tower {
+/*.glyphicon-tower {
     margin-top: 12px;
     margin-right: 10px;
-}
+}*/
 
 
 .glyphicon-remove {
     font-size: 1.2em;
 }
 
-.glyphicon-search {
+.glyphicon-remove:hover {
+    font-size: 1.2em;
+    color: #FF4057;
+}
+
+.group-header-icon {
+    font-size: 1.2em;
+    color: #555;
+    margin-left: 5px;
+    margin-top: 12px;
+    transition: all 0.3s ease 0s;
+}
+
+
+/*.glyphicon-search {
     font-size: 1.2em;
     margin-right: 5px;
     margin-left: 3px;
-}
+}*/
 
 .remove-group-button, .remove-org-button, .group-res-button {
     display: none;
@@ -217,6 +230,14 @@ h4 {
     display: none;
 }
 
+.group-content {
+    display: none;
+}
+
+.group-content.active {
+    display: inline;
+}
+
 .remove-reservation-button.active {
     display: inline;
     border-style: none;
@@ -235,7 +256,8 @@ h4 {
 
 .list-group-item.active {
     transition: all 0.3s ease 0s !important;
-    background-color: #63B7FF !important;
+    background-color: white !important;
+    color: #555 !important;
 }
 
 .full-list {
@@ -258,3 +280,62 @@ h4 {
     margin-top: -10px;
     margin-bottom: 0;
 }
+
+.divider {
+    height: 2px;
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.group-content-item {
+    position: relative;
+}
+
+.group-content-blurb {
+    display: block;
+    font-style: italic;
+    color: #555555;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    padding-left: 18px;
+}
+
+.group-content-members {
+    position: relative;
+}
+
+.group-content-button {
+    margin-top: 5px;
+    margin-left: 4px;
+    background-color: #fed100;
+    color: #222222;
+    transition: all 0.3s ease 0s;
+}
+
+.group-content-button:hover {
+    background-color: #EEBE00;
+}
+
+.request-count {
+    position: absolute;
+    right: 0%;
+    margin-right: 0px;
+    top: 2px;
+    /*background-color: #5cb85c;*/
+    background-color: #FF4057;
+}
+
+.danger {
+    background-color: transparent;
+    border: solid 2px red;
+    color: red;
+    -webkit-border-radius: 5px !important;
+    transition: all 0.3s ease 0s;
+}
+
+.danger:hover {
+    background-color: red;
+    color: white;
+}
+
