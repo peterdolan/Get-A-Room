@@ -374,6 +374,7 @@ def user_profile(request):
 	group_reservations = sorted(group_reservations, key=lambda x: (x.group.name, x.start_time))
 	# Final reservation list (personal+group)
 	reservations = list(chain(personal_reservations,group_reservations))
+	print reservations
 	# Groups this user is an admin of
 	admin_groups = []
 	if profile.is_group_admin:
@@ -443,12 +444,12 @@ def delete_profile_info(request):
 		reservation_ids_strs = json.loads(request.POST.get('reservation_ids'))
 		reservation_ids = [int(x) for x in reservation_ids_strs]
 		reservations = Reservation.objects.all().filter(pk__in=reservation_ids)
-		# for res in reservations:
-		# 	if res.group:
-		# 		print "GROUP NAME: " + res.group.name
-		# 		group = res.group
-		# 		group.nres = group.nres + 1
-		# 		group.save()
+		for res in reservations:
+			if res.group:
+				print "GROUP NAME: " + res.group.name
+				group = res.group
+				group.nres = group.nres + 1
+				group.save()
 		Reservation.objects.filter(pk__in=reservation_ids).delete()
 
 		# Handle groups deleted from user's profile

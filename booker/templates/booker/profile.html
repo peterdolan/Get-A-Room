@@ -47,7 +47,7 @@
 							</div>
 							<a href="/booker/" class="btn">Get a Room</a>
 						</div>
-						{% if reservations.count == 0 %}
+						{% if reservations|length == 0 %}
 							<p>Your schedule looks all clear!</p>
 						{% else %}
 							<div id="main" class="full-list">
@@ -79,7 +79,7 @@
 							<button class="btn" onclick="createGroupPopup()">Create Group</button>
 							<button class="btn" onclick="joinGroupPopup()">Join Group</button>
 						</div>
-						{% if groups.count == 0 %}
+						{% if groups|length == 0 %}
 							<p>Get social and join some groups! Or start one of your own!</p>
 						{% else %}
 							<div id="main" class="full-list">
@@ -115,7 +115,7 @@
 							</div>
 							<button class="btn" onclick="joinOrgPopup()">Join Organization</button>
 						</div>
-						{% if profile.organizations.count == 0 %}
+						{% if organizations|length == 0 %}
 							<p>Uh oh, you haven't joined any organizations yet! Join an organization in order to book a reservation on its calendar.</p>
 						{% else %}
 							<div id="main" class="full-list">
