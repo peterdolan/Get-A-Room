@@ -1,0 +1,62 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/settings.css" %} ">
+  <script src="{% static "js/settings.js" %}"></script>
+{% endblock %}
+
+{% block body_block %}
+	<div id="settings" class="container">
+		<div class="inner-container">
+			<div class="column one-fourth">
+				<ul id="nav" class="nav nav-pills nav-stacked">
+				  	<li class="active"><a data-toggle="tab" href="#change-password">Change Password</a></li>
+				  	<li><a data-toggle="tab" href="#change-profile-pic">Change Profile Picture</a></li>
+				  	<li><a data-toggle="tab" href="#get-help">Contact Us</a></li>
+				</ul>
+			</div>
+			<div class="column three-fourths">
+				<h1>Settings</h1>
+				<div class="tab-content">
+					<div id="change-password" class="tab-pane fade in active">
+						<h3>Change Password <span id="error"><span></h3>
+						<form id="pform" name="pform" action="#" method="POST">
+				        	{% csrf_token %}
+				        	<div class="form-group">
+					        	{{ pform.password.label_tag }}
+					            {{ pform.password }}
+					        </div>
+					       	<div class="form-group">
+				            	{{ pform.new1.label_tag }}
+				            	{{ pform.new1 }}
+				            </div>
+				            <div class="form-group">
+				            	{{ pform.new2.label_tag }}
+				            	{{ pform.new2 }}
+				            </div>
+				            <button type="button" class="btn" onclick="changePassword()">Submit</button>
+				        </form>
+				    </div>
+				    <div id="change-profile-pic" class="tab-pane fade">
+				    	<h3>Change Profile Picture</h3>
+				    	<img src="{{pic_url}}" />
+				    	<form id="uform" name="uform" action="#" method="POST">
+				    		{% csrf_token %}
+				    		<div class="form-group">
+				    			{{ uform.picture }}
+				    		</div>
+				    		<button type="button" class="btn" onclick="uploadPhoto()">Submit</button>
+				    	</form>
+				    </div>
+				    <div id="get-help" class="tab-pane fade">
+				    	<p> helpo </p>
+				    </div>
+				</div>
+	        </div>
+	    </div>
+	</div>
+
+	<script>
+	    addClasses();
+  	</script>
+{% endblock %}

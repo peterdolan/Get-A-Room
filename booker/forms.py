@@ -153,7 +153,6 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
-	weekly = forms.CharField(max_length=200)
 	nmeetings = forms.CharField(max_length=200)
 	# description = forms.CharField(max_length=200)
 
@@ -184,3 +183,27 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('first_name','last_name','picture')
+
+class ChangePasswordForm(forms.Form):
+	password = forms.CharField(
+		widget=forms.PasswordInput,
+		label="Old password",
+		required=True
+	)
+
+	new1 = forms.CharField(
+		widget=forms.PasswordInput,
+		label="New password",
+		required=True
+	)
+	
+	new2 = forms.CharField(
+		widget=forms.PasswordInput,
+		label="Confirm new password",
+		required=True
+	)
+
+class ChangeProfilePictureForm(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ('picture')

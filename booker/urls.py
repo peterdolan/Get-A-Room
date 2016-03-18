@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^organizations/$',views.organizations,name='organizations'),
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
-    url(r'^user/$',views.user,name='user')
+    url(r'^user/$',views.user,name='user'),
+    url(r'^settings/$',views.settings,name='settings'),
+    url(r'^change_password/$',views.change_password,name='change_password')
     ]

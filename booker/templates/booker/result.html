@@ -38,11 +38,6 @@
 				<input type="text" name="date" value="{{form.data.date}}" />
 				<input type="text" name="time" value="{{form.data.time}}" />
 				<input type="text" name="duration" value="{{form.data.duration}}" />
-				{% if form.data.weekly %}
-					<input type="text" name="weekly" value="True" />
-				{% else %}
-					<input type="text" name="weekly" value="False" />
-				{% endif %}
 				<input type="text" name="nmeetings" value="{{nmeetings}}" />
 				<input type="submit" value="submit" />
 			</form>

@@ -11,10 +11,10 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.db import models
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from booker.forms import UserForm, UserProfileForm
+from booker.forms import UserForm, UserProfileForm, ChangePasswordForm, ChangeProfilePictureForm
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -23,7 +23,6 @@ from .forms import *
 
 @login_required
 def index(request):
-	empty_list = []
 	if request.method == 'POST':
 		form = RoomForm(request.POST)
 		if form.is_valid():
@@ -46,9 +45,6 @@ def getValidRooms(form, nmeetings):
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
 	capacity = int(form.cleaned_data['capacity'])
-	nmeetings = form.cleaned_data['nmeetings']
-	if nmeetings is None or not form.cleaned_data['weekly']:
-		nmeetings = 1
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
 	windows_bool = bool(form.cleaned_data['windows'])
@@ -299,7 +295,6 @@ def register(request):
 			{'user_form': user_form, 'user_profile_form': user_profile_form, 'registered': registered},
 			context)
 
-
 def user_login(request):
 	# Like before, obtain the context for the user's request.
 	context = RequestContext(request)
@@ -514,10 +509,31 @@ def join_org(request):
 def user(request):
 	if request.method == 'GET':
 		user_serializable = {}
-		user_profile = UserProfile.objects.get(user=request.user)
+		user_profile = UserProfile.objects.all().filter(user=request.user)[0]
 		profile_picture_url = str(user_profile.get_profile_pic_url())
 
 	return HttpResponse(profile_picture_url)
+
+def settings(request):
+	password_form = ChangePasswordForm()
+	profile_form = ChangeProfilePictureForm()
+	pic_url = request.user.userprofile.picture
+	return render(request, 'booker/settings.html', {'pform':password_form, 'uform':profile_form, 'pic_url', pic_url})
+
+def change_password(request):
+	if request.method == 'POST':
+		oldp = request.POST.get('oldp')
+		newp = request.POST.get('newp')
+		user = authenticate(username=request.user.username, password=oldp)
+		if user:
+			if user.is_active:
+				user.set_password(newp)
+				user.save()
+				login(request, user)
+				return HttpResponse(200)
+
+	return HttpResponseBadRequest(401)
+
 
 
 

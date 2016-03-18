@@ -8,11 +8,6 @@
 	
 
 	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="{% static "js/dist/sweetalert.css" %} ">
-	<link rel="stylesheet" type="text/css" href="{% static "css/swal-forms.css" %} ">
-
-	<script src="{% static "js/dist/sweetalert.min.js" %}"></script>
-	<script src="{% static "js/swal-forms.js" %}"></script>
 {% endblock %}
 
 {% block body_block %}
@@ -47,7 +42,7 @@
 							</div>
 							<a href="/booker/" class="btn">Get a Room</a>
 						</div>
-						{% if reservations.count == 0 %}
+						{% if reservations.count == 0 or not reservations %}
 							<p>Your schedule looks all clear!</p>
 						{% else %}
 							<div id="main" class="full-list">
