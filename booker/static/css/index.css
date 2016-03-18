@@ -39,6 +39,8 @@ option {
 
 .centered-container {
     display: block;
+    height: 425px;
+    overflow-y: auto; 
 }
 
 input[type=submit] {
