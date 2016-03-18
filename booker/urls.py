@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^get_org_list/$',views.get_org_list,name='get_org_list'),
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
-    url(r'^buildings/$',views.buildings,name='buildings')
+    url(r'^buildings/$',views.buildings,name='buildings'),
+    url(r'^calendar/get_closest_reservation/$',views.get_closest_reservation,name='get_closest_reservation')
 ]

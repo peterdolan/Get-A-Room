@@ -131,18 +131,11 @@ def calendar_view(request):
 		# if form.is_valid():
 	profile = request.user.userprofile
 	organizations = profile.organizations.all()
-	# building_obj = Building.objects.all().filter(organization__in=organizations, name__contains=form.cleaned_data['building'])[0]
 	buildings = Building.objects.all().filter(organization__in=organizations)
 	rooms_list = Room.objects.all().filter(building__in=buildings)
 	res_array = Reservation.objects.all().filter(room__in=rooms_list, start_time__gte=timezone.now())
 
 	return render(request, 'booker/calendar.html', {'buildings':buildings, 'res_array':res_array})
-		# else:
-			# return render(request, 'booker/uhmmm.html')
-	# else: #GET
-		# form = CalendarViewForm(data=request.POST)
-		# return render(request, 'booker/calendar.html', {'form':form, 'res_array':[]})
-		# return render_to_response('booker/calendar.html', {}, context)
 
 def buildings(request):
 	profile = request.user.userprofile
@@ -153,6 +146,30 @@ def buildings(request):
 		rooms_list = [str(x) for x in Room.objects.all().filter(building=building).values_list('name',flat=True)]
 		building_map[building.name] = rooms_list
 	return HttpResponse(json.dumps(building_map))
+
+def get_closest_reservation(request):
+	date = request.POST.get('date', False)
+	room = request.POST.get('room', False)
+	date = date[:-15]
+	new_date = datetime.strptime(date, "%a %b %d %Y %H:%M:%S")
+	room_obj = Room.objects.all().filter(name=room)[0]
+	reservations = Reservation.objects.all().filter(room=room_obj, start_time__gt=new_date).order_by('start_time')
+	if not reservations:
+		return HttpResponse(-1)
+	else: 
+		reservation = reservations[0]
+		time = str(reservation.start_time)
+		time = time[:-6]
+		time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+		json_data = {}
+		json_data['year'] = time.year
+		json_data['month'] = time.month
+		json_data['day'] = time.day
+		json_data['hour'] = time.hour
+		json_data['minute'] = time.minute
+		json_data['second'] = time.second
+		json_encoded = json.dumps(json_data)
+		return HttpResponse(json_encoded)
 
 def eventsFeed(request, room_name):
 	from django.utils.timezone import utc
@@ -165,13 +182,10 @@ def eventsFeed(request, room_name):
 		start = datetime.now.replace(tzinfo=utc)
 		end = start + timedelta(days=7)
 
-	# entries = Reservation.objects.filter(start_time__gte=start).filter(end_time__lte=end)
 	room_obj = Room.objects.all().filter(name=room_name)
 	entries = Reservation.objects.all().filter(room=room_obj, start_time__gte=start).filter(end_time__lte=end)
-	# print entries
 	json_list = []
 	for entry in entries:
-		# id = entry.id
 		room = entry.room
 		username = entry.user.first_name + " " + entry.user.last_name
 		description = entry.description
