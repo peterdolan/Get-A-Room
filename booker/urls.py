@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^calendar/$', views.calendar_view, name='calendar'),
-    url(r'^calendar/eventsfeed/(?P<building_name>.+)/$', views.eventsFeed, name='eventsfeed'),
+    url(r'^calendar/eventsfeed/(?P<room_name>.+)/$', views.eventsFeed, name='eventsfeed'),
     url(r'^profile/$', views.user_profile, name='profile'),
     url(r'^groupres/$', views.groupres, name='groupres'),
     url(r'^singleres/$', views.singleres, name='singleres'),
@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^organizations/$',views.organizations,name='organizations'),
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
-    url(r'^user/$',views.user,name='user')
-    ]
+    url(r'^user/$',views.user,name='user'),
+    url(r'^buildings/$',views.buildings,name='buildings'),
+    url(r'^calendar/get_closest_reservation/$',views.get_closest_reservation,name='get_closest_reservation'),
+]

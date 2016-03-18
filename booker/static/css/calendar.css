@@ -29,20 +29,69 @@ span.time {
 
 .cal-view-div {
 	float: left;
+	background-color: white;
 }
 
-.form-group > label {
+.CalendarTitle > label {
 	color: black;
+	font-size: 30px;
+	font-family: Futura,Trebuchet MS,Arial,sans-serif !important;
+    font-weight: 100;
+}
+
+.TitleText {
+	color: #fed100;
+}
+
+.dropDId{
+	color: black !important;
+}
+
+.container {
+	background-color: #222222;
+}
+
+.cal_container {
+	background-color: white;
+}
+
+.TitleText {
+	font-size: 20px;
+}
+
+.form-inline {
+	padding-bottom: 0px;
+	margin-bottom: 0px !important;
 }
 
 body {
-	margin-top: 40px;
 	text-align: center;
 	font-size: 14px;
 	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
 }
 
 #calendar {
-	width: 100%;
+	/*overflow-y: scroll;*/
+	overflow-x: hidden; 
+	width: 90%;
+	/*height: 84.9%;*/
 	margin: 0 auto;
 }
+
+.fc-content {
+	height: 50%;
+	background-color: white;
+}
+
+.fc-header {
+	color: #fed100;
+}
+
+form_field{
+	color: black;
+}
+
+
+/**{
+	border: 1px solid red !important;
+}*/

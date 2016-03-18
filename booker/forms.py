@@ -108,9 +108,12 @@ class RoomForm(forms.Form):
 		required = False
 	)
 
-	# description = forms.CharField(
-	# 	widget=forms.TextInput	
-	# )
+	description = forms.CharField(
+		required = False,
+		initial = "",
+		label = "Description",
+		max_length = 200
+	)
 
 	projector = forms.BooleanField(
 		required = False,
@@ -153,6 +156,7 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
+	description = forms.CharField(max_length=200)
 	weekly = forms.CharField(max_length=200)
 	nmeetings = forms.CharField(max_length=200)
 	# description = forms.CharField(max_length=200)

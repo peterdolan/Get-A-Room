@@ -12,17 +12,22 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
-<<<<<<< HEAD
     url(r'^calendar/$', views.calendar_view, name='calendar'),
-    url(r'^calendar/eventsfeed/(?P<building_name>.+)/$', views.eventsFeed, name='eventsfeed')
-	]
-=======
+    url(r'^calendar/eventsfeed/(?P<room_name>.+)/$', views.eventsFeed, name='eventsfeed'),
     url(r'^profile/$', views.user_profile, name='profile'),
+    url(r'^groupres/$', views.groupres, name='groupres'),
+    url(r'^singleres/$', views.singleres, name='singleres'),
     url(r'^create_group/$', views.create_group, name='create_group'),
     url(r'^delete_profile_info/$',views.delete_profile_info,name='delete_profile_info'),
-    url(r'^get_group_list/$',views.get_group_list,name='get_group_list'),
-    url(r'^get_org_list/$',views.get_org_list,name='get_org_list'),
+    url(r'^groups/$',views.groups,name='groups'),
+    url(r'^organizations/$',views.organizations,name='organizations'),
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
+<<<<<<< HEAD
+    url(r'^user/$',views.user,name='user')
     ]
->>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96
+=======
+    url(r'^buildings/$',views.buildings,name='buildings'),
+    url(r'^calendar/get_closest_reservation/$',views.get_closest_reservation,name='get_closest_reservation')
+]
+>>>>>>> c27cc33d2338acef50d89897ac585b61865b138f

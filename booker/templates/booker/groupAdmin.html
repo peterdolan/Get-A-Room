@@ -1,0 +1,29 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/admin.css" %} ">
+{% endblock %}
+
+{% block body_block %}
+	<div id="AdminGen">
+		<div id="header">
+			Group usage for {{Group}}:
+		</div>
+		<ul>
+			<div id="listItem">
+				Average group size: {number}
+			</div>
+			<div id="listItem">
+			Favorite room: {room}
+			</div>
+			<div id="listItem">
+			Rooms in the last [dropdown]: {number}
+			</div>
+			<div id="listItem">
+			Favorite time: {time}
+			</div>
+		</ul>
+	</div>
+
+{% endblock %}
+

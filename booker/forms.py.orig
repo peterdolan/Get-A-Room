@@ -1,12 +1,9 @@
 from django import forms
-<<<<<<< HEAD
 from django.db import models
 from functools import partial
 from datetime import datetime
 import time
-=======
 from booker.models import UserProfile, Group
->>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96
 from django.contrib.auth.models import User
 
 
@@ -71,7 +68,7 @@ class RoomForm(forms.Form):
 		label = "What Time?",
 		required = False,
 		choices = time_choices,
-		initial = getStarterNum()
+		initial = 26
 	)
 
 	duration_choices = (
@@ -87,7 +84,7 @@ class RoomForm(forms.Form):
 		label = "Duration",
 		required = False,
 		choices = duration_choices,
-		initial = 'one'
+		initial = 60
 	)
 
 	capacity = forms.IntegerField(
@@ -96,6 +93,33 @@ class RoomForm(forms.Form):
 		max_value = 20,
 		initial = 3
 	)
+
+<<<<<<< HEAD
+	weekly = forms.BooleanField(
+		label = "Make Weekly",
+		required = False,
+		initial = False
+	)
+
+	nmeetings = forms.IntegerField(
+		label = "Number of Weeks",
+		min_value = 2,
+		max_value = 10,
+		initial = 10,
+		required = False
+	)
+
+	# description = forms.CharField(
+	# 	widget=forms.TextInput	
+	# )
+=======
+	description = forms.CharField(
+		required = False,
+		initial = "",
+		label = "Description",
+		max_length = 200
+	)
+>>>>>>> c27cc33d2338acef50d89897ac585b61865b138f
 
 	projector = forms.BooleanField(
 		required = False,
@@ -138,8 +162,14 @@ class ReservationForm(forms.Form):
 	date = forms.CharField(max_length=200)
 	time = forms.CharField(max_length=200)
 	duration = forms.CharField(max_length=200)
-
 <<<<<<< HEAD
+	weekly = forms.CharField(max_length=200)
+	nmeetings = forms.CharField(max_length=200)
+	# description = forms.CharField(max_length=200)
+
+class GroupReservationForm(forms.Form):
+	group = forms.CharField(max_length=200)
+
 class CalendarViewForm(forms.Form):
 	building_choices = (
 		('Old Union', 'Old Union'),
@@ -153,11 +183,9 @@ class CalendarViewForm(forms.Form):
 		choices = building_choices
 	)
 =======
-class GroupForm(forms.ModelForm):
-	class Meta:
-		model = Group
-		fields = ('name',)
->>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96
+	description = forms.CharField(max_length=200)
+
+>>>>>>> c27cc33d2338acef50d89897ac585b61865b138f
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -166,10 +194,7 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('email', 'password')
 
-<<<<<<< HEAD
-=======
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('first_name','last_name','picture')
->>>>>>> 0c804d7d3f10e0405de761f805b23cb5517f0e96

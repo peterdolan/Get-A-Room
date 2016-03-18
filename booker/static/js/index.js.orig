@@ -34,6 +34,7 @@ function addClasses() {
 	var capacity = document.getElementById("id_capacity");
 	capacity.className = "form-control";
 
+<<<<<<< HEAD
 	var weekly = document.getElementById("id_weekly");
 	if (weekly !== null) {
 		weekly.className = "form-control";
@@ -58,8 +59,10 @@ function addClasses() {
 			nmeetings.previousSibling.previousSibling.style.display = "none";
 		}
 	}
+=======
 	var description = document.getElementById("id_description");
 	description.className = "form-control";
+>>>>>>> c27cc33d2338acef50d89897ac585b61865b138f
 
 	var projector = document.getElementById("id_projector");
 	projector.className = "form-control";
@@ -95,7 +98,11 @@ function getToday(){
 	return today;
 }
 
+<<<<<<< HEAD
 function verifyDate(){
+=======
+function checkTimeValues() {
+>>>>>>> c27cc33d2338acef50d89897ac585b61865b138f
 	var date = document.getElementById("id_date");
 	var options = document.getElementsByTagName("option");
 	var today = getToday();	

@@ -27,7 +27,6 @@
 
 {% block body_block %}
   <div class="container">
-<<<<<<< HEAD
     <ul class="nav nav-pills">
       <li class="pill active grow icon" id="time-pill">
         <a class="pill-link" data-toggle="pill" href="#time" onclick="transitionPane('time')">
@@ -57,7 +56,11 @@
     <div class="pane-container">
       <form action="." method="post">
         {% csrf_token %}
+<<<<<<< HEAD
         <div class="centered-container tab-content">
+          {% if group_search %}
+            <h3 style="color:#fed100;">Group: {{group}}</h3>
+          {% endif %}
           <div id="time" class="tab-pane fade in active">
             <h2>Time and Duration</h2>
             <div class = "form-group">
@@ -76,33 +79,19 @@
               {{ form.capacity.label_tag }}
               {{ form.capacity }}
             </div>
+            {% if group_search %}
+              <div class = "form-group">
+                {{ form.weekly.label_tag }}
+                {{ form.weekly }}
+              </div>
+            {% endif %}
+            {% if group_search %}
+              <div class = "form-group">
+                {{ form.nmeetings.label_tag }}
+                {{ form.nmeetings }}
+              </div>
+            {% endif %}
 =======
-  <ul class="row nav nav-pill">
-        <li class="col-md-3">
-          <a href="#" style="text-align:center;" onclick="return show('timePage', 'amnetiesPage', 'locationPage');">
-            <img src="{% static "images/clock_icon.png" %}" alt="Time" /> 
-          </a>
-        </li>
-        <li class="col-md-3">
-          <a href="#" style="text-align:center;" onclick="return show('amnetiesPage', 'timePage', 'locationPage');">
-            <img src="{% static "images/checkbox.png"%}" alt="Time" /> 
-          </a>
-        </li>
-        <li class="col-md-3">
-          <a href="#" style="text-align:center;" onclick="return show('locationPage', 'timePage', 'amnetiesPage');">
-            <img src="{% static "images/location_point.png" %}" alt="Time" /> 
-          </a>
-        </li>
-        <li class="col-md-3">
-          <label for="submit-form" id="submit">Go!</label>
-        </li>
-      </ul>
-  <div class="centered-container">
-    {% if group_search %}
-      <h3 style="color:#fed100;">Group: {{group}}</h3>
-    {% endif %}
-      <form action="." method="post">
-        {% csrf_token %}
         <div id="timePage">
           <h2>Time and Duration</h2>
           <div class = "form-group">
@@ -121,29 +110,21 @@
             {{ form.capacity.label_tag }}
             {{ form.capacity }}
           </div>
-          <!-- <div class = "form-group">
+          <div class = "form-group">
             {{ form.description.label_tag }}
             {{ form.description }}
-          </div> -->
-          {% if group_search %}
-            <div class = "form-group">
-              {{ form.weekly.label_tag }}
-              {{ form.weekly }}
-            </div>
-          {% endif %}
-          {% if group_search %}
-            <div class = "form-group">
-              {{ form.nmeetings.label_tag }}
-              {{ form.nmeetings }}
-            </div>
-          {% endif %}
+          </div>
         </div>
         <div id="amnetiesPage" style = "display:none">
           <h2>Amenities</h2>
           <div class = "form-group">
             {{ form.projector.label_tag }}
             {{ form.projector }}
->>>>>>> 7f8dc4066f9312c3c521c4a147f9e0251057758e
+          </div>
+          <div class = "form-group">
+            {{ form.whiteboard.label_tag }}
+            {{ form.whiteboard }}
+>>>>>>> c27cc33d2338acef50d89897ac585b61865b138f
           </div>
           <div id="amenities" class="tab-pane fade">
             <h2>Amenities</h2>
@@ -175,13 +156,11 @@
         <input type="submit" id='submit-form' class = "hidden" />
       </form>
     </div>
-<<<<<<< HEAD
     <div class="arrow" id="rightarrow">
       <a id="rightarrowlink" data-toggle="pill" href="#amenities" onclick="transitionPane(1)">
         <img src="{% static "images/rightarrow.png" %}" alt="Right" /> 
       </a>
     </div>
-=======
 
     <!-- Uncomment below for form validation errors to appear on this page -->
     <!-- {% if form.errors %}
@@ -198,12 +177,11 @@
         </div>
       {% endfor %}
     {% endif %} -->
->>>>>>> 7f8dc4066f9312c3c521c4a147f9e0251057758e
-  </div>
 
-<!--   <script>
+  </div>
+  <script>
     addClasses();
     checkTimeValues();
     checkDurationValues();
-  </script> -->
+  </script>
   {% endblock %}

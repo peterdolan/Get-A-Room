@@ -22,7 +22,7 @@ class UserProfile(models.Model):
     # The user's last name
     last_name = models.CharField(max_length=30)
     # Organizations the user is a member of
-    organizations = models.ManyToManyField('Organization',null=True,blank=True)
+    # organizations = models.ManyToManyField('Organization',null=True,blank=True)
     # Groups the user is a member of
     groups = models.ManyToManyField('Group',null=True,blank=True)
     # Allows for faster check of OrgAdmin status
@@ -59,7 +59,7 @@ class Organization(models.Model):
 
 class Building(models.Model):
 	name = models.CharField(max_length=200)
-	organization = models.ForeignKey(Organization, on_delete=models.CASCADE,null=True)
+	organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.name
 
