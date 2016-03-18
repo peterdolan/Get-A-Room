@@ -43,6 +43,10 @@ span.time {
 	color: #fed100;
 }
 
+.dropDId{
+	color: black !important;
+}
+
 .container {
 	background-color: #222222;
 }

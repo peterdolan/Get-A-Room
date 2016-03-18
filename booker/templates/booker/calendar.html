@@ -26,13 +26,13 @@
       <div class = "CalendarTitle">
           <form role="form" class="form-inline">  
             <div class = "TitleText"> Reservation Calendar for: 
-              <select id="calview_bldg" onchange="building_submit()">
+              <select class = "dropDId" id="calview_bldg" onchange="building_submit()">
                 {% for building in buildings %}
                   <option value="{{building.name}}"> {{building.name}} </option>
                 {% endfor %}
 
               </select>
-          <select class = "room_form" id="calview_room" onchange="calendar_refresh()"></select>
+          <select class = "dropDId" id="calview_room" onchange="calendar_refresh()"></select>
         </form>
         </div>
       </div>
