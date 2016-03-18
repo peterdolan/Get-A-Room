@@ -193,7 +193,7 @@ def buildings(request):
 def get_closest_reservation(request):
 	date = request.POST.get('date', False)
 	room = request.POST.get('room', False)
-	date = date[:-15]
+	date = date.split(" GMT")[0]
 	new_date = datetime.strptime(date, "%a %b %d %Y %H:%M:%S")
 	room_obj = Room.objects.all().filter(name=room)[0]
 	reservations = Reservation.objects.all().filter(room=room_obj, start_time__gt=new_date).order_by('start_time')
