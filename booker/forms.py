@@ -68,7 +68,7 @@ class RoomForm(forms.Form):
 		label = "What Time?",
 		required = False,
 		choices = time_choices,
-		initial = getStarterNum()
+		initial = 26
 	)
 
 	duration_choices = (
@@ -84,7 +84,7 @@ class RoomForm(forms.Form):
 		label = "Duration",
 		required = False,
 		choices = duration_choices,
-		initial = 'one'
+		initial = 60
 	)
 
 	capacity = forms.IntegerField(
