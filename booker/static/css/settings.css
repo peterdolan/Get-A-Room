@@ -55,7 +55,7 @@
   box-shadow: 0 0 0 1px white inset;
 }
 
-#error {
+.error {
   color: red;
   font-size: 10pt;
 }
@@ -79,4 +79,14 @@
 #id_picture {
   background-color: #222222;
   color: white;
+}
+
+#settings table td, th{
+  padding-right: 30px;
+}
+
+#settings table tr:hover {
+  background-color: white;
+  color: #222222;
+  cursor: default;
 }

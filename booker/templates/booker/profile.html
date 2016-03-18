@@ -16,11 +16,11 @@
 			<div class= "column one-forth">
 				{% if profile.picture %}
 					<div class="profile-pic-container">
-						<div class="profile-pic" style="background-image: url({% static profile_pic %});">
+						<div onclick="toChangePicture()" title="click to change profile picture" class="profile-pic" style="background-image: url({% static profile_pic %});">
 						</div>
 					</div>
 				{% else %}
-					<input class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+					<input onclick="toChangePicture()" class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
 				{% endif %}
 				<h2 class="user-name">
 				<a class="name-link" href=".">{{ profile.first_name }} {{ profile.last_name }}</a>

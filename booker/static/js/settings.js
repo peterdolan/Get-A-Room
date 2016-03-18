@@ -73,32 +73,10 @@ function uploadPhoto() {
         errorPicture.innerHTML = "- Must select a file to upload.";
     }else {
         document.forms['uform'].submit();
-        // $.ajax({
-        //     url: "/booker/change_profile_picture/",
-        //     type: "POST",
-        //     data: {url: picture.value},
-        //     success: function(response) {
-        //         errorPicture.innerHTML = "";
-        //         picture.value = "";
-        //         setTimeout(function() {
-        //             swal({
-        //                 title: "Successfully changed your profile picture!",
-        //                 type: "success",
-        //             }, function() {
-        //                 location.replace("/booker/settings/");
-        //             });
-        //         }, 2000);
-        //     },
-        //     error: function(response) {
-        //         setTimeout(function() {
-        //             swal("Failed to change profile picture.");
-        //         }, 2000);
-        //     }
-        // });
     }
 }
 
-// SWAL unnecessary (thanks, James.... /s)
+// SWAL unnecessary (thanks, Jaaames.... /s)
 
 // function changePassword() {
 //     swal.withForm({

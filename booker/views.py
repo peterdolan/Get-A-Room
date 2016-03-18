@@ -515,10 +515,20 @@ def user(request):
 	return HttpResponse(profile_picture_url)
 
 def settings(request):
+	active_tab_array = ['','','']
+	active_tab = request.GET.get('tab')
+	if active_tab is None:
+		active_tab = 'password'
+	if active_tab == 'password':
+		active_tab_array[0] = ' active'
+	elif active_tab == 'picture':
+		active_tab_array[1] = ' active'
+	elif active_tab == 'contact':
+		active_tab_array[2] = ' active'
 	password_form = ChangePasswordForm()
 	profile_form = ChangeProfilePictureForm()
 	pic_url = request.user.userprofile.get_profile_pic_url()
-	return render(request, 'booker/settings.html', {'pform':password_form, 'uform':profile_form, 'pic_url':pic_url})
+	return render(request, 'booker/settings.html', {'pform':password_form, 'uform':profile_form, 'pic_url':pic_url, 'active_tab':active_tab_array})
 
 def change_password(request):
 	if request.method == 'POST':
@@ -541,7 +551,7 @@ def change_profile_picture(request):
 			profile = request.user.userprofile
 			profile.picture = request.FILES['picture']
 			profile.save()
-			return HttpResponseRedirect('/booker/settings')
+			return HttpResponseRedirect('/booker/settings/?tab=picture')
 	return HttpResponseBadRequest(401)
 
 
