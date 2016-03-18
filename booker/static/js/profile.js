@@ -410,5 +410,9 @@ function createGroupPopup() {
 	)
 }
 
+function toChangePicture() {
+	location.replace("/booker/settings/?tab=picture");
+}
+
 
 

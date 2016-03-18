@@ -23,11 +23,14 @@ urlpatterns = [
     url(r'^organizations/$',views.organizations,name='organizations'),
     url(r'^join_group/$',views.join_group,name='join_group'),
     url(r'^join_org/$',views.join_org,name='join_org'),
+    url(r'^user/$',views.user,name='user'),
 <<<<<<< HEAD
-    url(r'^user/$',views.user,name='user')
-    ]
-=======
     url(r'^buildings/$',views.buildings,name='buildings'),
-    url(r'^calendar/get_closest_reservation/$',views.get_closest_reservation,name='get_closest_reservation')
+    url(r'^calendar/get_closest_reservation/$',views.get_closest_reservation,name='get_closest_reservation'),
 ]
->>>>>>> c27cc33d2338acef50d89897ac585b61865b138f
+=======
+    url(r'^settings/$',views.settings,name='settings'),
+    url(r'^change_password/$',views.change_password,name='change_password'),
+    url(r'^change_profile_picture/$',views.change_profile_picture,name='change_profile_picture'),
+]
+>>>>>>> d445d7a54446e79fa1206f255d7e71d50d694aa2

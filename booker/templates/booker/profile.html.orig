@@ -1,0 +1,152 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+	<!-- Profile css/js -->
+	<link rel="stylesheet" type="text/css" href="{% static "css/profile.css" %} ">
+	<script src="{% static "js/profile.js" %}"></script>
+
+	
+
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css">
+{% endblock %}
+
+{% block body_block %}
+	<div class="container">
+		<div class="inner-container">
+			<div class= "column one-forth">
+				{% if profile.picture %}
+					<div class="profile-pic-container">
+						<div onclick="toChangePicture()" title="click to change profile picture" class="profile-pic" style="background-image: url({% static profile_pic %});">
+						</div>
+					</div>
+				{% else %}
+					<input onclick="toChangePicture()" class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+				{% endif %}
+				<h2 class="user-name">
+				<a class="name-link" href=".">{{ profile.first_name }} {{ profile.last_name }}</a>
+				</h2>
+				<a class="user-email" href="mailto:{{profile.user.username}}" "Email">{{profile.user.username}}</a>
+			</div>
+			<div class="column three-fourths">
+				<ul class="nav nav-tabs">
+					<li class="tab{{active_tab_array.0}}"><a class="tab-link" data-toggle="tab" href="#reservations" onclick="makeContentInactive()">Reservations</a></li>
+					<li class="tab{{active_tab_array.1}}"><a class="tab-link" data-toggle="tab" href="#groups" onclick="makeContentInactive()" id="dirk">Groups</a></li>
+					<li class="tab{{active_tab_array.2}}"><a class="tab-link" data-toggle="tab" href="#organizations" onclick="makeContentInactive()">Organizations</a></li>
+				</ul>
+				<div class="tab-content">
+					
+					<div id="reservations" class="tab-pane fade in{{active_tab_array.0}}">
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>My Reservations</h3>
+							</div>
+							<a href="/booker/" class="btn">Get a Room</a>
+						</div>
+<<<<<<< HEAD
+						{% if reservations|length == 0 %}
+=======
+						{% if reservations.count == 0 or not reservations %}
+>>>>>>> d445d7a54446e79fa1206f255d7e71d50d694aa2
+							<p>Your schedule looks all clear!</p>
+						{% else %}
+							<div id="main" class="full-list">
+								<div class="list-group" id="reservation-list">
+									{% for reservation in reservations %}
+										<a id="reservation{{ reservation.id }}" onclick="updateActiveReservation('{{profile.id}}','{{reservation.group.name}}','reservation{{reservation.id}}')" href="#" class="list-group-item">
+											<h4><span>{{ reservation.room.building.name }}</span> <span>{{ reservation.room.name }}</span></h4>
+											<span class="time">{{reservation.start_time}}</span> to <span class="time">{{reservation.end_time}}</span>
+											{% if reservation.group != None %}
+												<span class="groupname">{{reservation.group.name}}</span>
+											{% else %}
+												<span class="groupname">{{profile.first_name}} {{profile.last_name}}</span>
+											{% endif %}
+											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+				 	<div id="groups" class="tab-pane fade in{{active_tab_array.1}}">
+				 		<div class="button-bar">
+							<div class="header-container">
+								<h3>My Groups</h3>
+							</div>
+							<button class="btn" onclick="createGroupPopup()">Create Group</button>
+							<button class="btn" onclick="joinGroupPopup()">Join Group</button>
+						</div>
+						{% if groups|length == 0 %}
+							<p>Get social and join some groups! Or start one of your own!</p>
+						{% else %}
+							<div id="main" class="full-list">
+								<div class="list-group" id="group-list">
+									{% for group in groups %}
+										<a id="group{{ group.id }}" onclick="updateActiveGroup('group{{group.id}}')" href="#" class="list-group-item">
+											<h4><span>{{ group.name }}</span></h4>
+											<span class="pull-right">
+												{% if group in admin_groups %}
+													<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
+												{% endif %}
+												<span class="badge">{{group.get_member_count}}</span>
+												{% if group in admin_groups %}
+													<button class="btn group-res-button" id="group-res-button group{{ group.id }}" onclick="toGroupRes('{{group.name}}')">
+														<span class="glyphicon glyphicon-search"></span>
+													</button>
+												{% endif %}
+												<button class="btn remove-group-button" id="remove-group-button group{{ group.id }}" onclick="removeGroup('group{{group.id}}')">
+													<span class="glyphicon glyphicon-remove"></span>
+												</button>
+											</span>
+										</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+					<div id="organizations" class="tab-pane fade in{{active_tab_array.2}}">
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>My Organizations</h3>
+							</div>
+							<button class="btn" onclick="joinOrgPopup()">Join Organization</button>
+						</div>
+						{% if organizations|length == 0 %}
+							<p>Uh oh, you haven't joined any organizations yet! Join an organization in order to book a reservation on its calendar.</p>
+						{% else %}
+							<div id="main" class="full-list">
+								<div class="list-group" id="org-list">
+									{% for org in organizations %}
+										<a id="org{{ org.id }}" onclick="updateActiveOrg('org{{org.id}}')" href="#" class="list-group-item">
+											<h4><span>{{ org.name }}</span></h4>
+											<span class="pull-right">
+												{% if org in admin_orgs %}
+													<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
+												{% endif %}
+												<span class="badge">{{org.get_member_count}}</span>
+												<button class="btn remove-org-button" id="remove-org-button org{{ org.id }}" onclick="removeOrg('org{{org.id}}')">
+													<span class="glyphicon glyphicon-remove"></span>
+												</button>
+											</span>
+										</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<form style="display:none" method="POST" action="/booker/groupres/" name="groupform" id="submit_form">
+			{% csrf_token %}
+			<input type="text" name="group" id="group-input" />
+			<input type="submit" value="submit" />
+		</form>
+	</div>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+{% endblock %}

@@ -186,3 +186,27 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('first_name','last_name','picture')
+
+class ChangePasswordForm(forms.Form):
+	password = forms.CharField(
+		widget=forms.PasswordInput,
+		label="Old password",
+		required=True
+	)
+
+	new1 = forms.CharField(
+		widget=forms.PasswordInput,
+		label="New password",
+		required=True
+	)
+	
+	new2 = forms.CharField(
+		widget=forms.PasswordInput,
+		label="Confirm new password",
+		required=True
+	)
+
+class ChangeProfilePictureForm(forms.ModelForm):
+	class Meta:
+		model = UserProfile
+		fields = ('picture',)

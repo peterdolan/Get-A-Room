@@ -1,0 +1,99 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+  <link rel="stylesheet" type="text/css" href="{% static "css/settings.css" %} ">
+  <script src="{% static "js/settings.js" %}"></script>
+{% endblock %}
+
+{% block body_block %}
+	<div id="settings" class="container">
+		<div class="inner-container">
+			<div class="column one-fourth">
+				<ul id="nav" class="nav nav-pills nav-stacked">
+				  	<li class="{{active_tab.0}}"><a data-toggle="tab" href="#change-password">Change Password</a></li>
+				  	<li class="{{active_tab.1}}"><a data-toggle="tab" href="#change-profile-pic">Change Profile Picture</a></li>
+				  	<li class="{{active_tab.2}}"><a data-toggle="tab" href="#get-help">Contact Us</a></li>
+				</ul>
+			</div>
+			<div class="column three-fourths">
+				<h1 style="margin-bottom:10px;">Settings</h1>
+				<div class="tab-content">
+					<div id="change-password" class="tab-pane fade in{{active_tab.0}}">
+						<h3>Change Password <span class="error" id="errorPassword"><span></h3>
+						<form id="pform" name="pform" action="#" method="POST">
+				        	{% csrf_token %}
+				        	<div class="form-group">
+					        	{{ pform.password.label_tag }}
+					            {{ pform.password }}
+					        </div>
+					       	<div class="form-group">
+				            	{{ pform.new1.label_tag }}
+				            	{{ pform.new1 }}
+				            </div>
+				            <div class="form-group">
+				            	{{ pform.new2.label_tag }}
+				            	{{ pform.new2 }}
+				            </div>
+				            <button type="button" class="btn" onclick="changePassword()">Submit</button>
+				        </form>
+				    </div>
+				    <div id="change-profile-pic" class="tab-pane fade in{{active_tab.1}}">
+				    	<h3>Change Profile Picture <span class="error" id="errorPicture"><span></h3>
+				    	<p>Current Profile Picture</p>
+				    	{% if pic_url %}
+							<div class="profile-pic-container">
+								<div class="profile-pic" style="background-image: url({% static pic_url %});"></div>
+							</div>
+						{% else %}
+							<input class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+						{% endif %}
+						<br />
+				    	<form id="uform" name="uform" action="/booker/change_profile_picture/" method="POST" enctype="multipart/form-data">
+				    		{% csrf_token %}
+				    		<div class="form-group">
+				    			{{ uform.picture }}
+				    		</div>
+				    		<button type="button" class="btn" onclick="uploadPhoto()">Submit</button>
+				    	</form>
+				    </div>
+				    <div id="get-help" class="tab-pane fade in{{active_tab.2}}">
+				    	<h3>Need help? Have a question?</h3>
+				    	<p>Contact one of us:<p>
+				    	<table class="table-hover" cellspacing="3">
+				    		<thead>
+				    			<tr>
+					    			<th style="color:#fed100;">Name:</th>
+					    			<th style="color:#fed100;">E-mail:</th>
+					    		</tr>
+					    	</thead>
+					    	<tbody>
+					    		<tr>
+				    				<td>Alec Powell</td>
+				    				<td>atpowell
+				    			</tr>
+					    		<tr>
+					    			<td>Carlos Girod</td>
+					    			<td>cgirod3
+					    		</tr>
+					    		<tr>
+					    			<td>James Webb</td>
+					    			<td>jmwebb
+					    		</tr>
+					    		<tr>
+					    			<td>Peter Dolan</td>
+					    			<td>pdolan
+					    		</tr>
+					    	</tbody>
+				    	</table>
+				    	<br />
+				    	<p><i>Note: all emails are @ stanford dot edu</i></p> 
+				    </div>
+				</div>
+	        </div>
+	    </div>
+	</div>
+
+	<script>
+	    addClasses();
+  	</script>
+{% endblock %}

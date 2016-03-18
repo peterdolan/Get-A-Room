@@ -36,6 +36,12 @@
         <link rel="stylesheet" href="{% static "css/base.css" %}" />
         <script src="{% static "js/base.js" %}"></script>
 
+        <link rel="stylesheet" type="text/css" href="{% static "js/dist/sweetalert.css" %} ">
+        <link rel="stylesheet" type="text/css" href="{% static "css/swal-forms.css" %} ">
+
+        <script src="{% static "js/dist/sweetalert.min.js" %}"></script>
+        <script src="{% static "js/swal-forms.js" %}"></script>
+
         {% block head_block %}{% endblock %}
 
     </head>
@@ -63,13 +69,14 @@
                         <li><a href="/booker/profile/">View Profile</a></li>
                         <li><a href="/admin/">Admin Portal</a></li>
                         <li role="separator" class="divider"></li>
+                        <li><a href="/booker/settings/">Settings</a></li>
                         <li><a href="/booker/logout/">Logout</a></li>
                     </ul>
                     <!-- <a class="header-link" href="/admin/">Admin Portal</a><br />
                     <a class="header-link" href="/booker/logout/">Logout</a><br /> -->
                 {% else %}
                     <a class="header-link" href="/booker/register/">Sign Up</a><br />
-                    <a class="header-link" href="/booker/login/">Login</a><br />
+                    <a class="header-link" href="/booker/login/">Login</a>
                 {% endif %}
             </div>
 

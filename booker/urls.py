@@ -26,4 +26,7 @@ urlpatterns = [
     url(r'^user/$',views.user,name='user'),
     url(r'^buildings/$',views.buildings,name='buildings'),
     url(r'^calendar/get_closest_reservation/$',views.get_closest_reservation,name='get_closest_reservation'),
+    url(r'^settings/$',views.settings,name='settings'),
+    url(r'^change_password/$',views.change_password,name='change_password'),
+    url(r'^change_profile_picture/$',views.change_profile_picture,name='change_profile_picture'),
 ]

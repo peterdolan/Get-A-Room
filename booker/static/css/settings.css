@@ -1,0 +1,92 @@
+#settings .centered-container {
+  width: 70% !important;
+}
+
+#settings {
+  color: white;
+  font-family: Futura,Trebuchet MS,Arial,sans-serif;
+}
+
+/*#settings h1, label, input {
+  padding: 5px;
+}*/
+
+.column {
+    float: left;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px; 
+}
+
+.one-fourth {
+    width: 25%;
+}
+
+.three-fourths {
+    width: 60%;
+}
+
+#settings .inner-container {
+  margin-top: 10px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#settings #nav li {
+  margin: 4px;
+}
+
+#settings #nav li a{
+  color: white;
+}
+
+#settings #nav li.active a{
+  background-color: white;
+  color: #222222;
+}
+
+#settings #nav li.active a:hover {
+  background-color: white;
+}
+
+#settings #nav li:hover a{
+  background-color: #222222;
+  box-shadow: 0 0 0 1px white inset;
+}
+
+.error {
+  color: red;
+  font-size: 10pt;
+}
+
+.profile-pic-container {
+    overflow: hidden;
+    width: 230px;
+    height: 230px;
+}
+
+.profile-pic {
+    width: 230px;
+    height: 230px;
+    -webkit-border-radius: 5px !important;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: block;
+}
+
+#id_picture {
+  background-color: #222222;
+  color: white;
+}
+
+#settings table td, th{
+  padding-right: 30px;
+}
+
+#settings table tr:hover {
+  background-color: white;
+  color: #222222;
+  cursor: default;
+}

@@ -129,7 +129,8 @@ li {
 
 .container {
 	height: 84.9% !important;
-	width: 100% !important;
+	width: 100%;
+	background-color: #222222;
 }
 
 

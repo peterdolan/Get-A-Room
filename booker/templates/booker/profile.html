@@ -8,11 +8,6 @@
 	
 
 	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css">
-	<link rel="stylesheet" type="text/css" href="{% static "js/dist/sweetalert.css" %} ">
-	<link rel="stylesheet" type="text/css" href="{% static "css/swal-forms.css" %} ">
-
-	<script src="{% static "js/dist/sweetalert.min.js" %}"></script>
-	<script src="{% static "js/swal-forms.js" %}"></script>
 {% endblock %}
 
 {% block body_block %}
@@ -21,11 +16,11 @@
 			<div class= "column one-forth">
 				{% if profile.picture %}
 					<div class="profile-pic-container">
-						<div class="profile-pic" style="background-image: url({% static profile_pic %});">
+						<div onclick="toChangePicture()" title="click to change profile picture" class="profile-pic" style="background-image: url({% static profile_pic %});">
 						</div>
 					</div>
 				{% else %}
-					<input class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+					<input onclick="toChangePicture()" class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
 				{% endif %}
 				<h2 class="user-name">
 				<a class="name-link" href=".">{{ profile.first_name }} {{ profile.last_name }}</a>
