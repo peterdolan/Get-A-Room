@@ -104,24 +104,30 @@ function updateActiveGroup(nname) {
 	}
 	var old_group = document.getElementsByClassName("list-group-item active");
 	var group = document.getElementById(nname);
+
 	var old_remove_button = document.getElementsByClassName("remove-group-button active");
 	var remove_button = document.getElementById("remove-group-button "+nname);
-	var old_groupres_button = document.getElementsByClassName("group-res-button active");
-	var groupres_button = document.getElementById("group-res-button " + nname);
 
+	var old_group_content = document.getElementsByClassName("group-content active");
+	var group_content = document.getElementById("group-content "+nname);
+
+	// If the group that was clicked was the active group, unactivate it
 	if (group === old_group[0]) {
 		group.className = "list-group-item";
 		remove_button.className = "remove-group-button";
-		groupres_button.className = "group-res-button";
+		group_content.className = "group-content";
 	} else {
+		// If there is an active group, unactivate it
 		if (old_group.length !== 0) {
 			old_group[0].className = "list-group-item";
 			old_remove_button[0].className = "remove-group-button";
-			old_groupres_button[0].className = "group-res-button";
+			old_group_content[0].className = "group-content";
+
 		}
+		// Set the group that was clicked to active
 		group.className = "list-group-item active";
 		remove_button.className = "remove-group-button active";
-		groupres_button.className = "group-res-button active";
+		group_content.className = "group-content active"
 	}
 }
 
@@ -278,7 +284,7 @@ function makeContentInactive() {
 
 function joinGroupPopup() {
 	swal.withForm({   
-		title: "Join a Group!", 
+		title: "Request to Join a Group!", 
 		text: 'Search existing groups:',
 		confirmButtonColor: '#FED100',
 		showCancelButton: true,   
@@ -294,14 +300,16 @@ function joinGroupPopup() {
 			group_name = this.swalForm.name;
 			if ($.inArray(group_name, group_names) !== -1) {
 				$.ajax({
-					url : "/booker/join_group/",
+					url : "/booker/join_group_request/",
 					type: "POST",
 					data : {group_name:group_name},
 				});
 				setTimeout(function(){ 
 					swal({
-						title: "Successfully joined " + group_name + "!",
+						title: "Request sent to " + group_name + "!",
+						text: "You will be added to this group once the group admin accepts your request.",
 						type: "success",
+						confirmButtonColor: '#FED100',
 					},
 					function() {
 						location.replace("/booker/profile/?tab=group");
