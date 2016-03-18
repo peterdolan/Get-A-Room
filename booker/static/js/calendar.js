@@ -28,13 +28,18 @@ $(document).ready(function () {
 var buildings_map;
 var reservations_list;
 
+// function mycomparator(a,b) {
+// 	return 
+// }
+
 function getBuildings() {
 	jQuery.get("/booker/buildings",function(building_list) {
 		buildings_map = JSON.parse(building_list);
 		if(Object.keys(buildings_map).length > 0) {
 			var select = document.getElementById("calview_bldg");
 			var building = select.options[select.selectedIndex].value;
-			$.each(buildings_map[building], function(key, value) {
+			var rooms = buildings_map[building];
+			$.each(rooms.sort(), function(key, value) {
 		    	$('#calview_room')
 		    		.append($("<option></option>")
 		    		.attr("value",value)
@@ -53,8 +58,8 @@ function building_submit() {
     		.find('option')
     		.remove()
     		.end()
-
-    $.each(buildings_map[building], function(key, value) {
+    var rooms = buildings_map[building];
+    $.each(rooms.sort(), function(key, value) {
     	$('#calview_room')
     		.append($("<option></option>")
     		.attr("value",value)
@@ -63,17 +68,6 @@ function building_submit() {
 	calendar_refresh();
 	getCurrentRoom();
 }
-
-//function to get a day's reservations given a room - needs to be called inside each time user clicks sweetalert
-//goal is to stop user (error msg) whne htye try to reserve something that overlaps
-
-//also look at getbuilding
-// function getReservationList(room_name, date) {
-// 	jQuery.get("/booker/get_reservation_list/",function(res_list) {
-// 		reservations_list = JSON.parse(res_list)
-// 	});
-// }
-
 
 function getHeight() {
 	var clientHeight;
@@ -97,8 +91,6 @@ function getHeight() {
 function calendar_refresh() {
 	var value = document.getElementById("calview_room");
 	var room = value.options[value.selectedIndex].value;
-	// console.log(value);
-	// console.log(room);
 	$('#calendar').remove()
 	var new_div = document.createElement("div");
 	new_div.id = 'calendar';
@@ -264,7 +256,6 @@ function getFormattedTime(date) {
 function getCurrentRoom(){
 	var value = document.getElementById("calview_room");
     var room = value.options[value.selectedIndex].value;
-	document.getElementById('aggregator_name').innerHTML = room;
 }
 getCurrentRoom();
 
