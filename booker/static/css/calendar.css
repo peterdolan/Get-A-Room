@@ -29,6 +29,7 @@ span.time {
 
 .cal-view-div {
 	float: left;
+	background-color: white;
 }
 
 .CalendarTitle > label {
@@ -36,11 +37,14 @@ span.time {
 	font-size: 30px;
 	font-family: Futura,Trebuchet MS,Arial,sans-serif !important;
     font-weight: 100;
+}
 
+.TitleText {
+	color: #fed100;
 }
 
 .container {
-	/*background-color: black;*/
+	background-color: #222222;
 }
 
 .cal_container {
@@ -72,6 +76,11 @@ body {
 
 .fc-content {
 	height: 50%;
+	background-color: white;
+}
+
+.fc-header {
+	color: #fed100;
 }
 
 form_field{
