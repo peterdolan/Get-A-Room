@@ -77,6 +77,26 @@ function building_submit() {
 // 	});
 // }
 
+
+function getHeight() {
+	var clientHeight;
+	if( typeof( window.innerWidth ) == 'number' ) {
+	//Non-IE
+	clientHeight = window.innerHeight;
+	} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+	//IE 6+ in 'standards compliant mode'
+	clientHeight = document.documentElement.clientWidth;
+	return document.documentElement.clientHeight;
+	} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+	//IE 4 compatible
+	clientHeight = document.body.clientHeight;
+	}
+	clientHeight -= $('.header').outerHeight(true);
+	clientHeight -= $('.CalendarTitle').outerHeight(true);
+	clientHeight -= ($('.cal_container').outerHeight(true) - $('.cal_container').height());
+	return clientHeight-20;
+}
+
 function calendar_refresh() {
 	var value = document.getElementById("calview_room");
 	var room = value.options[value.selectedIndex].value;
@@ -95,15 +115,15 @@ function calendar_refresh() {
 		views:
         {
         	agendaWeek: {
-        		// start: '08:00', 
-            	// end: '23:59',
-            	minTime: "05:00:00",
+     //        	businessHours: {
+     //    			start: '02:00',
+					// end: '08:00',
+					// dow: [1,2,3,4,5,6,7]
+     //    		},
         	}
         },
-		// start: '08:00',
-		// end: '02:00',
 		allDaySlot: false,
-		height: 1200,
+		height: getHeight(),
 		editable: false,
 		defaultView: 'agendaWeek',
 		eventColor: '#fed100',
@@ -129,7 +149,6 @@ function make_reservation(date) {
 			showLoaderOnConfirm: true,
 		    formFields: [
 				{ id: 'description', placeholder: 'Add a description for your booking' },
-				// { id: 'length', placeholder: 'Duration of your booking' },
 				{ id: 'length', type: 'select', options: [
 					{value: '30', text: '30 minutes'},
 					{value: '60', text: '1 hour'},
@@ -142,10 +161,17 @@ function make_reservation(date) {
 			}, 
 			function (isConfirm) {
 				if (isConfirm) {
+					var desc;
+					if (this.swalForm.description == '') {
+						desc = "MyEvent!";
+					}
+					else {
+						desc = this.swalForm.description;
+					}
 					$.ajax({
 						url : "../post_reservation/",
 						type: "POST",
-						data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), duration:this.swalForm.length, description:this.swalForm.description},
+						data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), duration:this.swalForm.length, description:desc},
 					});
 					setTimeout(function(){ 
 						swal({
