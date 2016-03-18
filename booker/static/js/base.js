@@ -12,3 +12,7 @@ $(document).ready(function() {
 });
 
 var user_picture;
+
+function showNotifications() {
+	swal("You have no notifications");   
+}

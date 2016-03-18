@@ -56,7 +56,7 @@
                     <a class="header-link" id="calendar-icon" href="/booker/calendar/">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </a>
-                    <a class="header-link" id="notifications" href="/booker/calendar/">
+                    <a class="header-link" id="notifications" onclick="showNotifications()" href="#">
                         <span class="glyphicon glyphicon-bell"></span>
                     </a>
                     <a class="header-link" id="profile" href="/booker/profile/">
@@ -69,14 +69,13 @@
                         <li><a href="/booker/profile/">View Profile</a></li>
                         <li><a href="/admin/">Admin Portal</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/booker/settings/">Settings</a></li>
                         <li><a href="/booker/logout/">Logout</a></li>
                     </ul>
                     <!-- <a class="header-link" href="/admin/">Admin Portal</a><br />
                     <a class="header-link" href="/booker/logout/">Logout</a><br /> -->
                 {% else %}
-                    <a class="header-link" href="/booker/register/">Sign Up</a><br />
-                    <a class="header-link" href="/booker/login/">Login</a>
+                    <a class="header-link-login" href="/booker/register/">Sign Up</a>
+                    <a class="header-link-login" href="/booker/login/">Login</a>
                 {% endif %}
             </div>
 

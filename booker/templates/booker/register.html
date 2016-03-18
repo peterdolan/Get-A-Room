@@ -5,14 +5,12 @@
 {% endblock %}
 {% block body_block %}
     <div class="container">
-        <h1>Register with Get-A-Room!</h1>
+        <h1 class="login-header">Register with Get-A-Room!</h1>
 
         {% if registered %}
         <strong>Thank you for registering!</strong>
         <a href="/booker/">Return to the homepage.</a><br />
         {% else %}
-        <strong>Register here!</strong><br />
-
         <form id="user_form" method="post" action="/booker/register/"
                 enctype="multipart/form-data">
 

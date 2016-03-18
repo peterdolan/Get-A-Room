@@ -5,11 +5,11 @@
 {% endblock %}
 {% block body_block %}
 	<div class="container">
-        <h1>Login to Get-A-Room</h1>
+        <h1 class="login-header">Login to Get-A-Room</h1>
 
         <form id="login_form" method="post" action="/booker/login/">
             {% csrf_token %}
-            Email: <input class="textbox" type="text" name="username" value="" size="50" />
+            Email: <input class="textbox" autocomplete="off" type="text" name="username" value="" size="50" />
             <br />
             Password: <input class="textbox" type="password" name="password" value="" size="50" />
             <br />
