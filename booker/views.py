@@ -492,6 +492,11 @@ def organizations(request):
 		return HttpResponse(serializers.serialize('json',Organization.objects.all()))
 
 @ensure_csrf_cookie
+def user_profiles(request):
+	if request.method == "GET":
+		return HttpResponse(serializers.serialize('json',UserProfile.objects.all()))
+
+@ensure_csrf_cookie
 def join_group_request(request):
 	if request.method == 'POST':
 		group_name = request.POST.get('group_name')
@@ -509,6 +514,30 @@ def join_org(request):
 		org = Organization.objects.get(name=org_name)
 		request.user.userprofile.organizations.add(org)
 		# Reservation.objects.filter(pk__in=reservation_ids).delete()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def add_user_to_group(request):
+	if request.method == 'POST':
+		group_name = request.POST.get('group_name')
+		group = Group.objects.get(name=group_name)
+		user_profile_pk = int(request.POST.get('user_profile_pk'))
+		user_profile = UserProfile.objects.get(pk=user_profile_pk)
+		user_profile.groups.add(group)
+		user_profile.save()
+
+	return HttpResponse(0)
+
+@ensure_csrf_cookie
+def add_group_admin(request):
+	if request.method == 'POST':
+		group_name = request.POST.get('group_name')
+		group = Group.objects.get(name=group_name)
+		user_profile_pk = int(request.POST.get('user_profile_pk'))
+		user_profile = UserProfile.objects.get(pk=user_profile_pk)
+		group.admins.add(user_profile)
+		group.save()
 
 	return HttpResponse(0)
 

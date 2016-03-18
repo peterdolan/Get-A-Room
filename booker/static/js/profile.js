@@ -15,6 +15,7 @@ $(document).ready(function () {
 
 	getGroupList();
 	getOrgList();
+	getUserList();
 
 	$(window).bind("beforeunload", function(e) {
 		deleted_reservations = document.getElementsByClassName("deleted-reservation");
@@ -49,21 +50,30 @@ $(document).ready(function () {
 
 function getGroupList() {
 	jQuery.get("/booker/groups/",function(group_objs) {
-		group_list = JSON.parse(group_objs)
-		group_names = []
+		group_list = JSON.parse(group_objs);
+		group_names = [];
 		for (var i=0; i<group_list.length; i++) {
-			console.log(1);
-			group_names.push(group_list[i]["fields"]["name"])
+			group_names.push(group_list[i]["fields"]["name"]);
 		}
 	});
 }
 
 function getOrgList() {
 	jQuery.get("/booker/organizations/",function(org_objs) {
-		org_list = JSON.parse(org_objs)
-		org_names = []
+		org_list = JSON.parse(org_objs);
+		org_names = [];
 		for (var i=0; i<org_list.length; i++) {
-			org_names.push(org_list[i]["fields"]["name"])
+			org_names.push(org_list[i]["fields"]["name"]);
+		}
+	});
+}
+
+function getUserList() {
+	jQuery.get("/booker/user_profiles/",function(user_objs) {
+		user_list = JSON.parse(user_objs);
+		user_names_emails = [];
+		for (var i=0; i<user_list.length; i++) {
+			user_names_emails.push(user_list[i]["fields"]["first_name"]+ ' ' +user_list[i]["fields"]["last_name"]);
 		}
 	});
 }
@@ -72,6 +82,8 @@ var group_list;
 var group_names;
 var org_list;
 var org_names;
+var user_list;
+var user_names_emails;
 var delete_called = false;
 
 function updateActiveOrg(nname) {
@@ -416,6 +428,160 @@ function createGroupPopup() {
 		    }
 		}
 	)
+}
+
+// function requestsPopup(group_name) {
+// 	swal.withForm({   
+// 		title: "Request to Join a Group!", 
+// 		text: 'Search existing groups:',
+// 		confirmButtonColor: '#FED100',
+// 		showCancelButton: true,   
+// 		closeOnConfirm: false,   
+// 		showLoaderOnConfirm: true, 
+// 		html: true,
+// 		formFields: [
+// 			{ id: 'name', placeholder: 'Start typing group name' },
+// 		]
+// 	}, 
+// 	function(isConfirm) {
+// 		if (isConfirm) {
+// 			group_name = this.swalForm.name;
+// 			if ($.inArray(group_name, group_names) !== -1) {
+// 				$.ajax({
+// 					url : "/booker/join_group_request/",
+// 					type: "POST",
+// 					data : {group_name:group_name},
+// 				});
+// 				setTimeout(function(){ 
+// 					swal({
+// 						title: "Request sent to " + group_name + "!",
+// 						text: "You will be added to this group once the group admin accepts your request.",
+// 						type: "success",
+// 						confirmButtonColor: '#FED100',
+// 					},
+// 					function() {
+// 						location.replace("/booker/profile/?tab=group");
+// 					});   
+// 	    		}, 2000);
+// 			} else {
+// 				setTimeout(function(){ 
+// 					swal("Uh oh! There is no group called " + group_name + "!");   
+// 	    		}, 2000);
+// 			}
+// 	    }
+// 	});
+// 	jQuery(function($) {
+// 		var data = [];
+// 		console.log("HERE!")
+// 		console.log(group_name);
+// 		console.log($.inArray(group_name,group_names));
+// 		var curr_group = group_list[$.inArray(group_name,group_names)];
+// 		console.log(curr_group);
+// 		for (var i=0; i<curr_group["fields"]["member_requests"].length;i++) {
+// 			console.log(curr_group["fields"]["member_requests"][i][]);
+// 		}
+// 		$("#name").autocomplete({
+// 			source: data
+// 		});
+// 	});
+// }
+
+
+function addEditMembersPopup(group_name) {
+	swal.withForm({   
+		title: "Add Members to Your Group!", 
+		text: 'Search users:',
+		confirmButtonColor: '#FED100',
+		showCancelButton: true,   
+		closeOnConfirm: false,   
+		showLoaderOnConfirm: true, 
+		html: true,
+		formFields: [
+			{ id: 'name', placeholder: "Start typing user's name" },
+		]
+	}, 
+	function(isConfirm) {
+		if (isConfirm) {
+			user_name = this.swalForm.name;
+			if ($.inArray(user_name, user_names_emails) !== -1) {
+				user_profile_pk = user_list[$.inArray(user_name, user_names_emails)]["pk"];
+				$.ajax({
+					url : "/booker/add_user_to_group/",
+					type: "POST",
+					data : {group_name:group_name,user_profile_pk:user_profile_pk},
+				});
+				setTimeout(function(){ 
+					swal({
+						title: user_name + " added to " + group_name + "!",
+						type: "success",
+						confirmButtonColor: '#FED100',
+					},
+					function() {
+						location.replace("/booker/profile/?tab=group");
+					});   
+	    		}, 2000);
+			} else {
+				setTimeout(function(){ 
+					swal("Uh oh! There is no user called " + user_name + "!");   
+	    		}, 2000);
+			}
+	    }
+	});
+	jQuery(function($) {
+		var data = user_names_emails;
+		console.log(data);
+		$("#name").autocomplete({
+			source: data
+		});
+	});
+}
+
+function addEditAdminsPopup(group_name) {
+	swal.withForm({   
+		title: "Add another Admin for Your Group!", 
+		text: 'Search users:',
+		confirmButtonColor: '#FED100',
+		showCancelButton: true,   
+		closeOnConfirm: false,   
+		showLoaderOnConfirm: true, 
+		html: true,
+		formFields: [
+			{ id: 'name', placeholder: "Start typing user's name" },
+		]
+	}, 
+	function(isConfirm) {
+		if (isConfirm) {
+			user_name = this.swalForm.name;
+			if ($.inArray(user_name, user_names_emails) !== -1) {
+				user_profile_pk = user_list[$.inArray(user_name, user_names_emails)]["pk"];
+				$.ajax({
+					url : "/booker/add_group_admin/",
+					type: "POST",
+					data : {group_name:group_name,user_profile_pk:user_profile_pk},
+				});
+				setTimeout(function(){ 
+					swal({
+						title: user_name + " made admin of " + group_name + "!",
+						type: "success",
+						confirmButtonColor: '#FED100',
+					},
+					function() {
+						location.replace("/booker/profile/?tab=group");
+					});   
+	    		}, 2000);
+			} else {
+				setTimeout(function(){ 
+					swal("Uh oh! There is no user called " + user_name + "!");   
+	    		}, 2000);
+			}
+	    }
+	});
+	jQuery(function($) {
+		var data = user_names_emails;
+		$("#name").autocomplete({
+			source: data
+		});
+	});
 }
 
 

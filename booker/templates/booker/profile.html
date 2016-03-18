@@ -85,20 +85,21 @@
 							<div id="main" class="full-list">
 								<div class="list-group" id="group-list">
 									{% for group in groups %}
-										<a id="group{{ group.id }}" onclick="updateActiveGroup('group{{group.id}}')" href="#" class="list-group-item">
+										<a id="group{{ group.id }}" href="#" class="list-group-item">
 											<h4><span>{{ group.name }}</span></h4>
 											<span class="pull-right">
 												{% if group in admin_groups %}
 													<span class="glyphicon glyphicon-tower group-header-icon" aria-hidden="true"></span>
-													<span class="glyphicon glyphicon-chevron-down group-header-icon" aria-hidden="true"></span>
-													{% if group.member_requests.count > 0 %}
+													<span class="glyphicon glyphicon-chevron-down group-header-icon" aria-hidden="true" onclick="updateActiveGroup('group{{group.id}}')"></span>
+													<!-- {% if group.member_requests.count > 0 %}
 														<span class="badge request-count right"></span>
-													{% endif %}
+													{% endif %} -->
 												{% endif %}
 												<button class="btn remove-group-button" id="remove-group-button group{{ group.id }}" onclick="removeGroup('group{{group.id}}')">
 													<span class="glyphicon glyphicon-remove group-header-icon"></span>
 												</button>
 											</span>
+
 											{% if group in admin_groups %}
 												<div id="group-content group{{ group.id }}" class="group-content">
 													<div class="divider"></div>
@@ -114,26 +115,28 @@
 															{% endif %}
 														{% endfor %}
 													</div>
+
 													<div class="divider"></div>
 													<div class="group-content-item" id="group-content-members">
 														<span class="glyphicon glyphicon-plus"></span>
 														<h4>Members</h4>
-														<button class="btn right group-content-button" onclick="toGroupRes('{{group.name}}')">Requests
+														<!-- <button class="btn right group-content-button" onclick="requestsPopup('{{group.name}}')">Requests
+														</button> -->
+														<button class="btn right group-content-button" onclick="addEditMembersPopup('{{group.name}}')">Add Members
 														</button>
-														<button class="btn right group-content-button" onclick="toGroupRes('{{group.name}}')">Add/Edit Members
-														</button>
-														{% if group.member_requests.count > 0 %}
+														<!-- {% if group.member_requests.count > 0 %}
 															<span class="badge request-count right">{{group.member_requests.count}}</span>
-														{% endif %}
+														{% endif %} -->
 														<span class="group-content-blurb">Total members: {{group.userprofile_set.count}}</span>
-													</div>					
+													</div>	
+
 													<div class="divider"></div>
 													<div class="group-content-item" id="group-content-admins">
 														<span class="glyphicon glyphicon-tower"></span>
 														<h4>Admins</h4>
-														<button class="btn right group-content-button danger" onclick="toGroupRes('{{group.name}}')">DELETE
+														<button class="btn right group-content-button danger" onclick="deleteGroupPopup('{{group.name}}')">DELETE
 														</button>
-														<button class="btn right group-content-button" onclick="toGroupRes('{{group.name}}')">Add/Edit Admins
+														<button class="btn right group-content-button" onclick="addEditAdminsPopup('{{group.name}}')">Add Admins
 														</button>
 														{% for admin in group.admins.all %}
 															{% if forloop.counter0 < 3 %}

@@ -23,5 +23,8 @@ urlpatterns = [
     url(r'^organizations/$',views.organizations,name='organizations'),
     url(r'^join_group_request/$',views.join_group_request,name='join_group_request'),
     url(r'^join_org/$',views.join_org,name='join_org'),
-    url(r'^user/$',views.user,name='user')
+    url(r'^user/$',views.user,name='user'),
+    url(r'^user_profiles/$',views.user_profiles,name='user_profiles'),
+    url(r'^add_user_to_group/$',views.add_user_to_group,name='add_user_to_group/'),
+    url(r'^add_group_admin/$',views.add_group_admin,name='add_group_admin/'),
     ]
