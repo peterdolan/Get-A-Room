@@ -17,7 +17,6 @@ def make_custom_datefield(f):
 class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
-
     # The user's first name
     first_name = models.CharField(max_length=30)
     # The user's last name
@@ -93,9 +92,7 @@ class Group(models.Model):
 
 class Reservation(models.Model):
 	room = models.ForeignKey(Room, on_delete=models.CASCADE)
-
-	#TODO: Should null=True for this user attribute?
-	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, null=True)
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 	group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 	description = models.TextField()
 	start_time = models.DateTimeField()

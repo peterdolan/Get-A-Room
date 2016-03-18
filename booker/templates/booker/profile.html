@@ -53,14 +53,17 @@
 							<div id="main" class="full-list">
 								<div class="list-group" id="reservation-list">
 									{% for reservation in reservations %}
-										<a id="reservation{{ reservation.id }}" onclick="updateActiveReservation('reservation{{reservation.id}}')" href="#" class="list-group-item">
+										<a id="reservation{{ reservation.id }}" onclick="updateActiveReservation('{{profile.id}}','{{reservation.group.name}}','reservation{{reservation.id}}')" href="#" class="list-group-item">
 											<h4><span>{{ reservation.room.building.name }}</span> <span>{{ reservation.room.name }}</span></h4>
 											<span class="time">{{reservation.start_time}}</span> to <span class="time">{{reservation.end_time}}</span>
-											<span class="pull-right">
-												<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
-													<span class="glyphicon glyphicon-remove"></span>
-												</button>
-											</span>
+											{% if reservation.group != None %}
+												<span class="groupname">{{reservation.group.name}}</span>
+											{% else %}
+												<span class="groupname">{{profile.first_name}} {{profile.last_name}}</span>
+											{% endif %}
+											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
 										</a>
 									{% endfor %}
 								</div>

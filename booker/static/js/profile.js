@@ -48,19 +48,29 @@ $(document).ready(function () {
 });
 
 function getGroupList() {
-	jQuery.get("/booker/get_group_list/",function(group_names) {
-		group_list = JSON.parse(group_names)
+	jQuery.get("/booker/groups/",function(group_objs) {
+		group_list = JSON.parse(group_objs)
+		group_names = []
+		for (var i=0; i<group_list.length; i++) {
+			group_names.push(group_list[i]["fields"]["name"])
+		}
 	});
 }
 
 function getOrgList() {
-	jQuery.get("/booker/get_org_list/",function(org_names) {
-		org_list = JSON.parse(org_names)
+	jQuery.get("/booker/organizations/",function(org_objs) {
+		org_list = JSON.parse(org_objs)
+		org_names = []
+		for (var i=0; i<org_list.length; i++) {
+			org_names.push(org_list[i]["fields"]["name"])
+		}
 	});
 }
 
 var group_list;
+var group_names;
 var org_list;
+var org_names;
 var delete_called = false;
 
 function updateActiveOrg(nname) {
@@ -114,8 +124,23 @@ function updateActiveGroup(nname) {
 	}
 }
 
-function updateActiveReservation(nname) {
-	if(delete_called) {
+function userIsGroupAdmin(user_id,group_name) {
+	for (var i=0; i<group_list.length; i++) {
+		curr_group = group_list[i];
+		if (group_name === curr_group["fields"]["name"]) {
+			if ($.inArray(parseInt(user_id), curr_group["fields"]["admins"]) !== -1) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function updateActiveReservation(user_id,group_name,nname) {
+	if (group_name !== "" && !userIsGroupAdmin(user_id,group_name)) {
+		return;
+	}
+	if (delete_called) {
 		delete_called = false;
 		return;
 	}
@@ -266,7 +291,7 @@ function joinGroupPopup() {
 	function(isConfirm) {
 		if (isConfirm) {
 			group_name = this.swalForm.name;
-			if ($.inArray(group_name, group_list) !== -1) {
+			if ($.inArray(group_name, group_names) !== -1) {
 				$.ajax({
 					url : "/booker/join_group/",
 					type: "POST",
@@ -289,7 +314,7 @@ function joinGroupPopup() {
 	    }
 	});
 	jQuery(function($) {
-		var data = group_list;
+		var data = group_names;
 		$("#name").autocomplete({
 			source: data
 		});
@@ -312,7 +337,7 @@ function joinOrgPopup() {
 	function(isConfirm) {
 		if (isConfirm) {
 			org_name = this.swalForm.name;
-			if ($.inArray(org_name, org_list) !== -1) {
+			if ($.inArray(org_name, org_names) !== -1) {
 				$.ajax({
 					url : "/booker/join_org/",
 					type: "POST",
@@ -335,7 +360,7 @@ function joinOrgPopup() {
 	    }
 	});
 	jQuery(function($) {
-		var data = org_list;
+		var data = org_names;
 		$("#name").autocomplete({
 			source: data
 		});
@@ -359,7 +384,7 @@ function createGroupPopup() {
 		function (isConfirm) {
 			if (isConfirm) {
 				group_name = this.swalForm.name;
-				if ($.inArray(group_name, group_list) === -1) {
+				if ($.inArray(group_name, group_names) === -1) {
 					$.ajax({
 						url : "/booker/create_group/",
 						type: "POST",

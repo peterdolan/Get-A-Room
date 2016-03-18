@@ -1,23 +1,22 @@
 from datetime import datetime, date, time, timedelta
+from itertools import chain
 from sets import Set
 import pytz
 import json
 
+from django.core import serializers
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
 from booker.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login, logout
-from django.core.serializers.json import DjangoJSONEncoder
 from django.views.decorators.csrf import ensure_csrf_cookie
-import json
 
 from .models import *
 from .forms import *
@@ -47,6 +46,9 @@ def getValidRooms(form, nmeetings):
 	start_time = form.cleaned_data['time']
 	duration = form.cleaned_data['duration']
 	capacity = int(form.cleaned_data['capacity'])
+	nmeetings = form.cleaned_data['nmeetings']
+	if nmeetings is None or not form.cleaned_data['weekly']:
+		nmeetings = 1
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
 	windows_bool = bool(form.cleaned_data['windows'])
@@ -112,6 +114,7 @@ def getActualDate(date_str, time_str):
 	return utc.localize(date)
 
 def post_reservation(request):
+
 	print "In post_rez"
 	form = ReservationForm(request.POST)
 	if form.is_valid():
@@ -182,7 +185,6 @@ def calendar_view(request):
 
 def eventsFeed(request, building_name):
 	from django.utils.timezone import utc
-	from django.core.serializers.json import DjangoJSONEncoder
 
 	if request.is_ajax():
 		print 'Its ajax from fullCalendar()'
@@ -348,31 +350,40 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
+	# Handles reloading and automatically navigating to a given tab
 	active_tab_array = ['','','']
 	active_tab = request.GET.get('tab')
 	if active_tab is None:
 		active_tab = 'reservation'
-
 	if active_tab == 'reservation':
 		active_tab_array[0] = ' active'
 	elif active_tab == 'group':
 		active_tab_array[1] = ' active'
 	elif active_tab == 'organization':
 		active_tab_array[2] = ' active'
-
-	print active_tab_array
-
+	# Profile of the current user
 	profile = request.user.userprofile
+	# User's profile picture
 	profile_pic = profile.get_profile_pic_url()
-	reservations = Reservation.objects.all().filter(user=profile,end_time__gte=datetime.today()- timedelta(hours=8))
+	# Reservations under this user's name
+	personal_reservations = Reservation.objects.filter(user=profile,group__isnull=True,end_time__gte=datetime.today()- timedelta(hours=8))
+	# Reservations for groups this user is a member of
+	group_reservations = Reservation.objects.filter(group__in=profile.groups.all(),end_time__gte=datetime.today()- timedelta(hours=8))
+	# Sorts group reservations by group name, breaks ties with start time
+	group_reservations = sorted(group_reservations, key=lambda x: (x.group.name, x.start_time))
+	# Final reservation list (personal+group)
+	reservations = list(chain(personal_reservations,group_reservations))
+	# Groups this user is an admin of
 	admin_groups = []
 	if profile.is_group_admin:
 		admin_groups = profile.get_admin_groups()
+	# Groups this user is a member of
 	groups = profile.groups.all()
+	# Organizations this user is an admin of
 	admin_organizations = []
 	if profile.is_org_admin:
 		admin_organizations = profile.get_admin_organizations()
-	print "Admin Orgs", admin_organizations
+	# Organizations this user is a member of
 	organizations = profile.organizations.all()
 	# print organizations
 	return render(request, 'booker/profile.html', {'profile':profile,
@@ -462,24 +473,14 @@ def delete_profile_info(request):
 	return HttpResponse(0)
 
 @ensure_csrf_cookie
-def get_group_list(request):
-	all_group_names = []
-	all_groups = Group.objects.all()
-	for group in all_groups:
-		all_group_names.append(group.name)
-	print all_group_names
-	print json.dumps(all_group_names)
-	return HttpResponse(json.dumps(all_group_names))
+def groups(request):
+	if request.method == "GET":
+		return HttpResponse(serializers.serialize('json',Group.objects.all()))
 
 @ensure_csrf_cookie
-def get_org_list(request):
-	all_org_names = []
-	all_orgs = Organization.objects.all()
-	for org in all_orgs:
-		all_org_names.append(org.name)
-	print all_org_names
-	print json.dumps(all_org_names)
-	return HttpResponse(json.dumps(all_org_names))
+def organizations(request):
+	if request.method == "GET":
+		return HttpResponse(serializers.serialize('json',Organization.objects.all()))
 
 @ensure_csrf_cookie
 def join_group(request):
