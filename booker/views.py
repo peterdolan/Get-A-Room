@@ -443,12 +443,12 @@ def delete_profile_info(request):
 		reservation_ids_strs = json.loads(request.POST.get('reservation_ids'))
 		reservation_ids = [int(x) for x in reservation_ids_strs]
 		reservations = Reservation.objects.all().filter(pk__in=reservation_ids)
-		# for res in reservations:
-		# 	if res.group:
-		# 		print "GROUP NAME: " + res.group.name
-		# 		group = res.group
-		# 		group.nres = group.nres + 1
-		# 		group.save()
+		for res in reservations:
+			if res.group:
+				print "GROUP NAME: " + res.group.name
+				group = res.group
+				group.nres = group.nres + 1
+				group.save()
 		Reservation.objects.filter(pk__in=reservation_ids).delete()
 
 		# Handle groups deleted from user's profile
