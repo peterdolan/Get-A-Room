@@ -83,7 +83,7 @@ class Group(models.Model):
 	# Users requesting to join this group
 	# a user_profile can select the groups
 	# they are requesting to join via .group_requests.all()
-	member_requests = models.ManyToManyField(UserProfile, related_name="group_requests")
+	member_requests = models.ManyToManyField(UserProfile, related_name="group_requests",null=True)
 	# vso = models.IntegerField()
 
 	def get_member_count(self):

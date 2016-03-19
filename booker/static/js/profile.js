@@ -167,6 +167,7 @@ function updateActiveReservation(user_id,group_name,nname) {
 	var reservation = document.getElementById(nname);
 	var old_button = document.getElementsByClassName("remove-reservation-button active");
 	var button = document.getElementById("remove-reservation-button "+nname);
+	console.log(button);
 
 	if (reservation === old_reservation[0]) {
 		reservation.className = "list-group-item";
