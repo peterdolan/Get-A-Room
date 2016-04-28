@@ -25,10 +25,6 @@ class UserProfile(models.Model):
     organizations = models.ManyToManyField('Organization',null=True,blank=True)
     # Groups the user is a member of
     groups = models.ManyToManyField('Group',null=True,blank=True)
-    # Allows for faster check of OrgAdmin status
-    is_org_admin = models.BooleanField(default=False)
-    # Allows for faster check of GroupAdmin status
-    is_group_admin = models.BooleanField(default=False)
     # Profile picture
     picture = models.ImageField(upload_to='booker/static/images/profile_images', blank=True)
 

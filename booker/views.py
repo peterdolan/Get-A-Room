@@ -394,15 +394,11 @@ def user_profile(request):
 	reservations = list(chain(personal_reservations,group_reservations))
 	print reservations
 	# Groups this user is an admin of
-	admin_groups = []
-	if profile.is_group_admin:
-		admin_groups = profile.admin_of.all()
+	admin_groups = profile.admin_of.all()
 	# Groups this user is a member of
 	groups = profile.groups.all()
 	# Organizations this user is an admin of
-	admin_organizations = []
-	if profile.is_org_admin:
-		admin_organizations = profile.get_admin_organizations()
+	admin_organizations = profile.get_admin_organizations()
 	# Organizations this user is a member of
 	organizations = profile.organizations.all()
 	# print organizations
