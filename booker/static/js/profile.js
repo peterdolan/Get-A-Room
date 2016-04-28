@@ -16,6 +16,7 @@ $(document).ready(function () {
 	getGroupList();
 	getOrgList();
 	getUserList();
+	getCurrentUser();
 
 	$(window).bind("beforeunload", function(e) {
 		deleted_reservations = document.getElementsByClassName("deleted-reservation");
@@ -48,32 +49,39 @@ $(document).ready(function () {
 	});
 });
 
+function getCurrentUser() {
+	jQuery.get("/booker/current-user/",function(user_obj) {
+		current_user = user_obj;
+		console.log(current_user);
+	});
+}
+
 function getGroupList() {
 	jQuery.get("/booker/groups/",function(group_objs) {
-		group_list = JSON.parse(group_objs);
+		group_list = group_objs;
 		group_names = [];
 		for (var i=0; i<group_list.length; i++) {
-			group_names.push(group_list[i]["fields"]["name"]);
+			group_names.push(group_list[i]["name"]);
 		}
 	});
 }
 
 function getOrgList() {
 	jQuery.get("/booker/organizations/",function(org_objs) {
-		org_list = JSON.parse(org_objs);
+		org_list = org_objs;
 		org_names = [];
 		for (var i=0; i<org_list.length; i++) {
-			org_names.push(org_list[i]["fields"]["name"]);
+			org_names.push(org_list[i]["name"]);
 		}
 	});
 }
 
 function getUserList() {
-	jQuery.get("/booker/user_profiles/",function(user_objs) {
-		user_list = JSON.parse(user_objs);
+	jQuery.get("/booker/user-profiles/",function(user_objs) {
+		user_list = user_objs;
 		user_names_emails = [];
 		for (var i=0; i<user_list.length; i++) {
-			user_names_emails.push(user_list[i]["fields"]["first_name"]+ ' ' +user_list[i]["fields"]["last_name"]);
+			user_names_emails.push(user_list[i]["first_name"]+ ' ' +user_list[i]["last_name"]);
 		}
 	});
 }
@@ -84,7 +92,7 @@ var org_list;
 var org_names;
 var user_list;
 var user_names_emails;
-var delete_called = false;
+var current_user;
 
 function updateActiveOrg(nname) {
 	if(delete_called) {
@@ -110,10 +118,6 @@ function updateActiveOrg(nname) {
 }
 
 function updateActiveGroup(nname) {
-	if(delete_called) {
-		delete_called = false;
-		return;
-	}
 	var old_group = document.getElementsByClassName("list-group-item active");
 	var group = document.getElementById(nname);
 
@@ -146,8 +150,8 @@ function updateActiveGroup(nname) {
 function userIsGroupAdmin(user_id,group_name) {
 	for (var i=0; i<group_list.length; i++) {
 		curr_group = group_list[i];
-		if (group_name === curr_group["fields"]["name"]) {
-			if ($.inArray(parseInt(user_id), curr_group["fields"]["admins"]) !== -1) {
+		if (group_name === curr_group["name"]) {
+			if ($.inArray(parseInt(user_id), curr_group["admins"]) !== -1) {
 				return true;
 			}
 		}
@@ -159,15 +163,10 @@ function updateActiveReservation(user_id,group_name,nname) {
 	if (group_name !== "" && !userIsGroupAdmin(user_id,group_name)) {
 		return;
 	}
-	if (delete_called) {
-		delete_called = false;
-		return;
-	}
 	var old_reservation = document.getElementsByClassName("list-group-item active");
 	var reservation = document.getElementById(nname);
 	var old_button = document.getElementsByClassName("remove-reservation-button active");
 	var button = document.getElementById("remove-reservation-button "+nname);
-	console.log(button);
 
 	if (reservation === old_reservation[0]) {
 		reservation.className = "list-group-item";
@@ -182,7 +181,7 @@ function updateActiveReservation(user_id,group_name,nname) {
 	}
 }
 
-function removeReservation(nname) {
+function removeReservation(reservation_id) {
 	swal({   
 		title: "Are you sure?",   
 		text: "You will permanently lose this reservation!",   
@@ -192,20 +191,42 @@ function removeReservation(nname) {
 		confirmButtonText: "Yes, cancel it!",   
 		closeOnConfirm: false 
 	},
-	function() {
-		delete_called = true;
-		nname = "#" + nname;
-		$(nname).removeClass('active');
-		$(nname).addClass('deleted-reservation');
-		$(nname).css("display","none");
-		swal({
-			title: "Reservation canceled!",
-			type: "success",
-		},
-		function() {
-			location.replace("/booker/profile/?tab=reservation");
-		}); 
+	function(isConfirm) {
+		if (isConfirm) {
+			$.ajax({
+				url : "/booker/reservations/"+reservation_id,
+				type: "DELETE",
+			});
+			setTimeout(function(){ 
+				swal({
+					title: "Reservation canceled!",
+			 		type: "success",
+					confirmButtonColor: '#FED100',
+				},
+				function() {
+					location.replace("/booker/profile/?tab=group");
+				});   
+    		}, 2000);
+		} else {
+			setTimeout(function(){ 
+				swal("Uh oh! Could not cancel this reservation!");   
+	    	}, 2000);
+		}
 	});
+	// function() {
+	// 	delete_called = true;
+	// 	nname = "#" + nname;
+	// 	$(nname).removeClass('active');
+	// 	$(nname).addClass('deleted-reservation');
+	// 	$(nname).css("display","none");
+	// 	swal({
+	// 		title: "Reservation canceled!",
+	// 		type: "success",
+	// 	},
+	// 	function() {
+	// 		location.replace("/booker/profile/?tab=reservation");
+	// 	}); 
+	// });
 }
 
 function toGroupRes(gname) {
@@ -311,11 +332,16 @@ function joinGroupPopup() {
 	function(isConfirm) {
 		if (isConfirm) {
 			group_name = this.swalForm.name;
+			var group = $.grep(group_list, function(e){ return e.name == group_name; });
+			if (group.length !== 0) {
+				group = group[0]
+				group.member_requests.push()
+			}
 			if ($.inArray(group_name, group_names) !== -1) {
 				$.ajax({
-					url : "/booker/join_group_request/",
-					type: "POST",
-					data : {group_name:group_name},
+					url : "/booker/groups/",
+					type: "PUT",
+					data : group,
 				});
 				setTimeout(function(){ 
 					swal({

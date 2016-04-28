@@ -244,7 +244,7 @@ h4 {
     position: absolute;
     top: 35%;
     right: 0%;
-    color: #fff;
+    color: #fff !important;
     background-color: transparent;
     transition: all 0.3s ease 0s;
 }
@@ -256,7 +256,8 @@ h4 {
 
 .list-group-item.active {
     transition: all 0.3s ease 0s !important;
-    background-color: white !important;
+    background-color: #9ED2FF !important;
+    /*background-color: white !important;*/
     color: #555 !important;
 }
 

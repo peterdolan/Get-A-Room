@@ -34,7 +34,7 @@
 					<li class="tab{{active_tab_array.2}}"><a class="tab-link" data-toggle="tab" href="#organizations" onclick="makeContentInactive()">Organizations</a></li>
 				</ul>
 				<div class="tab-content">
-					
+
 					<div id="reservations" class="tab-pane fade in{{active_tab_array.0}}">
 						<div class="button-bar">
 							<div class="header-container">
@@ -56,7 +56,7 @@
 											{% else %}
 												<span class="groupname">{{profile.first_name}} {{profile.last_name}}</span>
 											{% endif %}
-											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
+											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('{reservation.id}}')">
 												<span class="glyphicon glyphicon-remove"></span>
 											</button>
 										</a>

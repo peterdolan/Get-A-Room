@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
+import django.utils
+from pygments.lexers import get_all_lexers
+from pygments.styles import get_all_styles
 from django.contrib.auth.models import User
 
 def getCurDate():
@@ -25,12 +28,13 @@ class UserProfile(models.Model):
     organizations = models.ManyToManyField('Organization',null=True,blank=True)
     # Groups the user is a member of
     groups = models.ManyToManyField('Group',null=True,blank=True)
-    # Allows for faster check of OrgAdmin status
-    is_org_admin = models.BooleanField(default=False)
-    # Allows for faster check of GroupAdmin status
-    is_group_admin = models.BooleanField(default=False)
     # Profile picture
     picture = models.ImageField(upload_to='booker/static/images/profile_images', blank=True)
+    # Time of profile creation
+    created = models.DateTimeField(default=django.utils.timezone.now)
+
+    class Meta:
+    	ordering = ('created',)
 
     # Override the __unicode__() method to return out something meaningful!
     def __unicode__(self):
@@ -102,13 +106,6 @@ class Reservation(models.Model):
 
 	def get_string(self):
 		return self.user_name + ' has booked ' + self.room.name + ' for ' + self.description
-	#+ ' from ' + str(start_time) + ' to ' + str(end_time)
-
-	# def __str__(self):
-	# 	return ' '.join([
-	# 		self.room.name,
-	# 		self.user_name,
-	# 	])
 
 
 
