@@ -3,6 +3,7 @@ from itertools import chain
 from sets import Set
 import pytz
 import json
+import csv
 
 from django.core import serializers
 from django.core.urlresolvers import reverse
@@ -242,6 +243,20 @@ def post_reservation(request):
 		return HttpResponseRedirect('/booker/confirm/')
 	else:
 		return render(request, 'booker/uhmmm.html')
+
+def csv_dump(request, org_name):
+	response = HttpResponse(content_type='text/csv')
+	name = '"' + org_name + '_reservation_list.csv"'
+	print name
+	response['Content-Disposition'] = 'attachment; filename=' + name
+
+	writer = csv.writer(response)
+	reservations = Reservation.objects.all()
+	writer.writerow(["Room Name", "Created By", "Description", "Start Time", "End Time"])
+	for reservation in reservations:
+		if org_name == str.strip(str(reservation.room.building.organization)):
+			writer.writerow([reservation.room, reservation.user, reservation.description, reservation.start_time, reservation.end_time])
+	return response
 
 def confirm(request):
 	if (request.session.get('first_confirm', False)):
