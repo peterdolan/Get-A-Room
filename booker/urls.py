@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^groupres/$', views.groupres, name='groupres'),
     url(r'^singleres/$', views.singleres, name='singleres'),
     url(r'^create_group/$', views.create_group, name='create_group'),
+    url(r'^create_organization/$', views.create_organization, name='create_organization'),
     url(r'^delete_profile_info/$',views.delete_profile_info,name='delete_profile_info'),
     url(r'^groups/$',views.groups,name='groups'),
     url(r'^organizations/$',views.organizations,name='organizations'),

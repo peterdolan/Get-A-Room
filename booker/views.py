@@ -469,6 +469,13 @@ def user_logout(request):
 	# Take the user back to the homepage.
 	return HttpResponseRedirect('/booker/')
 
+def getOnOrganizations(orgs):
+	o = []
+	for org in orgs:
+		if org.on:
+			o.append(org)
+	return o
+
 @login_required
 def user_profile(request):
 	# Handles reloading and automatically navigating to a given tab
@@ -499,10 +506,15 @@ def user_profile(request):
 	admin_groups = profile.admin_of.all()
 	# Groups this user is a member of
 	groups = profile.groups.all()
-	# Organizations this user is an admin of
+
+	# Organizations this user is an admin of and that are "on"
 	admin_organizations = profile.get_admin_organizations()
-	# Organizations this user is a member of
+	admin_organizations = getOnOrganizations(admin_organizations)
+
+	# Organizations this user is a member of and that are "on"
 	organizations = profile.organizations.all()
+	organizations = getOnOrganizations(organizations)
+
 	# print organizations
 	return render(request, 'booker/profile.html', {'profile':profile,
 													'profile_pic':profile_pic,
@@ -543,9 +555,28 @@ def create_group(request):
 		group.save()
 		admin = request.user.userprofile
 		group.admins.add(admin)
+
+		# is this necessary anymore?
 		admin.is_group_admin = True
+
 		admin.groups.add(group)
 		group.save()
+		admin.save()
+
+	return HttpResponse(0)
+
+@login_required
+@ensure_csrf_cookie
+def create_organization(request):
+	if request.method == 'POST':
+		print request.POST.get('org_name')
+		org_name = request.POST.get('org_name')
+		org = Organization(name=org_name)
+		org.save()
+		admin = request.user.userprofile
+		org.admins.add(admin)
+		admin.organizations.add(org)
+		org.save()
 		admin.save()
 
 	return HttpResponse(0)
@@ -667,7 +698,7 @@ def user(request):
 	return HttpResponse(profile_picture_url)
 
 def settings(request):
-	active_tab_array = ['','','']
+	active_tab_array = ['','','','']
 	active_tab = request.GET.get('tab')
 	if active_tab is None:
 		active_tab = 'password'
@@ -675,8 +706,10 @@ def settings(request):
 		active_tab_array[0] = ' active'
 	elif active_tab == 'picture':
 		active_tab_array[1] = ' active'
-	elif active_tab == 'contact':
+	elif active_tab == 'create':
 		active_tab_array[2] = ' active'
+	elif active_tab == 'contact':
+		active_tab_array[3] = ' active'
 	password_form = ChangePasswordForm()
 	profile_form = ChangeProfilePictureForm()
 	pic_url = request.user.userprofile.get_profile_pic_url()

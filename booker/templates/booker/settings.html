@@ -12,7 +12,8 @@
 				<ul id="nav" class="nav nav-pills nav-stacked">
 				  	<li class="{{active_tab.0}}"><a data-toggle="tab" href="#change-password">Change Password</a></li>
 				  	<li class="{{active_tab.1}}"><a data-toggle="tab" href="#change-profile-pic">Change Profile Picture</a></li>
-				  	<li class="{{active_tab.2}}"><a data-toggle="tab" href="#get-help">Contact Us</a></li>
+				  	<li class="{{active_tab.2}}"><a data-toggle="tab" href="#create-org">Create an Organization</a></li>
+				  	<li class="{{active_tab.3}}"><a data-toggle="tab" href="#get-help">Contact Us</a></li>
 				</ul>
 			</div>
 			<div class="column three-fourths">
@@ -56,7 +57,14 @@
 				    		<button type="button" class="btn" onclick="uploadPhoto()">Submit</button>
 				    	</form>
 				    </div>
-				    <div id="get-help" class="tab-pane fade in{{active_tab.2}}">
+				    <div id="create-org" class="tab-pane fade in{{active_tab.2}}">
+				    	<h3>Create an Organization</h3>
+				    	<br />
+				    	<p>Click the button below to request the creation of an organization. Once you submit the request, it will be received and processed by the site administrators.</p>
+				    	<br />
+				    	<button type="button" class="btn" onclick="createOrganization()">Create</button>
+				    </div>
+				    <div id="get-help" class="tab-pane fade in{{active_tab.3}}">
 				    	<h3>Need help? Have a question?</h3>
 				    	<p>Contact one of us:<p>
 				    	<table class="table-hover" cellspacing="3">

@@ -428,7 +428,7 @@ function createGroupPopup() {
 				}
 		    }
 		}
-	)
+	);
 }
 
 function toChangePicture() {

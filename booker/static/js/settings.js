@@ -66,6 +66,59 @@ function changePassword() {
     }
 }
 
+var org_names;
+
+function getOrgList() {
+    jQuery.get("/booker/organizations/",function(org_objs) {
+        org_list = JSON.parse(org_objs);
+        org_names = [];
+        for (var i=0; i<org_list.length; i++) {
+            org_names.push(org_list[i]["fields"]["name"]);
+        }
+    });
+}
+
+function createOrganization() {
+    swal.withForm({
+        title: 'Create an Organization!',
+        text: 'Completion of this form will submit a request to create an organization.',
+        showCancelButton: true,
+        confirmButtonColor: '#FED100',
+        confirmButtonText: 'Submit Request',
+        closeOnConfirm: false,   
+        showLoaderOnConfirm: true,
+        formFields: [
+            { id: 'name', placeholder: 'Name your organization' },
+        ]
+        }, 
+        function (isConfirm) {
+            if (isConfirm) {
+                org_name = this.swalForm.name;
+                if ($.inArray(org_name, org_names) === -1) {
+                    $.ajax({
+                        url : "/booker/create_organization/",
+                        type: "POST",
+                        data : {org_name:org_name},
+                    });
+                    setTimeout(function(){ 
+                        swal({
+                            title: "Successfully created organization " + org_name + "!",
+                            type: "success",
+                        },
+                        function() {
+                            location.replace("/booker/settings/?tab=create");
+                        });   
+                    }, 2000);
+                } else {
+                    setTimeout(function(){ 
+                        swal("Whoops! An organization called " + org_name + " already exists! Please use another name.");   
+                    }, 2000);
+                }
+            }
+        }
+    )
+}
+
 function uploadPhoto() {
     var picture = document.getElementById("id_picture");
     var errorPicture = document.getElementById("errorPicture")

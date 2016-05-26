@@ -44,6 +44,7 @@ class UserProfile(models.Model):
 class Organization(models.Model):
 	name = models.CharField(max_length=200)
 	admins = models.ManyToManyField(UserProfile,null=True)
+	on = models.BooleanField(default=False)
 
 	def __str__(self):
 		return self.name
