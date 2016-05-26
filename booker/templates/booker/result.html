@@ -8,9 +8,19 @@
 {% block body_block %}
 	<div class="container">
 		<div id="header">
-			<h1>These rooms are available:</h1>
-			<button id="book-button" type="button" class="btn disabled" onclick="bookRoom()">Book Room</button>
-			<hr />
+			{% if rooms %}
+				{% if suggested %}
+					<h1>Your search did not return any results. Here are similar rooms that are available for the same time:</h1>
+				{% else %}
+					<h1>These rooms are available:</h1>
+					<h4>Have Fun!</h4>
+				{% endif %}
+				<button id="book-button" type="button" class="btn disabled" onclick="bookRoom()">Book Room</button>
+			{% else %}
+				<h1>We couldn't find any rooms with that match or closely match your criteria.</h1>
+				<h4>Feel free to alter your criteria or use the calendar option.</h4>
+			{% endif %}
+			<hr>
 		</div>
 		<div id="main">
 			<div class="list-group" id="room-list">

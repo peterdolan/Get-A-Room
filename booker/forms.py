@@ -133,11 +133,8 @@ class RoomForm(forms.Form):
 
 	area_choices = (
 		('empty', ''),
-		('huang', 'Huang'),
-		('quad', 'Main Quad'),
 		('union', 'Old Union'),
-		('any', 'Anywhere'),
-		('other', 'Other')
+		('lathrop', 'Lathrop')
 	)
 	area = forms.ChoiceField(
 		label = "Where?",
