@@ -245,6 +245,7 @@ def post_reservation(request):
 		return render(request, 'booker/uhmmm.html')
 
 def csv_dump(request, org_name):
+	#dumps data
 	response = HttpResponse(content_type='text/csv')
 	name = '"' + org_name + '_reservation_list.csv"'
 	print name
