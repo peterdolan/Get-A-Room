@@ -109,6 +109,7 @@ def getActualDate(date_str, time_str):
 	date = datetime.strptime(timeStamp, "%m/%d/%Y %H:%M")
 	return utc.localize(date)
 
+
 def post_reservation(request):
 
 	print "In post_rez"
@@ -399,6 +400,7 @@ def user_profile(request):
 	groups = profile.groups.all()
 	# Organizations this user is an admin of
 	admin_organizations = profile.get_admin_organizations()
+	print "admin orgs", admin_organizations
 	# Organizations this user is a member of
 	organizations = profile.organizations.all()
 	# print organizations
@@ -504,6 +506,19 @@ def groups(request):
 def organizations(request):
 	if request.method == "GET":
 		return HttpResponse(serializers.serialize('json',Organization.objects.all()))
+
+def organization(request, org_id):
+	if request.method == "GET":
+		org = Organization.objects.get(pk=org_id)
+		buildings = Building.objects.filter(organization=org)
+		print buildings
+		rooms = Room.objects.filter(building__in=buildings)
+		print rooms
+		current_reservations = Reservation.objects.filter(room__in=rooms, start_time__gte=timezone.now())
+		print current_reservations
+		return render(request, 'booker/organization-profile.html', {'org':org, 'buildings':buildings, 'rooms':rooms, 'current_reservations':current_reservations})
+
+	return HttpResponse(0)
 
 @ensure_csrf_cookie
 def user_profiles(request):

@@ -1,0 +1,121 @@
+{% extends 'booker/base.html' %}
+{% load static %}
+{% block head_block %}
+	<!-- Profile css/js -->
+	<link rel="stylesheet" type="text/css" href="{% static "css/profile.css" %} ">
+	<!-- <script src="{% static "js/profile.js" %}"></script> -->
+
+	
+
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css">
+{% endblock %}
+
+{% block body_block %}
+	<div class="container">
+		<div class="inner-container">
+			<div class= "column one-forth">
+				<input onclick="toChangePicture()" class="profile-pic" type="image" src="{% static "images/mag_question.png" %}" border="0" alt="Upload profile picture" />
+				<h2 class="user-name">
+					<a class="name-link" href=".">{{ org.name }}</a>
+				</h2>
+			</div>
+			<div class="column three-fourths">
+				<ul class="nav nav-tabs">
+					<li class="tab{{active_tab_array.0}}"><a class="tab-link" data-toggle="tab" href="#reservations" onclick="makeContentInactive()">Reservations</a></li>
+					<li class="tab{{active_tab_array.1}}"><a class="tab-link" data-toggle="tab" href="#buildings" onclick="makeContentInactive()" id="dirk">Buildings</a></li>
+					<li class="tab{{active_tab_array.2}}"><a class="tab-link" data-toggle="tab" href="#Rooms" onclick="makeContentInactive()">Rooms</a></li>
+					<li class="tab{{active_tab_array.3}}"><a class="tab-link" data-toggle="tab" href="#Members" onclick="makeContentInactive()">Members</a></li>
+				</ul>
+				<div class="tab-content">
+
+					<div id="reservations" class="tab-pane fade in{{active_tab_array.0}}">
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>Reservations</h3>
+							</div>
+							<a href="/booker/" class="btn">Get a Room</a>
+						</div>
+						{% if current_reservations|length == 0 %}
+							<p>Your organization has no reservations!</p>
+						{% else %}
+							<div id="main" class="full-list">
+								<div class="list-group" id="reservation-list">
+									{% for reservation in current_reservations %}
+										<a id="reservation{{ reservation.id }}" onclick="updateActiveReservation('{{profile.id}}','{{reservation.group.name}}','reservation{{reservation.id}}')" href="#" class="list-group-item">
+											<h4><span>{{ reservation.room.building.name }}</span> <span>{{ reservation.room.name }}</span></h4>
+											<span class="time">{{reservation.start_time}}</span> to <span class="time">{{reservation.end_time.time}}</span>
+											{% if reservation.group != None %}
+												<span class="groupname">{{reservation.group.name}}</span>
+											{% else %}
+												<span class="groupname">{{reservation.user.first_name}} {{reservation.user.last_name}}</span>
+											{% endif %}
+											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+					<div id="reservations" class="tab-pane fade in{{active_tab_array.0}}">
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>Reservations</h3>
+							</div>
+							<a href="/booker/" class="btn">Get a Room</a>
+						</div>
+						{% if current_reservations|length == 0 %}
+							<p>Your organization has no reservations!</p>
+						{% else %}
+							<div id="main" class="full-list">
+								<div class="list-group" id="reservation-list">
+									{% for reservation in current_reservations %}
+										<a id="reservation{{ reservation.id }}" onclick="updateActiveReservation('{{profile.id}}','{{reservation.group.name}}','reservation{{reservation.id}}')" href="#" class="list-group-item">
+											<h4><span>{{ reservation.room.building.name }}</span> <span>{{ reservation.room.name }}</span></h4>
+											<span class="time">{{reservation.start_time}}</span> to <span class="time">{{reservation.end_time.time}}</span>
+											{% if reservation.group != None %}
+												<span class="groupname">{{reservation.group.name}}</span>
+											{% else %}
+												<span class="groupname">{{reservation.user.first_name}} {{reservation.user.last_name}}</span>
+											{% endif %}
+											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+
+					<div id="buildings" class="tab-pane fade in{{active_tab_array.1}}">
+						<div class="button-bar">
+							<div class="header-container">
+								<h3>Buildings</h3>
+							</div>
+							<a href="/booker/" class="btn">Create building</a>
+						</div>
+						{% if buildings|length == 0 %}
+							<p>Your organization has no buildings!</p>
+						{% else %}
+							<div id="main" class="full-list">
+								<div class="list-group" id="building-list">
+									{% for building in buildings %}
+										<a id="building{{ building.id }}" onclick="updateActiveBuilding('building{{ building.id }}')" href="#" class="list-group-item">
+											<h4><span>{{ building.name }}</span></h4>
+											<button class="btn remove-reservation-button" id="remove-reservation-button reservation{{ reservation.id }}" onclick="removeReservation('reservation{{reservation.id}}')">
+												<span class="glyphicon glyphicon-remove"></span>
+											</button>
+										</a>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

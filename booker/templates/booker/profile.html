@@ -163,11 +163,12 @@
 							<div id="main" class="full-list">
 								<div class="list-group" id="org-list">
 									{% for org in organizations %}
-										<a id="org{{ org.id }}" onclick="updateActiveOrg('org{{org.id}}')" href="#" class="list-group-item">
+										<a id="org{{ org.id }}" onclick="updateActiveOrg('org{{org.id}}')" href="/booker/organization/{{org.id}}/" class="list-group-item">
 											<h4><span>{{ org.name }}</span></h4>
 											<span class="pull-right">
-												{% if org in admin_orgs %}
-													<span class="glyphicon glyphicon-tower" aria-hidden="true"></span>
+												{% if org in admin_organizations %}
+													<span class="glyphicon glyphicon-tower" aria-hidden="true">
+													</span>
 												{% endif %}
 												<span class="badge">{{org.get_member_count}}</span>
 												<button class="btn remove-org-button" id="remove-org-button org{{ org.id }}" onclick="removeOrg('org{{org.id}}')">

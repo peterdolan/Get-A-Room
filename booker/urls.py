@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^user_profiles/$',views.user_profiles,name='user_profiles'),
     url(r'^add_user_to_group/$',views.add_user_to_group,name='add_user_to_group/'),
     url(r'^add_group_admin/$',views.add_group_admin,name='add_group_admin/'),
+    url(r'^organization/(?P<org_id>.+)/$', views.organization, name='organization')
     ]
