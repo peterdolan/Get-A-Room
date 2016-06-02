@@ -1,3 +1,7 @@
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+</head>
+
 {% extends 'booker/base.html' %}
 {% load static %}
 {% block head_block %}
@@ -18,6 +22,28 @@
 				<h2 class="user-name">
 					<a class="name-link" href=".">{{ org.name }}</a>
 				</h2>
+				<select id = "time_drop_down">
+					<option value="1">One Week</option>
+					<option value="2">Two Weeks</option>
+					<option value="3">One Week</option>
+					<option value="4">One Week</option>
+					<option value="-1">All Data</option>
+				</select>
+	 			<div>
+	 				<button type="submit" class="btn success" type="button" id = "submit_btn">
+	 				    Get CSV file
+	 				</button>
+	 			</div>	
+ 				<script>
+				$('#submit_btn').click(function() {
+					console.log("{{org.name}}")
+					var selected = $('#time_drop_down').val();
+    				alert("testing" + selected);
+    				window.location.href = ("/booker/data_dump/{{org.name}}/" + selected + "/");
+
+				});
+				</script>
+ 				
 			</div>
 			<div class="column three-fourths">
 				<ul class="nav nav-tabs">
@@ -27,7 +53,6 @@
 					<li class="tab{{active_tab_array.3}}"><a class="tab-link" data-toggle="tab" href="#Members" onclick="makeContentInactive()">Members</a></li>
 				</ul>
 				<div class="tab-content">
-
 					<div id="reservations" class="tab-pane fade in{{active_tab_array.0}}">
 						<div class="button-bar">
 							<div class="header-container">

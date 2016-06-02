@@ -3,6 +3,7 @@ from itertools import chain
 from sets import Set
 import pytz
 import json
+import csv
 
 from django.core import serializers
 from django.core.urlresolvers import reverse
@@ -30,7 +31,12 @@ def index(request):
 			if nmeetings is None or not form.cleaned_data['weekly']:
 				nmeetings = 1
 			rooms = getValidRooms(form, nmeetings)
-			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'nmeetings':nmeetings})
+			suggested = False
+			if not rooms:
+				suggested = True
+				rooms = getSuggestionRoomObjects(form, nmeetings, 0)
+			return render(request, 'booker/result.html', {'rooms':rooms, 'form':form, 'nmeetings':nmeetings, 'suggested':suggested})
+
 	else:
 		form = RoomForm()
 		if request.session.get('group_search', False):
@@ -48,6 +54,7 @@ def getValidRooms(form, nmeetings):
 	projector_bool = bool(form.cleaned_data['projector'])
 	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
 	windows_bool = bool(form.cleaned_data['windows'])
+	area = form.cleaned_data['area']
 
 	kwargs = {
 		'capacity__gte':capacity,
@@ -66,6 +73,98 @@ def getValidRooms(form, nmeetings):
 	end_time = start_time + dur_dt
 	time_tuple = (start_time, end_time)
 	return checkReservations(room_objects_ordered, time_tuple, nmeetings)
+
+def getSuggestionRoomObjects(form, nmeetings, it):
+	print 'Looking for rooms again. Iteration: ' + str(it)
+	capacity = int(form.cleaned_data['capacity'])
+	projector_bool = bool(form.cleaned_data['projector'])
+	whiteboard_bool = bool(form.cleaned_data['whiteboard'])
+	windows_bool = bool(form.cleaned_data['windows'])
+
+	kwargs = {}
+	if it == 0:
+		kwargs['capacity__gte'] = 0
+		if projector_bool:
+			kwargs['has_projector'] = True
+		if windows_bool:
+			kwargs['has_windows'] = True
+		if whiteboard_bool:
+			kwargs['has_whiteboard'] = True
+		it = 1
+	elif it == 1:
+		kwargs['capacity__gte'] = capacity
+		if projector_bool:
+			kwargs['has_projector'] = False
+			if windows_bool:
+				kwargs['has_windows'] = True
+			if whiteboard_bool:
+				kwargs['has_whiteboard'] = True
+			it = 2
+		else:
+			if windows_bool:
+				kwargs['has_windows'] = False
+				if whiteboard_bool:
+					kwargs['has_whiteboard'] = True
+				it = 3
+			else:
+				if whiteboard_bool:
+					kwargs['has_whiteboard'] = False
+					it = -1
+				else:
+					rooms = []
+					return rooms
+	elif it == 2:
+		kwargs['capacity__gte'] = capacity
+		if projector_bool:
+			kwargs['has_projector'] = True
+		if windows_bool:
+			kwargs['has_windows'] = False
+			if whiteboard_bool:
+				kwargs['has_whiteboard'] = True
+			it = 3
+		else:
+			if whiteboard_bool:
+				kwargs['has_whiteboard'] = False
+				it = -1
+			else:
+				rooms = []
+				return rooms
+	elif it == 3:
+		kwargs['capacity__gte'] = capacity
+		if projector_bool:
+			kwargs['has_projector'] = True
+		if windows_bool:
+			kwargs['has_windows'] = True
+		if whiteboard_bool:
+			kwargs['has_whiteboard'] = False
+			it = -1
+		else:
+			rooms = []
+			return rooms
+	else: 
+		rooms = []
+		return rooms
+
+	date = form.cleaned_data['date']
+	start_time = form.cleaned_data['time']
+	duration = form.cleaned_data['duration']
+	area = form.cleaned_data['area']
+
+	room_objects_filtered = Room.objects.all().filter(**kwargs)
+	room_objects_ordered = room_objects_filtered.order_by('name')
+
+	start_time = getActualDate(date,start_time)
+	dur_dt = timedelta(minutes=int(duration))
+	end_time = start_time + dur_dt
+	time_tuple = (start_time, end_time)
+	room_list = checkReservations(room_objects_ordered, time_tuple, nmeetings)
+	if room_list:
+		print 'Found something.'
+		return room_list
+	else:
+		print  "Didn't find anything. Going to new iteration."
+		return getSuggestionRoomObjects(form, nmeetings, it)
+		
 
 def checkReservations(room_objects_list, time_tuple, nmeetings):
 	#look for overlap by comparing reservation times to times desired
@@ -146,6 +245,30 @@ def post_reservation(request):
 	else:
 		return render(request, 'booker/uhmmm.html')
 
+def csv_dump(request, org_name, num_weeks):
+	cur_time = timezone.now()
+	d = 0
+	num_weeks = int(num_weeks)
+	if num_weeks != -1:
+		d = timedelta(weeks = num_weeks)
+	
+	response = HttpResponse(content_type='text/csv')
+	name = '"' + org_name + '_reservation_list.csv"'
+	response['Content-Disposition'] = 'attachment; filename=' + name
+
+	writer = csv.writer(response)
+	reservations = Reservation.objects.all()
+	writer.writerow(["Room Name", "Created By", "Description", "Start Time", "End Time"])
+
+	for reservation in reservations:
+		print type(reservation.start_time)
+		if org_name == str.strip(str(reservation.room.building.organization)):
+			if num_weeks == -1:
+				writer.writerow([reservation.room, reservation.user, reservation.description, reservation.start_time, reservation.end_time])
+			elif reservation.start_time > cur_time and reservation.start_time < cur_time + d:
+					writer.writerow([reservation.room, reservation.user, reservation.description, reservation.start_time, reservation.end_time])
+	return response
+
 def confirm(request):
 	if (request.session.get('first_confirm', False)):
 		group_search = request.session.get('group_search')
@@ -210,6 +333,10 @@ def get_closest_reservation(request):
 		json_data['second'] = time.second
 		json_encoded = json.dumps(json_data)
 		return HttpResponse(json_encoded)
+
+# def get_room_info(request):
+# 	room_name = request.GET.get('room', False)
+# 	building_name = request.GET.get('building', False)
 
 def eventsFeed(request, room_name):
 	from django.utils.timezone import utc

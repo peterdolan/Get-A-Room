@@ -256,6 +256,68 @@ function getFormattedTime(date) {
 function getCurrentRoom(){
 	var value = document.getElementById("calview_room");
     var room = value.options[value.selectedIndex].value;
+  //   var building = select.options[select.selectedIndex].value;
+  //   $.ajax({
+		// 	url: "get_room_info/",
+		// 	type: "GET",
+		// 	data: {room:room, building:building},
+		// 	success : function(room_obj) {
+		// 		res_info = JSON.parse(reservation_time);
+		// 		var d = new Date(res_info['year'],res_info['month']-1,res_info['day'],res_info['hour'],res_info['minute'],res_info['second']);
+		// 		var options = [
+		// 				{value: '30', text: '30 minutes'},
+		// 				{value: '60', text: '1 hour'},
+		// 				{value: '90', text: '1 hour and a half'},
+		// 				{value: '120', text: '2 hours'},
+		// 				{value: '150', text: '2 and a half hours'},
+		// 				{value: '180', text: '3 hours'}
+		// 			];
+		// 		var diff = getFormattedTime(d) - getFormattedTime(date);
+		// 		if(getFormattedDate(d) == getFormattedDate(date) && ((getFormattedTime(d) - getFormattedTime(date)) < 6)) {
+		// 			options = options.slice(0,diff);
+		// 		}
+		// 		swal.withForm({
+		// 		    title: 'Make a reservation \non ' + grabDate(date) + '\n at '+ grabTime(date) + '\n in ' + room + '?',
+		// 		    text: 'Make reservations for your friends, teammates, etc.',
+		// 		    showCancelButton: true,
+		// 		    confirmButtonColor: '#FED100',
+		// 		    confirmButtonText: 'Make Reservation',
+		// 		    closeOnConfirm: false,   
+		// 			showLoaderOnConfirm: true,
+		// 		    formFields: [
+		// 				{ id: 'description', placeholder: 'Add a description for your booking' },
+		// 				{ id: 'length', type: 'select', options: options }
+		// 			]
+		// 			}, 
+		// 			function (isConfirm) {
+		// 				if (isConfirm) {
+		// 					var desc;
+		// 					if (this.swalForm.description == '') {
+		// 						desc = "MyEvent!";
+		// 					}
+		// 					else {
+		// 						desc = this.swalForm.description;
+		// 					}
+		// 					$.ajax({
+		// 						url : "../post_reservation/",
+		// 						type: "POST",
+		// 						data : {room:room, date:getFormattedDate(date), time:getFormattedTime(date), nmeetings:1, duration:this.swalForm.length, description:desc},
+		// 					});
+		// 					setTimeout(function(){ 
+		// 						swal({
+		// 							title: "Successfully created reservation!",
+		// 							type: "success",
+		// 						},
+		// 						function() {
+		// 							location.replace("/booker/calendar/");
+		// 						});
+		// 	    			}, 2000);
+		// 			    }
+		// 			}
+		// 		);
+		// 		calendar_refresh();
+		// 	}
+		// });	
 }
 getCurrentRoom();
 
